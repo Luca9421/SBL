@@ -54,6 +54,11 @@
       color: gray;
     }
 
+    .winner {
+      color: green;
+      font-weight: bold;
+    }
+
     /* MENU */
     .menu {
       position: fixed;
@@ -95,31 +100,72 @@
 
 <script>
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
-
 fetch(url)
   .then(res => res.text())
   .then(data => {
     const righe = data.split("\n").slice(1);
     const contenitore = document.getElementById("contenitore");
 
+    let gironi = {};
+
+    // Raggruppa per girone
     righe.forEach(riga => {
       const col = riga.split(",");
       if(col.length < 6) return;
 
-      const card = document.createElement("div");
-      card.className = "card";
+      const girone = col[0];
 
-      card.innerHTML = `
-        <div class="girone">Girone ${col[0]}</div>
-        <div class="match">
-          <span>${col[1]}</span>
-          <span class="score">${col[3]} - ${col[4]}</span>
-          <span>${col[2]}</span>
-        </div>
-        <div class="status">${col[5]}</div>
-      `;
+      if(!gironi[girone]) {
+        gironi[girone] = [];
+      }
 
-      contenitore.appendChild(card);
+      gironi[girone].push(col);
+    });
+
+    // Ordina gironi (A, B, C...)
+    Object.keys(gironi).sort().forEach(g => {
+
+      // Titolo girone
+      const titolo = document.createElement("h2");
+      titolo.style.marginLeft = "15px";
+      titolo.innerText = "Girone " + g;
+      contenitore.appendChild(titolo);
+
+      // Partite
+      gironi[g].forEach(col => {
+
+        let squadraA = col[1];
+        let squadraB = col[2];
+        let puntiA = parseInt(col[3]);
+        let puntiB = parseInt(col[4]);
+
+        let classeA = "";
+        let classeB = "";
+
+        // Evidenzia vincitore
+        if(col[5] === "Finita") {
+          if(puntiA > puntiB) {
+            classeA = "winner";
+          } else if(puntiB > puntiA) {
+            classeB = "winner";
+          }
+        }
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="match">
+            <span class="${classeA}">${squadraA}</span>
+            <span class="score">${col[3]} - ${col[4]}</span>
+            <span class="${classeB}">${squadraB}</span>
+          </div>
+          <div class="status">${col[5]}</div>
+        `;
+
+        contenitore.appendChild(card);
+      });
+
     });
   });
 </script>
