@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gironi</title>
+  <style>
+    body { font-family: Arial; margin: 0; }
+
+    nav {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="gironi.html">Gironi</a>
+</nav>
+
+<h1>🏐 Gironi e Partite</h1>
+
+<table id="tabella">
+  <thead>
+    <tr>
+      <th>Girone</th>
+      <th>Squadra A</th>
+      <th>Squadra B</th>
+      <th>Risultato</th>
+      <th>Stato</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+
+fetch(url)
+  .then(res => res.text())
+  .then(data => {
+    const righe = data.split("\n").slice(1);
+    const tbody = document.querySelector("#tabella tbody");
+
+    righe.forEach(riga => {
+      const col = riga.split(",");
+      if(col.length < 6) return;
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${col[0]}</td>
+        <td>${col[1]}</td>
+        <td>${col[2]}</td>
+        <td>${col[3]} - ${col[4]}</td>
+        <td>${col[5]}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  });
+</script>
+
+</body>
+</html>
