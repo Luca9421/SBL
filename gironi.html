@@ -2,66 +2,96 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gironi</title>
-  <style>
-    body { font-family: Arial; margin: 0; }
 
-    nav {
-      background-color: #333;
-      padding: 10px;
-      text-align: center;
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f2f4f8;
     }
 
-    nav a {
+    .header {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
+      padding: 20px;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      margin-top: 20px;
+      margin: 0;
+      font-size: 24px;
     }
 
-    table {
-      width: 90%;
-      margin: 20px auto;
-      border-collapse: collapse;
+    /* CARD PARTITA */
+    .card {
+      background: white;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
+    .girone {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #0072ff;
     }
 
-    th {
-      background-color: #f4f4f4;
+    .match {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .score {
+      font-weight: bold;
+    }
+
+    .status {
+      font-size: 12px;
+      color: gray;
+    }
+
+    /* MENU */
+    .menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .spacer {
+      height: 70px;
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="gironi.html">Gironi</a>
-</nav>
+<div class="header">
+  <h1>🏐 Gironi</h1>
+</div>
 
-<h1>🏐 Gironi e Partite</h1>
+<div id="contenitore"></div>
 
-<table id="tabella">
-  <thead>
-    <tr>
-      <th>Girone</th>
-      <th>Squadra A</th>
-      <th>Squadra B</th>
-      <th>Risultato</th>
-      <th>Stato</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div class="spacer"></div>
+
+<div class="menu">
+  <a href="index.html">🏠 Home</a>
+  <a href="gironi.html">📊 Gironi</a>
+</div>
 
 <script>
 const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
@@ -70,23 +100,26 @@ fetch(url)
   .then(res => res.text())
   .then(data => {
     const righe = data.split("\n").slice(1);
-    const tbody = document.querySelector("#tabella tbody");
+    const contenitore = document.getElementById("contenitore");
 
     righe.forEach(riga => {
       const col = riga.split(",");
       if(col.length < 6) return;
 
-      const tr = document.createElement("tr");
+      const card = document.createElement("div");
+      card.className = "card";
 
-      tr.innerHTML = `
-        <td>${col[0]}</td>
-        <td>${col[1]}</td>
-        <td>${col[2]}</td>
-        <td>${col[3]} - ${col[4]}</td>
-        <td>${col[5]}</td>
+      card.innerHTML = `
+        <div class="girone">Girone ${col[0]}</div>
+        <div class="match">
+          <span>${col[1]}</span>
+          <span class="score">${col[3]} - ${col[4]}</span>
+          <span>${col[2]}</span>
+        </div>
+        <div class="status">${col[5]}</div>
       `;
 
-      tbody.appendChild(tr);
+      contenitore.appendChild(card);
     });
   });
 </script>
