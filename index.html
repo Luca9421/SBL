@@ -2,59 +2,69 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Torneo Beach Volley</title>
+  <title>Summer Beach League</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    h1 { text-align: center; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px;}
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center;}
-    th { background-color: #f4f4f4;}
+    body { font-family: Arial; margin: 0; }
+
+    /* MENU */
+    nav {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: #555;
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
 
-<h1>🏐 Torneo Beach Volley</h1>
+<!-- MENU -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="gironi.html">Gironi</a>
+</nav>
 
-<table id="tabella">
-  <thead>
-    <tr>
-      <th>Girone</th>
-      <th>Squadra A</th>
-      <th>Squadra B</th>
-      <th>Risultato</th>
-      <th>Stato</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<!-- CONTENUTO HOME -->
+<div class="header">
+  <h1>🏐 Summer Beach League</h1>
+  <h2>2nda Edizione</h2>
 
-<script>
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
-
-fetch(url)
-  .then(res => res.text())
-  .then(data => {
-    const righe = data.split("\n").slice(1);
-    const tbody = document.querySelector("#tabella tbody");
-
-    righe.forEach(riga => {
-      const col = riga.split(",");
-      if(col.length < 6) return;
-
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td>${col[0]}</td>
-        <td>${col[1]}</td>
-        <td>${col[2]}</td>
-        <td>${col[3]} - ${col[4]}</td>
-        <td>${col[5]}</td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-  });
-</script>
+  <div class="info">
+    📅 Inserisci qui le date <br>
+    📍 Inserisci qui il luogo
+  </div>
+</div>
 
 </body>
 </html>
