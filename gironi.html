@@ -48,10 +48,15 @@
     .score {
       font-weight: bold;
     }
-
+    
+    .center {
+      text-align: center;
+    }
+    
     .status {
       font-size: 12px;
       color: gray;
+      margin-top: 3px;
     }
 
     .winner {
@@ -143,7 +148,7 @@ fetch(url)
         let classeB = "";
 
         // Evidenzia vincitore
-        if(col[5] === "Finita") {
+        if(col[5].trim().toLowerCase() === "finita") {
           if(puntiA > puntiB) {
             classeA = "winner";
           } else if(puntiB > puntiA) {
@@ -155,13 +160,15 @@ fetch(url)
         card.className = "card";
 
         card.innerHTML = `
-          <div class="match">
-            <span class="${classeA}">${squadraA}</span>
-            <span class="score">${col[3]} - ${col[4]}</span>
-            <span class="${classeB}">${squadraB}</span>
+        <div class="match">
+          <span class="${classeA}">${squadraA}</span>
+          <div class="center">
+            <div class="score">${col[3]} - ${col[4]}</div>
+            <div class="status">${col[5]}</div>
           </div>
-          <div class="status">${col[5]}</div>
-        `;
+          <span class="${classeB}">${squadraB}</span>
+        </div>
+      `;
 
         contenitore.appendChild(card);
       });
