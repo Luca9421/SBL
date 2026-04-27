@@ -63,6 +63,19 @@
     .btn:hover {
       background: #005ad1;
     }
+
+    .countdown {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    #timer {
+      margin-top: 10px;
+      font-size: 22px;
+      color: #fff;
+    }
+    
     /* MENU */
     .menu {
       position: fixed;
@@ -92,6 +105,10 @@
     📅 12-13-14 Giugno <br>
     📍 Bagni Alberto Cesare e Bagni Riccardo, Marotta
   </div>
+  <div class="countdown">
+    ⏳ Inizio torneo tra:
+    <div id="timer"></div>
+  </div>
 </div>
 
 <div class="section">
@@ -107,6 +124,28 @@
   <a href="index.html">🏠 Home</a>
   <a href="gironi.html">📊 Gironi</a>
 </div>
+  
+<script>
+  const torneoData = new Date("2026-06-12T17:00:00").getTime();
+  const x = setInterval(function() {
+  const now = new Date().getTime();
+  const distance = torneoData - now;
+  const giorni = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const ore = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minuti = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const secondi = Math.floor((distance % (1000 * 60)) / 1000);
 
+  document.getElementById("timer").innerHTML =
+    giorni + "g " + ore + "h " + minuti + "m " + secondi + "s";
+
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "🏐 TORNEO IN CORSO!";
+  }
+}, 1000);
+</script>
+
+
+  
 </body>
 </html>
