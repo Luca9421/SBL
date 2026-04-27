@@ -2,68 +2,75 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Summer Beach League</title>
+
   <style>
-    body { font-family: Arial; margin: 0; }
-
-    /* MENU */
-    nav {
-      background-color: #333;
-      padding: 10px;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f2f4f8;
     }
 
     /* HEADER */
     .header {
-      text-align: center;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
       padding: 40px 20px;
-      background-color: #f4f4f4;
+      text-align: center;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
 
     h1 {
       margin: 0;
-      font-size: 36px;
+      font-size: 28px;
     }
 
     h2 {
       margin: 10px 0;
-      color: #555;
+      font-weight: normal;
     }
 
     .info {
-      margin-top: 20px;
-      font-size: 18px;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+
+    /* MENU */
+    .menu {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
     }
   </style>
 </head>
+
 <body>
 
-<!-- MENU -->
-<nav>
-  <a href="index.html">Home</a>
-  <a href="gironi.html">Gironi</a>
-</nav>
-
-<!-- CONTENUTO HOME -->
 <div class="header">
   <h1>🏐 Summer Beach League</h1>
   <h2>2nda Edizione</h2>
-
   <div class="info">
-    📅 Inserisci qui le date <br>
-    📍 Inserisci qui il luogo
+    📅 Inserisci le date <br>
+    📍 Inserisci il luogo
   </div>
+</div>
+
+<div class="menu">
+  <a href="index.html">🏠 Home</a>
+  <a href="gironi.html">📊 Gironi</a>
 </div>
 
 </body>
