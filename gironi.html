@@ -63,7 +63,10 @@
       color: green;
       font-weight: bold;
     }
-
+    
+    .loser {
+      color: red;
+    }
     /* MENU */
     .menu {
       position: fixed;
@@ -143,16 +146,17 @@ fetch(url)
         let squadraB = col[2];
         let puntiA = parseInt(col[3]);
         let puntiB = parseInt(col[4]);
-
+        
         let classeA = "";
         let classeB = "";
-
-        // Evidenzia vincitore
+        
         if(col[5].trim().toLowerCase() === "finita") {
           if(puntiA > puntiB) {
             classeA = "winner";
+            classeB = "loser";
           } else if(puntiB > puntiA) {
             classeB = "winner";
+            classeA = "loser";
           }
         }
 
@@ -160,15 +164,15 @@ fetch(url)
         card.className = "card";
 
         card.innerHTML = `
-        <div class="match">
-          <span class="${classeA}">${squadraA}</span>
-          <div class="center">
-            <div class="score">${col[3]} - ${col[4]}</div>
-            <div class="status">${col[5]}</div>
+          <div class="match">
+            <span class="${classeA}">${squadraA}</span>
+            <div class="center">
+              <div class="status">${col[5]}</div>
+              <div class="score">${col[3]} - ${col[4]}</div>
+            </div>
+            <span class="${classeB}">${squadraB}</span>
           </div>
-          <span class="${classeB}">${squadraB}</span>
-        </div>
-      `;
+        `;
 
         contenitore.appendChild(card);
       });
