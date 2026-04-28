@@ -90,7 +90,7 @@
       margin-bottom: 20px;
     }
     
-    .carousel-container {
+   .carousel-container {
       overflow: hidden;
       width: 100%;
       position: relative;
@@ -99,9 +99,16 @@
     .carousel {
       display: flex;
       gap: 20px;
-      width: max-content;
-      animation: scroll 10s linear infinite;
-      padding: 10px 0;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 10px 20px;
+      -webkit-overflow-scrolling: touch;
+    
+      scrollbar-width: none;
+    }
+    
+    .carousel::-webkit-scrollbar {
+      display: none;
     }
     
     .carousel img {
@@ -115,15 +122,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
     
-    @keyframes scroll {
-      from {
-        transform: translateX(0);
-      }
-    
-      to {
-        transform: translateX(-50%);
-      }
-    }
     /* MENU */
     .menu {
       position: fixed;
@@ -248,47 +246,18 @@
 <script>
   const carousel = document.getElementById("carousel");
   
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+  let autoScroll = setInterval(() => {
+    carousel.scrollLeft += 1;
   
-  carousel.addEventListener("mousedown", (e) => {
-    isDown = true;
-    startX = e.pageX;
-    scrollLeft = carousel.scrollLeft;
-  });
+    // reset infinito
+    if (
+      carousel.scrollLeft + carousel.clientWidth
+      >= carousel.scrollWidth
+    ) {
+      carousel.scrollLeft = 0;
+    }
   
-  carousel.addEventListener("mouseleave", () => {
-    isDown = false;
-  });
-  
-  carousel.addEventListener("mouseup", () => {
-    isDown = false;
-  });
-  
-  carousel.addEventListener("mousemove", (e) => {
-    if(!isDown) return;
-    e.preventDefault();
-  
-    const x = e.pageX;
-    const walk = (x - startX) * 2;
-  
-    carousel.scrollLeft = scrollLeft - walk;
-  });
-  
-  // TOUCH MOBILE
-  
-  carousel.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].pageX;
-    scrollLeft = carousel.scrollLeft;
-  });
-  
-  carousel.addEventListener("touchmove", (e) => {
-    const x = e.touches[0].pageX;
-    const walk = (x - startX) * 2;
-  
-    carousel.scrollLeft = scrollLeft - walk;
-  });
+  }, 15);
 </script>
 
   
