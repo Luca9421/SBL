@@ -29,8 +29,8 @@
       position: relative;
       overflow: hidden;
       background:
-        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.45)),
-        url('https://www.google.com/imgres?q=paesaggio%20disegno%20immagine%20sfondo%20palme%20e%20tramonto%20disegno&imgurl=https%3A%2F%2Fst5.depositphotos.com%2F82105580%2F68758%2Fv%2F450%2Fdepositphotos_687583414-stock-illustration-natural-landscape-scenery-sunset-beach.jpg&imgrefurl=https%3A%2F%2Fdepositphotos.com%2Fit%2Fvectors%2Ftramonto.html&docid=AnXr6kZkVQz79M&tbnid=prJWIFWKslAWSM&w=600&h=328&hcb=2');
+        linear-gradient(rgba(0,40,90,0.45), rgba(0,60,120,0.5)),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop');
 
       background-size: cover;
       background-position: center;
@@ -47,16 +47,22 @@
 
     .hero h1 {
       margin: 0;
-      font-size: 34px;
-      font-weight: 700;
+      font-size: 42px;
+      font-weight: 800;
+      font-style: italic;
+      text-transform: uppercase;
       letter-spacing: 1px;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.35);
     }
 
     .hero h2 {
-      margin-top: 10px;
-      font-size: 18px;
-      font-weight: 400;
-      opacity: 0.95;
+      margin-top: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffd54a;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .hero-info {
@@ -71,12 +77,12 @@
     .countdown-box {
       margin: 30px auto 0;
       width: 100%;
-      max-width: 320px;
-      background: rgba(255,255,255,0.15);
+      max-width: 360px;
+      background: rgba(0,0,0,0.22);
       backdrop-filter: blur(10px);
-      border-radius: 22px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 28px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
     .countdown-title {
@@ -86,9 +92,32 @@
     }
 
     #timer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .time-box {
+      width: 72px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 12px 8px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .time-value {
       font-size: 28px;
       font-weight: 700;
+      color: white;
+    }
+
+    .time-label {
+      margin-top: 4px;
+      font-size: 11px;
       letter-spacing: 1px;
+      color: rgba(255,255,255,0.85);
     }
 
     /* SECTIONS */
@@ -260,13 +289,12 @@
 
   <div class="hero">
 
-    <h1>🏐 Summer Beach League</h1>
+    <h1>🏖️ Summer Beach League</h1>
 
     <h2>Seconda Edizione</h2>
 
     <div class="hero-info">
-      📅 12-13-14 Giugno<br>
-      📍 Bagni Alberto Cesare e Bagni Riccardo, Marotta
+      Beach Volley Tournament
     </div>
 
     <div class="countdown-box">
@@ -275,6 +303,26 @@
       </div>
 
       <div id="timer"></div>
+    </div>
+
+  </div>
+
+  <!-- INFO TORNEO -->
+
+  <div style="display:flex; gap:14px; margin:22px 18px;">
+
+    <div class="section" style="flex:1; margin:0; text-align:center;">
+      <h3>📅 Date</h3>
+      <p>
+        12 - 13 - 14 Giugno 2026
+      </p>
+    </div>
+
+    <div class="section" style="flex:1; margin:0; text-align:center;">
+      <h3>📍 Luogo</h3>
+      <p>
+        Bagni Alberto Cesare e Bagni Riccardo, Marotta
+      </p>
     </div>
 
   </div>
@@ -321,8 +369,8 @@
     <div class="carousel-container">
 
       <div class="carousel">
-		  
-	  <a href="https://instagram.com/SPONSOR1" target="_blank">
+
+<a href="https://instagram.com/SPONSOR1" target="_blank">
         <img src="BagniAlbertoCesare_Logo.png" alt="Bagni Alberto Cesare">
       </a>
 
@@ -360,7 +408,7 @@
 
         <!-- DUPLICATI -->
 
-      <a href="https://instagram.com/SPONSOR1" target="_blank">
+     <a href="https://instagram.com/SPONSOR1" target="_blank">
         <img src="BagniAlbertoCesare_Logo.png" alt="Bagni Alberto Cesare">
       </a>
 
@@ -425,8 +473,27 @@
       const minuti = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const secondi = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("timer").innerHTML =
-        giorni + "g " + ore + "h " + minuti + "m " + secondi + "s";
+      document.getElementById("timer").innerHTML = `
+        <div class="time-box">
+          <div class="time-value">${giorni}</div>
+          <div class="time-label">GIORNI</div>
+        </div>
+
+        <div class="time-box">
+          <div class="time-value">${ore}</div>
+          <div class="time-label">ORE</div>
+        </div>
+
+        <div class="time-box">
+          <div class="time-value">${minuti}</div>
+          <div class="time-label">MINUTI</div>
+        </div>
+
+        <div class="time-box">
+          <div class="time-value">${secondi}</div>
+          <div class="time-label">SECONDI</div>
+        </div>
+      `;
 
       if (distance < 0) {
         clearInterval(x);
