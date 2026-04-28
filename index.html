@@ -308,7 +308,21 @@ body {
 }
 
 /* INSTAGRAM */
+.social-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
+.social-title img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.social-title h3 {
+  margin: 0;
+}
 .instagram {
   background:
     linear-gradient(
@@ -545,7 +559,13 @@ body {
 
   <div class="section">
 
-    <h3><img src="instagram.png" alt="Instagram"> Seguici su Instagram</h3>
+	 <div class="social-title">
+		
+		 <img src="instagram.png" alt="Instagram">
+		
+		 <h3>Seguici su Instagram</h3>
+		
+	</div>
 
     <p>
       Guarda highlights, stories, foto delle partite
