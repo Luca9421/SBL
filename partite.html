@@ -125,22 +125,13 @@
 .accordion-content {
   max-height: 0;
   overflow: hidden;
-
   opacity: 0;
-
   transform: translateY(-10px);
-
-  transition:
-    max-height 0.5s ease,
-    opacity 0.4s ease,
-    transform 0.4s ease;
-
-  border-radius: 15px;
+  transition: all 0.4s ease;
 }
 
-/* APERTO */
 .accordion.open .accordion-content {
-  max-height: 2000px; /* sufficiente per tutte le partite */
+  max-height: 5000px;
   opacity: 1;
   transform: translateY(0);
 }
@@ -437,6 +428,11 @@ function loadMatches(url, container) {
 function toggleAccordion(el) {
   const acc = el.parentElement;
   acc.classList.toggle("open");
+
+  const content = acc.querySelector(".accordion-content");
+
+  // forza repaint (fix mobile + Safari)
+  content.style.display = "block";
 }
 </script>
 
