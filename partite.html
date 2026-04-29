@@ -1,70 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARTITE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARTITE</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #f2f4f8;
-}
+  <!-- =======================
+       STILI
+  ======================== -->
+  <style>
 
-/* HEADER */
-.header {
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f2f4f8;
+    }
 
-h1 {
-  margin: 0;
-  font-size: 24px;
-}
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
 
-/* CARD */
-.card {
-  background: white;
-  margin: 15px;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-.match {
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-}
+    /* =======================
+       CARD PARTITE
+    ======================== */
+    .card {
+      background: white;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-.score { font-weight: bold; }
-.center { text-align: center; }
+    .girone {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #0072ff;
+    }
 
-.status {
-  font-size: 12px;
-  color: gray;
-}
+    .match {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
 
-.winner { color: green; font-weight: bold; }
-.loser { color: red; }
+    .score {
+      font-weight: bold;
+    }
 
-/* ACCORDION */
+    .center {
+      text-align: center;
+    }
+
+    .status {
+      font-size: 12px;
+      color: gray;
+      margin-top: 3px;
+    }
+
+    .winner {
+      color: green;
+      font-weight: bold;
+    }
+
+    .loser {
+      color: red;
+    }
+
+/* =======================
+   ACCORDION GIRONI iOS STYLE
+======================== */
 .accordion {
   margin: 15px;
 }
 
+/* HEADER */
 .accordion-header {
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
+
   padding: 15px;
   border-radius: 18px;
+
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   cursor: pointer;
+
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+
+  transition: all 0.3s ease;
+}
+
+.accordion-header:hover {
+  transform: scale(1.01);
 }
 
 .accordion-header h2 {
@@ -73,249 +111,271 @@ h1 {
   color: #0072ff;
 }
 
-.arrow {
-  transition: transform 0.3s ease;
+/* FRECCIA */
+#arrow {
+  font-size: 18px;
+  transition: transform 0.35s ease;
 }
 
-.accordion.open .arrow {
-  transform: rotate(90deg);
-}
-
-/* CONTENT */
+/* CONTENUTO (animazione smooth invece di display none) */
 .accordion-content {
   max-height: 0;
   overflow: hidden;
+
   opacity: 0;
-  transition: all 0.4s ease;
+
+  transform: translateY(-10px);
+
+  transition:
+    max-height 0.5s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+
+  border-radius: 15px;
 }
 
+/* APERTO */
 .accordion.open .accordion-content {
-  max-height: 5000px;
+  max-height: 2000px; /* sufficiente per tutte le partite */
   opacity: 1;
+  transform: translateY(0);
 }
 
-/* MENU */
-.menu {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(255,255,255,0.95);
-  display: flex;
-  justify-content: space-around;
-  padding: 14px 0;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
+/* ROTAZIONE FRECCIA */
+.accordion.open #arrow {
+  transform: rotate(90deg);
 }
+    /* =======================
+       MENU (UGUALE INDEX)
+    ======================== */
+    .menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
 
-.menu-item {
-  text-align: center;
-  font-size: 12px;
-  text-decoration: none;
-  color: #555;
-}
+      width: 100%;
 
-.menu-item.active {
-  color: #0066ff;
-}
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
 
-.spacer { height: 90px; }
-</style>
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      padding: 14px 0;
+
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+
+     transform: translateY(0); /* VISIBILE DI DEFAULT */
+      opacity: 1;
+
+      transition: all 0.35s ease;
+    }
+
+    .menu.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      text-decoration: none;
+      color: #555;
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .menu-item img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .menu-item.active {
+      color: #0066ff;
+    }
+
+    /* spazio sotto per non coprire contenuto */
+    .spacer {
+      height: 90px;
+    }
+
+  </style>
 </head>
 
 <body>
 
+<!-- =======================
+     HEADER
+======================== -->
 <div class="header">
   <h1>PARTITE</h1>
 </div>
 
-<!-- GIRONI -->
-<div class="accordion" data-type="gironi">
-  <div class="accordion-header">
-    <h2>Gironi</h2>
-    <span class="arrow">▶</span>
-  </div>
-  <div class="accordion-content"></div>
-</div>
+<!-- CONTENUTO DINAMICO -->
+<!-- =======================
+     SEZIONE GIRONI COLLASSABILE
+======================== -->
+<div class="accordion">
 
-<div class="accordion" data-type="sedicesimi">
-  <div class="accordion-header">
-    <h2>Sedicesimi</h2>
-    <span class="arrow">▶</span>
+  <div class="accordion-header" onclick="toggleGironi()">
+    <h2>GIRONI</h2>
+    <span id="arrow">▶</span>
   </div>
-  <div class="accordion-content"></div>
-</div>
 
-<div class="accordion" data-type="ottavi">
-  <div class="accordion-header">
-    <h2>Ottavi</h2>
-    <span class="arrow">▶</span>
-  </div>
-  <div class="accordion-content"></div>
-</div>
+  <div id="contenitore" class="accordion-content"></div>
 
-<div class="accordion" data-type="quarti">
-  <div class="accordion-header">
-    <h2>Quarti</h2>
-    <span class="arrow">▶</span>
-  </div>
-  <div class="accordion-content"></div>
-</div>
-
-<div class="accordion" data-type="semifinali">
-  <div class="accordion-header">
-    <h2>Semifinali</h2>
-    <span class="arrow">▶</span>
-  </div>
-  <div class="accordion-content"></div>
-</div>
-
-<div class="accordion" data-type="finali">
-  <div class="accordion-header">
-    <h2>Finali</h2>
-    <span class="arrow">▶</span>
-  </div>
-  <div class="accordion-content"></div>
 </div>
 
 <div class="spacer"></div>
 
-<!-- MENU -->
+<!-- =======================
+     MENU
+======================== -->
 <div class="menu">
-  <a href="#" class="menu-item active">Partite</a>
+
+  <a href="index.html" class="menu-item">
+    <img src="home.png" alt="Home">
+    <span>Home</span>
+  </a>
+
+  <a href="gironi.html" class="menu-item">
+    <img src="gironi.png" alt="Gironi">
+    <span>Gironi</span>
+  </a>
+
+  <a href="partite.html" class="menu-item active">
+    <img src="partite.png" alt="Partite">
+    <span>Partite</span>
+  </a>
+
 </div>
 
+<!-- =======================
+     SCRIPT GIRONI + MENU
+======================== -->
 <script>
 
-const baseUrl = "https://docs.google.com/spreadsheets/d/1Dh7ibM5iHWrgZcLHlRFzz3bbiAM_rqWmN6hIQuUZe5A/edit?usp=sharing";
-
-const urls = {
-  gironi: baseUrl,
-  sedicesimi: "SEDICESIMI_URL.csv",
-  ottavi: "OTTAVI_URL.csv",
-  quarti: "QUARTI_URL.csv",
-  semifinali: "SEMIFINALI_URL.csv",
-  finali: "FINALI_URL.csv"
-};
-
-/* LOAD CSV */
-function loadMatches(url, container) {
-  // Aggiungiamo un feedback visivo
-  container.innerHTML = "<p style='padding:15px;'>Caricamento partite...</p>";
+  /* =======================
+     CARICAMENTO CSV
+  ======================== */
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
 
   fetch(url)
-    .then(r => {
-      if (!r.ok) throw new Error("Errore nel caricamento del file");
-      return r.text();
-    })
+    .then(res => res.text())
     .then(data => {
-      // Puliamo il contenitore
-      container.innerHTML = "";
-      
-      // Dividiamo le righe e puliamo spazi bianchi extra
-      const righe = data.trim().split(/\r?\n/).slice(1);
 
-      let gruppi = {};
+      const righe = data.split("\n").slice(1);
+      const contenitore = document.getElementById("contenitore");
 
+      let gironi = {};
+
+      /* RAGGRUPPA PER GIRONI */
       righe.forEach(riga => {
-        // Riconoscimento automatico: prova il punto e virgola, se non trova nulla usa la virgola
-        let c = riga.split(";");
-        if (c.length < 5) c = riga.split(",");
-        
-        if (c.length < 5) return;
 
-        const g = c[0].trim();
-        if (!gruppi[g]) gruppi[g] = [];
-        gruppi[g].push(c);
+        const col = riga.split(",");
+        if (col.length < 6) return;
+
+        const girone = col[0];
+
+        if (!gironi[girone]) {
+          gironi[girone] = [];
+        }
+
+        gironi[girone].push(col);
       });
 
-      if (Object.keys(gruppi).length === 0) {
-        container.innerHTML = "<p style='padding:15px;'>Nessuna partita trovata.</p>";
-        return;
-      }
+      /* ORDINA E STAMPA */
+      Object.keys(gironi).sort().forEach(g => {
 
-      Object.keys(gruppi).forEach(g => {
-        const title = document.createElement("h3");
-        title.style.margin = "20px 15px 10px";
-        title.innerText = g;
-        container.appendChild(title);
+        const titolo = document.createElement("h2");
+        titolo.style.marginLeft = "15px";
+        titolo.innerText = "Girone " + g;
+        contenitore.appendChild(titolo);
 
-        gruppi[g].forEach(c => {
-          let a = c[1], b = c[2];
-          let pa = parseInt(c[3]) || 0;
-          let pb = parseInt(c[4]) || 0;
-          let stato = (c[5] || "").trim();
+        gironi[g].forEach(col => {
 
-          let ca = "", cb = "";
+         let squadraA = col[1];
+let squadraB = col[2];
+let puntiA = parseInt(col[3]);
+let puntiB = parseInt(col[4]);
 
-          if (stato.toLowerCase() === "finita") {
-            if (pa > pb) { ca = "winner"; cb = "loser"; }
-            else if (pb > pa) { cb = "winner"; ca = "loser"; }
+let stato = col[5];
+let orario = col[6];
+let luogo = col[7];
+
+          if (col[5].trim().toLowerCase() === "finita") {
+
+            if (puntiA > puntiB) {
+              classeA = "winner";
+              classeB = "loser";
+            } else if (puntiB > puntiA) {
+              classeB = "winner";
+              classeA = "loser";
+            }
           }
 
-          const div = document.createElement("div");
-          div.className = "card";
-          div.innerHTML = `
-            <div class="match">
-              <span class="${ca}">${a}</span>
-              <div class="center">
-                <div class="status">${stato}</div>
-                <div class="score">${pa} - ${pb}</div>
-              </div>
-              <span class="${cb}">${b}</span>
-            </div>
-          `;
-          container.appendChild(div);
+          const card = document.createElement("div");
+          card.className = "card";
+
+         card.innerHTML = `
+  
+  <!-- TOP INFO (ORARIO + LUOGO) -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#666;
+    margin-bottom:8px;
+    font-weight:600;
+  ">
+    <div> ${orario || "-"}</div>
+    <div> ${luogo || "-"}</div>
+  </div>
+
+  <!-- MATCH -->
+  <div class="match">
+    <span class="${classeA}">${squadraA}</span>
+
+    <div class="center">
+      <div class="status">${stato}</div>
+      <div class="score">${col[3]} - ${col[4]}</div>
+    </div>
+
+    <span class="${classeB}">${squadraB}</span>
+  </div>
+`;
+
+          contenitore.appendChild(card);
         });
+
       });
-    })
-    .catch(err => {
-      container.innerHTML = `<p style='padding:15px; color:red;'>Errore: link non valido o file mancante.</p>`;
-      console.error(err);
     });
+
+  /* =======================
+     MENU SHOW ON SCROLL
+  ======================== */
+  const menu = document.querySelector(".menu");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      menu.classList.add("show");
+    } else {
+      menu.classList.remove("show");
+    }
+  });
+function toggleGironi() {
+  const accordion = document.querySelector(".accordion");
+  accordion.classList.toggle("open");
 }
-
-/* ACCORDION LOGIC */
-document.querySelectorAll(".accordion").forEach(acc => {
-  const header = acc.querySelector(".accordion-header");
-  const content = acc.querySelector(".accordion-content");
-
-  header.addEventListener("click", () => {
-    // Chiudi gli altri se vuoi un effetto pulito (opzionale)
-    // document.querySelectorAll(".accordion").forEach(el => { if(el!==acc) el.classList.remove("open"); });
-
-    acc.classList.toggle("open");
-
-    const type = acc.dataset.type;
-    // Carica i dati solo se non sono già stati caricati e se l'URL non è un placeholder
-    if (!content.dataset.loaded && urls[type] && urls[type].startsWith("http")) {
-      loadMatches(urls[type], content);
-      content.dataset.loaded = "1";
-    }
-  });
-});
-
-/* ACCORDION LOGIC */
-document.querySelectorAll(".accordion").forEach(acc => {
-
-  const header = acc.querySelector(".accordion-header");
-  const content = acc.querySelector(".accordion-content");
-
-  header.addEventListener("click", () => {
-
-    acc.classList.toggle("open");
-
-    const type = acc.dataset.type;
-
-    if (!content.dataset.loaded) {
-
-      if (urls[type]) {
-        loadMatches(urls[type], content);
-        content.dataset.loaded = "1";
-      }
-    }
-  });
-});
-
 </script>
 
 </body>
