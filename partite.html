@@ -186,7 +186,7 @@ h1 {
 
 <script>
 
-const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+const baseUrl = "https://docs.google.com/spreadsheets/d/1Dh7ibM5iHWrgZcLHlRFzz3bbiAM_rqWmN6hIQuUZe5A/edit?usp=sharing";
 
 const urls = {
   gironi: baseUrl,
@@ -199,48 +199,61 @@ const urls = {
 
 /* LOAD CSV */
 function loadMatches(url, container) {
+  // Aggiungiamo un feedback visivo
+  container.innerHTML = "<p style='padding:15px;'>Caricamento partite...</p>";
 
   fetch(url)
-    .then(r => r.text())
+    .then(r => {
+      if (!r.ok) throw new Error("Errore nel caricamento del file");
+      return r.text();
+    })
     .then(data => {
-
-      const righe = data.split("\n").slice(1);
+      // Puliamo il contenitore
+      container.innerHTML = "";
+      
+      // Dividiamo le righe e puliamo spazi bianchi extra
+      const righe = data.trim().split(/\r?\n/).slice(1);
 
       let gruppi = {};
 
       righe.forEach(riga => {
-        const c = riga.split(",");
+        // Riconoscimento automatico: prova il punto e virgola, se non trova nulla usa la virgola
+        let c = riga.split(";");
+        if (c.length < 5) c = riga.split(",");
+        
         if (c.length < 5) return;
 
-        const g = c[0];
-
+        const g = c[0].trim();
         if (!gruppi[g]) gruppi[g] = [];
         gruppi[g].push(c);
       });
 
-      Object.keys(gruppi).forEach(g => {
+      if (Object.keys(gruppi).length === 0) {
+        container.innerHTML = "<p style='padding:15px;'>Nessuna partita trovata.</p>";
+        return;
+      }
 
+      Object.keys(gruppi).forEach(g => {
         const title = document.createElement("h3");
+        title.style.margin = "20px 15px 10px";
         title.innerText = g;
         container.appendChild(title);
 
         gruppi[g].forEach(c => {
-
           let a = c[1], b = c[2];
-          let pa = parseInt(c[3]);
-          let pb = parseInt(c[4]);
-          let stato = c[5] || "";
+          let pa = parseInt(c[3]) || 0;
+          let pb = parseInt(c[4]) || 0;
+          let stato = (c[5] || "").trim();
 
           let ca = "", cb = "";
 
           if (stato.toLowerCase() === "finita") {
-            if (pa > pb) ca = "winner", cb = "loser";
-            else cb = "winner", ca = "loser";
+            if (pa > pb) { ca = "winner"; cb = "loser"; }
+            else if (pb > pa) { cb = "winner"; ca = "loser"; }
           }
 
           const div = document.createElement("div");
           div.className = "card";
-
           div.innerHTML = `
             <div class="match">
               <span class="${ca}">${a}</span>
@@ -251,12 +264,35 @@ function loadMatches(url, container) {
               <span class="${cb}">${b}</span>
             </div>
           `;
-
           container.appendChild(div);
         });
       });
+    })
+    .catch(err => {
+      container.innerHTML = `<p style='padding:15px; color:red;'>Errore: link non valido o file mancante.</p>`;
+      console.error(err);
     });
 }
+
+/* ACCORDION LOGIC */
+document.querySelectorAll(".accordion").forEach(acc => {
+  const header = acc.querySelector(".accordion-header");
+  const content = acc.querySelector(".accordion-content");
+
+  header.addEventListener("click", () => {
+    // Chiudi gli altri se vuoi un effetto pulito (opzionale)
+    // document.querySelectorAll(".accordion").forEach(el => { if(el!==acc) el.classList.remove("open"); });
+
+    acc.classList.toggle("open");
+
+    const type = acc.dataset.type;
+    // Carica i dati solo se non sono già stati caricati e se l'URL non è un placeholder
+    if (!content.dataset.loaded && urls[type] && urls[type].startsWith("http")) {
+      loadMatches(urls[type], content);
+      content.dataset.loaded = "1";
+    }
+  });
+});
 
 /* ACCORDION LOGIC */
 document.querySelectorAll(".accordion").forEach(acc => {
