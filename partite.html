@@ -75,17 +75,21 @@
       color: red;
     }
 
+
 /* =======================
-   ACCORDION GIRONI
+   ACCORDION GIRONI iOS STYLE
 ======================== */
 .accordion {
   margin: 15px;
 }
 
+/* HEADER */
 .accordion-header {
-  background: white;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+
   padding: 15px;
-  border-radius: 15px;
+  border-radius: 18px;
 
   display: flex;
   justify-content: space-between;
@@ -93,7 +97,13 @@
 
   cursor: pointer;
 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+
+  transition: all 0.3s ease;
+}
+
+.accordion-header:hover {
+  transform: scale(1.01);
 }
 
 .accordion-header h2 {
@@ -102,22 +112,37 @@
   color: #0072ff;
 }
 
+/* FRECCIA */
 #arrow {
   font-size: 18px;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s ease;
 }
 
-/* contenuto nascosto */
+/* CONTENUTO (animazione smooth invece di display none) */
 .accordion-content {
-  display: none;
-  margin-top: 10px;
+  max-height: 0;
+  overflow: hidden;
+
+  opacity: 0;
+
+  transform: translateY(-10px);
+
+  transition:
+    max-height 0.5s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
+
+  border-radius: 15px;
 }
 
-/* aperto */
+/* APERTO */
 .accordion.open .accordion-content {
-  display: block;
+  max-height: 2000px; /* sufficiente per tutte le partite */
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* ROTAZIONE FRECCIA */
 .accordion.open #arrow {
   transform: rotate(90deg);
 }
@@ -205,7 +230,7 @@
 
   <div class="accordion-header" onclick="toggleGironi()">
     <h2>GIRONI</h2>
-    <span id="arrow">▼</span>
+    <span id="arrow">▶</span>
   </div>
 
   <div id="contenitore" class="accordion-content"></div>
