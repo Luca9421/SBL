@@ -136,10 +136,6 @@
   transform: translateY(0);
 }
 
-/* ROTAZIONE FRECCIA */
-.accordion.open #arrow {
-  transform: rotate(90deg);
-}
     /* =======================
        MENU (UGUALE INDEX)
     ======================== */
@@ -389,29 +385,7 @@ function loadMatches(url, container) {
     });
 }
 
-  document.addEventListener("DOMContentLoaded", () => {
-
-  const accordions = document.querySelectorAll(".accordion");
-
-  const urls = {
-    0: baseUrl, // GIRONI (prima accordion già esistente)
-    1: "SEDICESIMI_URL.csv",
-    2: "OTTAVI_URL.csv",
-    3: "QUARTI_URL.csv",
-    4: "SEMIFINALI_URL.csv",
-    5: "FINALI_URL.csv"
-  };
-
-  accordions.forEach((acc, index) => {
-    const content = acc.querySelector(".accordion-content");
-    const url = urls[index];
-
-    if (url) {
-      loadMatches(url, content);
-    }
-  });
-
-});
+  
   
   /* =======================
      MENU SHOW ON SCROLL
@@ -431,19 +405,19 @@ function toggleAccordion(el) {
 
   acc.classList.toggle("open");
 
+  const index = Array.from(document.querySelectorAll(".accordion")).indexOf(acc);
+
+  const urls = [
+    baseUrl,
+    "SEDICESIMI_URL.csv",
+    "OTTAVI_URL.csv",
+    "QUARTI_URL.csv",
+    "SEMIFINALI_URL.csv",
+    "FINALI_URL.csv"
+  ];
+
   // carica SOLO la prima volta
   if (!content.dataset.loaded && acc.classList.contains("open")) {
-    const index = Array.from(document.querySelectorAll(".accordion")).indexOf(acc);
-
-    const urls = [
-      baseUrl,
-      "SEDICESIMI_URL.csv",
-      "OTTAVI_URL.csv",
-      "QUARTI_URL.csv",
-      "SEMIFINALI_URL.csv",
-      "FINALI_URL.csv"
-    ];
-
     if (urls[index]) {
       loadMatches(urls[index], content);
       content.dataset.loaded = "true";
