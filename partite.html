@@ -3,173 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Partite</title>
+  <title>PARTITE</title>
 
+  <!-- =======================
+       STILI
+  ======================== -->
   <style>
 
-  body {
-    margin: 0;
-    font-family: Arial;
-    background: #f2f4f8;
-  }
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f2f4f8;
+    }
 
-  /* =======================
-     HEADER
-  ======================== */
-  .header {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
 
-  h1 {
-    margin: 0;
-    font-size: 24px;
-  }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-  /* =======================
-     CARD PARTITE
-  ======================== */
-  .card {
-    background: white;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
+    /* =======================
+       CARD PARTITE
+    ======================== */
+    .card {
+      background: white;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-  .match {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
-  }
+    .girone {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #0072ff;
+    }
 
-  .center {
-    text-align: center;
-  }
+    .match {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
 
-  .status {
-    font-size: 12px;
-    color: gray;
-  }
+    .score {
+      font-weight: bold;
+    }
 
-  .score {
-    font-weight: bold;
-  }
+    .center {
+      text-align: center;
+    }
 
-  .winner {
-    color: green;
-    font-weight: bold;
-  }
+    .status {
+      font-size: 12px;
+      color: gray;
+      margin-top: 3px;
+    }
 
-  .loser {
-    color: red;
-  }
+    .winner {
+      color: green;
+      font-weight: bold;
+    }
 
-  /* =======================
-     GIRONI + FASI STYLE
-  ======================== */
-  h2 {
-    margin-left: 15px;
-    color: #0072ff;
-  }
+    .loser {
+      color: red;
+    }
 
-  /* =======================
-     STAGE ACCORDION
-  ======================== */
-  .stage {
-    margin: 15px;
-  }
+/* =======================
+   ACCORDION GIRONI iOS STYLE
+======================== */
+.accordion {
+  margin: 15px;
+}
 
-  .stage-header {
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(10px);
+/* HEADER */
+.accordion-header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
 
-    padding: 15px;
-    border-radius: 18px;
+  padding: 15px;
+  border-radius: 18px;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 
-    font-weight: bold;
-    color: #0072ff;
-  }
+  transition: all 0.3s ease;
+}
 
-  .stage-content {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
+.accordion-header:hover {
+  transform: scale(1.01);
+}
 
-    transform: translateY(-8px);
+.accordion-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0072ff;
+}
 
-    transition: all 0.4s ease;
+/* FRECCIA */
+#arrow {
+  font-size: 18px;
+  transition: transform 0.35s ease;
+}
 
-    margin-top: 10px;
-  }
+/* CONTENUTO (animazione smooth invece di display none) */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
 
-  .stage.open .stage-content {
-    max-height: 4000px;
-    opacity: 1;
-    transform: translateY(0);
-  }
+  opacity: 0;
 
-  /* =======================
-     MENU (INDEX STYLE)
-  ======================== */
-  .menu {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  transform: translateY(-10px);
 
-    width: 100%;
+  transition:
+    max-height 0.5s ease,
+    opacity 0.4s ease,
+    transform 0.4s ease;
 
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
+  border-radius: 15px;
+}
 
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+/* APERTO */
+.accordion.open .accordion-content {
+  max-height: 2000px; /* sufficiente per tutte le partite */
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    padding: 14px 0;
+/* ROTAZIONE FRECCIA */
+.accordion.open #arrow {
+  transform: rotate(90deg);
+}
+    /* =======================
+       MENU (UGUALE INDEX)
+    ======================== */
+    .menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
 
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
+      width: 100%;
 
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-  }
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
 
-  .menu-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
-    text-decoration: none;
-    color: #555;
+      padding: 14px 0;
 
-    font-size: 12px;
-    font-weight: 600;
-  }
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
 
-  .menu-item img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-  }
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
 
-  .menu-item.active {
-    color: #0066ff;
-  }
+      transform: translateY(100%);
+      opacity: 0;
 
-  .spacer {
-    height: 90px;
-  }
+      transition: all 0.35s ease;
+    }
+
+    .menu.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
+      text-decoration: none;
+      color: #555;
+
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .menu-item img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .menu-item.active {
+      color: #0066ff;
+    }
+
+    /* spazio sotto per non coprire contenuto */
+    .spacer {
+      height: 90px;
+    }
 
   </style>
 </head>
@@ -180,18 +217,23 @@
      HEADER
 ======================== -->
 <div class="header">
-  <h1>Partite</h1>
+  <h1>Gironi</h1>
 </div>
 
+<!-- CONTENUTO DINAMICO -->
 <!-- =======================
-     GIRONI (GIÀ ESISTENTE)
+     SEZIONE GIRONI COLLASSABILE
 ======================== -->
-<div id="contenitore"></div>
+<div class="accordion">
 
-<!-- =======================
-     ALTRE FASI TORNEO
-======================== -->
-<div id="torneo"></div>
+  <div class="accordion-header" onclick="toggleGironi()">
+    <h2>📊 Gironi</h2>
+    <span id="arrow">▶</span>
+  </div>
+
+  <div id="contenitore" class="accordion-content"></div>
+
+</div>
 
 <div class="spacer"></div>
 
@@ -201,206 +243,123 @@
 <div class="menu">
 
   <a href="index.html" class="menu-item">
-    <img src="home.png">
+    <img src="home.png" alt="Home">
     <span>Home</span>
   </a>
 
-  <a href="gironi.html" class="menu-item">
-    <img src="gironi.png">
+  <a href="gironi.html" class="menu-item active">
+    <img src="gironi.png" alt="Gironi">
     <span>Gironi</span>
   </a>
 
-  <a href="partite.html" class="menu-item active">
-    <img src="partite.png">
+  <a href="partite.html" class="menu-item">
+    <img src="partite.png" alt="Partite">
     <span>Partite</span>
   </a>
 
 </div>
 
 <!-- =======================
-     SCRIPT
+     SCRIPT GIRONI + MENU
 ======================== -->
 <script>
 
-const urlGironi = "https://docs.google.com/spreadsheets/d/1Dh7ibM5iHWrgZcLHlRFzz3bbiAM_rqWmN6hIQuUZe5A/edit?usp=drive_link";
-
-/* =======================
-   GIRONI (COME PRIMA)
-======================== */
-fetch(urlGironi)
-  .then(res => res.text())
-  .then(data => {
-
-    const righe = data.split("\n").slice(1);
-    const contenitore = document.getElementById("contenitore");
-
-    let gironi = {};
-
-    righe.forEach(riga => {
-
-      const col = riga.split(",");
-      if (col.length < 6) return;
-
-      const girone = col[0];
-
-      if (!gironi[girone]) {
-        gironi[girone] = [];
-      }
-
-      gironi[girone].push(col);
-    });
-
-    Object.keys(gironi).sort().forEach(g => {
-
-      const titolo = document.createElement("h2");
-      titolo.innerText = "Girone " + g;
-      contenitore.appendChild(titolo);
-
-      gironi[g].forEach(col => {
-
-        let squadraA = col[1];
-        let squadraB = col[2];
-        let puntiA = parseInt(col[3]);
-        let puntiB = parseInt(col[4]);
-
-        let classeA = "";
-        let classeB = "";
-
-        if (col[5].trim().toLowerCase() === "finita") {
-          if (puntiA > puntiB) {
-            classeA = "winner";
-            classeB = "loser";
-          } else {
-            classeB = "winner";
-            classeA = "loser";
-          }
-        }
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-          <div class="match">
-            <span class="${classeA}">${squadraA}</span>
-
-            <div class="center">
-              <div class="status">${col[5]}</div>
-              <div class="score">${col[3]} - ${col[4]}</div>
-            </div>
-
-            <span class="${classeB}">${squadraB}</span>
-          </div>
-        `;
-
-        contenitore.appendChild(card);
-      });
-
-    });
-
-  });
-
-/* =======================
-   FASI TORNEO (SOTTO GIRONI)
-======================== */
-const fasi = [
-  { nome: "Sedicesimi", url: "https://docs.google.com/spreadsheets/d/1eKKXJsAroiHJ8QwQ5OSwuoO3eDHqgqf3tuStDHnIIEc/edit?usp=drive_link" },
-  { nome: "Ottavi", url: "https://docs.google.com/spreadsheets/d/1Ck6hQF2b2Fcw0ueXcLTMz1fnlHKBBALLoStOh25lS3k/edit?usp=drive_link" },
-  { nome: "Quarti", url: "https://docs.google.com/spreadsheets/d/14XGUEW8gARnyy4g2LQc6Apvwb6CoP_BYbq9Rmd_QoQI/edit?usp=drive_link" },
-  { nome: "Semifinali", url: "https://docs.google.com/spreadsheets/d/1-86fGIkTVVUxPkYBs_G74IPKF3TYe9FyVZJPXOcYwl8/edit?usp=drive_link" },
-  { nome: "Finali", url: "https://docs.google.com/spreadsheets/d/1-iw16FL0hyNJNL3sovCuNyultvOaGwB_1Zu0-JrRB7M/edit?usp=drive_link" }
-];
-
-const torneo = document.getElementById("torneo");
-
-function creaStage(nome, url) {
-
-  const stage = document.createElement("div");
-  stage.className = "stage";
-
-  stage.innerHTML = `
-    <div class="stage-header" onclick="toggleStage(this)">
-      <span>${nome}</span>
-      <span>▶</span>
-    </div>
-
-    <div class="stage-content"></div>
-  `;
-
-  const content = stage.querySelector(".stage-content");
+  /* =======================
+     CARICAMENTO CSV
+  ======================== */
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
 
   fetch(url)
     .then(res => res.text())
     .then(data => {
 
       const righe = data.split("\n").slice(1);
+      const contenitore = document.getElementById("contenitore");
 
+      let gironi = {};
+
+      /* RAGGRUPPA PER GIRONI */
       righe.forEach(riga => {
 
         const col = riga.split(",");
-        if (col.length < 8) return;
+        if (col.length < 6) return;
 
-        let squadraA = col[1];
-        let squadraB = col[2];
-        let puntiA = parseInt(col[3]);
-        let puntiB = parseInt(col[4]);
-        let stato = col[5];
-        let orario = col[6];
-        let luogo = col[7];
+        const girone = col[0];
 
-        let classeA = "";
-        let classeB = "";
-
-        if (stato.trim().toLowerCase() === "finita") {
-          if (puntiA > puntiB) {
-            classeA = "winner";
-            classeB = "loser";
-          } else {
-            classeB = "winner";
-            classeA = "loser";
-          }
+        if (!gironi[girone]) {
+          gironi[girone] = [];
         }
 
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-          <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;font-weight:600;">
-            <div>🕒 ${orario || "-"}</div>
-            <div>📍 ${luogo || "-"}</div>
-          </div>
-
-          <div class="match">
-            <span class="${classeA}">${squadraA}</span>
-
-            <div class="center">
-              <div class="status">${stato}</div>
-              <div class="score">${col[3]} - ${col[4]}</div>
-            </div>
-
-            <span class="${classeB}">${squadraB}</span>
-          </div>
-        `;
-
-        content.appendChild(card);
+        gironi[girone].push(col);
       });
 
+      /* ORDINA E STAMPA */
+      Object.keys(gironi).sort().forEach(g => {
+
+        const titolo = document.createElement("h2");
+        titolo.style.marginLeft = "15px";
+        titolo.innerText = "Girone " + g;
+        contenitore.appendChild(titolo);
+
+        gironi[g].forEach(col => {
+
+          let squadraA = col[1];
+          let squadraB = col[2];
+          let puntiA = parseInt(col[3]);
+          let puntiB = parseInt(col[4]);
+
+          let classeA = "";
+          let classeB = "";
+
+          if (col[5].trim().toLowerCase() === "finita") {
+
+            if (puntiA > puntiB) {
+              classeA = "winner";
+              classeB = "loser";
+            } else if (puntiB > puntiA) {
+              classeB = "winner";
+              classeA = "loser";
+            }
+          }
+
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.innerHTML = `
+            <div class="match">
+              <span class="${classeA}">${squadraA}</span>
+
+              <div class="center">
+                <div class="status">${col[5]}</div>
+                <div class="score">${col[3]} - ${col[4]}</div>
+              </div>
+
+              <span class="${classeB}">${squadraB}</span>
+            </div>
+          `;
+
+          contenitore.appendChild(card);
+        });
+
+      });
     });
 
-  torneo.appendChild(stage);
+  /* =======================
+     MENU SHOW ON SCROLL
+  ======================== */
+  const menu = document.querySelector(".menu");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      menu.classList.add("show");
+    } else {
+      menu.classList.remove("show");
+    }
+  });
+function toggleGironi() {
+  const accordion = document.querySelector(".accordion");
+  accordion.classList.toggle("open");
 }
-
-/* INIT FASI */
-fasi.forEach(f => creaStage(f.nome, f.url));
-
-/* TOGGLE */
-function toggleStage(el) {
-  const parent = el.parentElement;
-  parent.classList.toggle("open");
-
-  const arrow = el.querySelector("span:last-child");
-  arrow.textContent = parent.classList.contains("open") ? "▼" : "▶";
-}
-
 </script>
 
 </body>
