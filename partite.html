@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gironi</title>
+  <title>PARTITE</title>
 
+  <!-- =======================
+       STILI
+  ======================== -->
   <style>
+
     body {
       margin: 0;
       font-family: Arial;
       background: #f2f4f8;
     }
 
+    /* HEADER */
     .header {
       background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: white;
@@ -24,7 +29,9 @@
       font-size: 24px;
     }
 
-    /* CARD PARTITA */
+    /* =======================
+       CARD PARTITE
+    ======================== */
     .card {
       background: white;
       margin: 15px;
@@ -48,11 +55,11 @@
     .score {
       font-weight: bold;
     }
-    
+
     .center {
       text-align: center;
     }
-    
+
     .status {
       font-size: 12px;
       color: gray;
@@ -63,122 +70,211 @@
       color: green;
       font-weight: bold;
     }
-    
+
     .loser {
       color: red;
     }
-    /* MENU */
+
+    /* =======================
+       MENU (UGUALE INDEX)
+    ======================== */
     .menu {
       position: fixed;
       bottom: 0;
+      left: 0;
+
       width: 100%;
-      background: white;
+
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      align-items: center;
+
+      padding: 14px 0;
+
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+
+      transform: translateY(100%);
+      opacity: 0;
+
+      transition: all 0.35s ease;
     }
 
-    .menu a {
+    .menu.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+
       text-decoration: none;
-      color: #333;
-      font-size: 14px;
+      color: #555;
+
+      font-size: 12px;
+      font-weight: 600;
     }
 
-    .spacer {
-      height: 70px;
+    .menu-item img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
     }
+
+    .menu-item.active {
+      color: #0066ff;
+    }
+
+    /* spazio sotto per non coprire contenuto */
+    .spacer {
+      height: 90px;
+    }
+
   </style>
 </head>
 
 <body>
 
+<!-- =======================
+     HEADER
+======================== -->
 <div class="header">
   <h1>🏐 Gironi</h1>
 </div>
 
+<!-- CONTENUTO DINAMICO -->
 <div id="contenitore"></div>
 
 <div class="spacer"></div>
 
+<!-- =======================
+     MENU
+======================== -->
 <div class="menu">
-  <a href="index.html">🏠 Home</a>
-  <a href="gironi.html">📊 Gironi</a>
+
+  <a href="index.html" class="menu-item">
+    <img src="home.png" alt="Home">
+    <span>Home</span>
+  </a>
+
+  <a href="gironi.html" class="menu-item active">
+    <img src="gironi.png" alt="Gironi">
+    <span>Gironi</span>
+  </a>
+
+  <a href="partite.html" class="menu-item">
+    <img src="partite.png" alt="Partite">
+    <span>Partite</span>
+  </a>
+
 </div>
 
+<!-- =======================
+     SCRIPT GIRONI + MENU
+======================== -->
 <script>
-const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
-fetch(url)
-  .then(res => res.text())
-  .then(data => {
-    const righe = data.split("\n").slice(1);
-    const contenitore = document.getElementById("contenitore");
 
-    let gironi = {};
+  /* =======================
+     CARICAMENTO CSV
+  ======================== */
+  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
 
-    // Raggruppa per girone
-    righe.forEach(riga => {
-      const col = riga.split(",");
-      if(col.length < 6) return;
+  fetch(url)
+    .then(res => res.text())
+    .then(data => {
 
-      const girone = col[0];
+      const righe = data.split("\n").slice(1);
+      const contenitore = document.getElementById("contenitore");
 
-      if(!gironi[girone]) {
-        gironi[girone] = [];
-      }
+      let gironi = {};
 
-      gironi[girone].push(col);
-    });
+      /* RAGGRUPPA PER GIRONI */
+      righe.forEach(riga => {
 
-    // Ordina gironi (A, B, C...)
-    Object.keys(gironi).sort().forEach(g => {
+        const col = riga.split(",");
+        if (col.length < 6) return;
 
-      // Titolo girone
-      const titolo = document.createElement("h2");
-      titolo.style.marginLeft = "15px";
-      titolo.innerText = "Girone " + g;
-      contenitore.appendChild(titolo);
+        const girone = col[0];
 
-      // Partite
-      gironi[g].forEach(col => {
-
-        let squadraA = col[1];
-        let squadraB = col[2];
-        let puntiA = parseInt(col[3]);
-        let puntiB = parseInt(col[4]);
-        
-        let classeA = "";
-        let classeB = "";
-        
-        if(col[5].trim().toLowerCase() === "finita") {
-          if(puntiA > puntiB) {
-            classeA = "winner";
-            classeB = "loser";
-          } else if(puntiB > puntiA) {
-            classeB = "winner";
-            classeA = "loser";
-          }
+        if (!gironi[girone]) {
+          gironi[girone] = [];
         }
 
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-          <div class="match">
-            <span class="${classeA}">${squadraA}</span>
-            <div class="center">
-              <div class="status">${col[5]}</div>
-              <div class="score">${col[3]} - ${col[4]}</div>
-            </div>
-            <span class="${classeB}">${squadraB}</span>
-          </div>
-        `;
-
-        contenitore.appendChild(card);
+        gironi[girone].push(col);
       });
 
+      /* ORDINA E STAMPA */
+      Object.keys(gironi).sort().forEach(g => {
+
+        const titolo = document.createElement("h2");
+        titolo.style.marginLeft = "15px";
+        titolo.innerText = "Girone " + g;
+        contenitore.appendChild(titolo);
+
+        gironi[g].forEach(col => {
+
+          let squadraA = col[1];
+          let squadraB = col[2];
+          let puntiA = parseInt(col[3]);
+          let puntiB = parseInt(col[4]);
+
+          let classeA = "";
+          let classeB = "";
+
+          if (col[5].trim().toLowerCase() === "finita") {
+
+            if (puntiA > puntiB) {
+              classeA = "winner";
+              classeB = "loser";
+            } else if (puntiB > puntiA) {
+              classeB = "winner";
+              classeA = "loser";
+            }
+          }
+
+          const card = document.createElement("div");
+          card.className = "card";
+
+          card.innerHTML = `
+            <div class="match">
+              <span class="${classeA}">${squadraA}</span>
+
+              <div class="center">
+                <div class="status">${col[5]}</div>
+                <div class="score">${col[3]} - ${col[4]}</div>
+              </div>
+
+              <span class="${classeB}">${squadraB}</span>
+            </div>
+          `;
+
+          contenitore.appendChild(card);
+        });
+
+      });
     });
+
+  /* =======================
+     MENU SHOW ON SCROLL
+  ======================== */
+  const menu = document.querySelector(".menu");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      menu.classList.add("show");
+    } else {
+      menu.classList.remove("show");
+    }
   });
+
 </script>
 
 </body>
