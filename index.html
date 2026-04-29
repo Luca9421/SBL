@@ -440,8 +440,16 @@ body {
 
   box-shadow:
     0 -4px 20px rgba(0,0,0,0.08);
-}
+	  transform: translateY(100%);
+  opacity: 0;
 
+  transition: all 0.35s ease;
+}
+	  
+.menu.show {
+  transform: translateY(0);
+  opacity: 1;
+}
 .menu-item {
   display: flex;
   flex-direction: column;
@@ -493,9 +501,7 @@ body {
     width: 180px;
     height: 180px;
   }
-  .info-cards {
-  flex-direction: column;
-}
+
 }
 
 </style>
@@ -620,10 +626,7 @@ body {
   <!-- SPONSOR -->
 
   <div class="sponsor-section">
-	 <div class="social-title">
-		
-		 <img src="sponsor.png" alt="Sponsor">
-	  	</div>
+
     <h3>I nostri Sponsor</h3>
 
 	  
@@ -811,6 +814,16 @@ body {
 
     }, 1000);
 
+const menu = document.querySelector(".menu");
+
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 120) {
+    menu.classList.add("show");
+  } else {
+    menu.classList.remove("show");
+  }
+});
+	  
   </script>
 
 </body>
