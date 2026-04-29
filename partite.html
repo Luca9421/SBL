@@ -305,10 +305,14 @@
 
         gironi[g].forEach(col => {
 
-          let squadraA = col[1];
-          let squadraB = col[2];
-          let puntiA = parseInt(col[3]);
-          let puntiB = parseInt(col[4]);
+        let squadraA = col[1];
+let squadraB = col[2];
+let puntiA = parseInt(col[3]);
+let puntiB = parseInt(col[4]);
+
+let stato = col[5];
+let orario = col[6];
+let luogo = col[7];
 
           let classeA = "";
           let classeB = "";
@@ -327,18 +331,33 @@
           const card = document.createElement("div");
           card.className = "card";
 
-          card.innerHTML = `
-            <div class="match">
-              <span class="${classeA}">${squadraA}</span>
+card.innerHTML = `
+  
+  <!-- TOP INFO (ORARIO + LUOGO) -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#666;
+    margin-bottom:8px;
+    font-weight:600;
+  ">
+    <div> ${orario || "-"}</div>
+    <div> ${luogo || "-"}</div>
+  </div>
 
-              <div class="center">
-                <div class="status">${col[5]}</div>
-                <div class="score">${col[3]} - ${col[4]}</div>
-              </div>
+  <!-- MATCH -->
+  <div class="match">
+    <span class="${classeA}">${squadraA}</span>
 
-              <span class="${classeB}">${squadraB}</span>
-            </div>
-          `;
+    <div class="center">
+      <div class="status">${stato}</div>
+      <div class="score">${col[3]} - ${col[4]}</div>
+    </div>
+
+    <span class="${classeB}">${squadraB}</span>
+  </div>
+`;
 
           contenitore.appendChild(card);
         });
