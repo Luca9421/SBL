@@ -131,7 +131,7 @@
 }
 
 .accordion.open .accordion-content {
-  max-height: 5000px;
+  max-height: 2000px;
   opacity: 1;
   transform: translateY(0);
 }
@@ -427,12 +427,28 @@ function loadMatches(url, container) {
   });
 function toggleAccordion(el) {
   const acc = el.parentElement;
-  acc.classList.toggle("open");
-
   const content = acc.querySelector(".accordion-content");
 
-  // forza repaint (fix mobile + Safari)
-  content.style.display = "block";
+  acc.classList.toggle("open");
+
+  // carica SOLO la prima volta
+  if (!content.dataset.loaded && acc.classList.contains("open")) {
+    const index = Array.from(document.querySelectorAll(".accordion")).indexOf(acc);
+
+    const urls = [
+      baseUrl,
+      "SEDICESIMI_URL.csv",
+      "OTTAVI_URL.csv",
+      "QUARTI_URL.csv",
+      "SEMIFINALI_URL.csv",
+      "FINALI_URL.csv"
+    ];
+
+    if (urls[index]) {
+      loadMatches(urls[index], content);
+      content.dataset.loaded = "true";
+    }
+  }
 }
 </script>
 
