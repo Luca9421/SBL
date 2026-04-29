@@ -235,6 +235,51 @@
 
 </div>
 
+
+  <!-- SEDICESIMI -->
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>Sedicesimi</h2>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="accordion-content"></div>
+</div>
+
+<!-- OTTAVI -->
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>Ottavi</h2>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="accordion-content"></div>
+</div>
+
+<!-- QUARTI -->
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>Quarti</h2>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="accordion-content"></div>
+</div>
+
+<!-- SEMIFINALI -->
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>Semifinali</h2>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="accordion-content"></div>
+</div>
+
+<!-- FINALI -->
+<div class="accordion">
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>Finali</h2>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="accordion-content"></div>
+</div>
 <div class="spacer"></div>
 
 <!-- =======================
@@ -264,25 +309,25 @@
 ======================== -->
 <script>
 
-  /* =======================
-     CARICAMENTO CSV
-  ======================== */
-  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+
+/* =======================
+   FUNZIONE GENERICA
+======================= */
+function loadMatches(url, container) {
 
   fetch(url)
     .then(res => res.text())
     .then(data => {
 
       const righe = data.split("\n").slice(1);
-      const contenitore = document.getElementById("contenitore");
 
       let gironi = {};
 
-      /* RAGGRUPPA PER GIRONI */
       righe.forEach(riga => {
 
         const col = riga.split(",");
-        if (col.length < 6) return;
+        if (col.length < 5) return;
 
         const girone = col[0];
 
@@ -293,27 +338,26 @@
         gironi[girone].push(col);
       });
 
-      /* ORDINA E STAMPA */
       Object.keys(gironi).sort().forEach(g => {
 
-        const titolo = document.createElement("h2");
-        titolo.style.marginLeft = "15px";
+        const titolo = document.createElement("h3");
         titolo.innerText = "Girone " + g;
-        contenitore.appendChild(titolo);
+        container.appendChild(titolo);
 
         gironi[g].forEach(col => {
 
-         let squadraA = col[1];
-let squadraB = col[2];
-let puntiA = parseInt(col[3]);
-let puntiB = parseInt(col[4]);
+          let squadraA = col[1];
+          let squadraB = col[2];
+          let puntiA = parseInt(col[3]);
+          let puntiB = parseInt(col[4]);
+          let stato = col[5];
+          let orario = col[6] || "-";
+          let luogo = col[7] || "-";
 
-let stato = col[5];
-let orario = col[6];
-let luogo = col[7];
+          let classeA = "";
+          let classeB = "";
 
-          if (col[5].trim().toLowerCase() === "finita") {
-
+          if (stato && stato.trim().toLowerCase() === "finita") {
             if (puntiA > puntiB) {
               classeA = "winner";
               classeB = "loser";
@@ -326,40 +370,54 @@ let luogo = col[7];
           const card = document.createElement("div");
           card.className = "card";
 
-         card.innerHTML = `
-  
-  <!-- TOP INFO (ORARIO + LUOGO) -->
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    color:#666;
-    margin-bottom:8px;
-    font-weight:600;
-  ">
-    <div> ${orario || "-"}</div>
-    <div> ${luogo || "-"}</div>
-  </div>
+          card.innerHTML = `
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;">
+              <div>${orario}</div>
+              <div>${luogo}</div>
+            </div>
 
-  <!-- MATCH -->
-  <div class="match">
-    <span class="${classeA}">${squadraA}</span>
+            <div class="match">
+              <span class="${classeA}">${squadraA}</span>
 
-    <div class="center">
-      <div class="status">${stato}</div>
-      <div class="score">${col[3]} - ${col[4]}</div>
-    </div>
+              <div class="center">
+                <div class="status">${stato}</div>
+                <div class="score">${col[3]} - ${col[4]}</div>
+              </div>
 
-    <span class="${classeB}">${squadraB}</span>
-  </div>
-`;
+              <span class="${classeB}">${squadraB}</span>
+            </div>
+          `;
 
-          contenitore.appendChild(card);
+          container.appendChild(card);
         });
-
       });
     });
+}
 
+  document.addEventListener("DOMContentLoaded", () => {
+
+  const accordions = document.querySelectorAll(".accordion");
+
+  const urls = {
+    0: baseUrl, // GIRONI (prima accordion già esistente)
+    1: "SEDICESIMI_URL.csv",
+    2: "OTTAVI_URL.csv",
+    3: "QUARTI_URL.csv",
+    4: "SEMIFINALI_URL.csv",
+    5: "FINALI_URL.csv"
+  };
+
+  accordions.forEach((acc, index) => {
+    const content = acc.querySelector(".accordion-content");
+    const url = urls[index];
+
+    if (url) {
+      loadMatches(url, content);
+    }
+  });
+
+});
+  
   /* =======================
      MENU SHOW ON SCROLL
   ======================== */
@@ -372,9 +430,9 @@ let luogo = col[7];
       menu.classList.remove("show");
     }
   });
-function toggleGironi() {
-  const accordion = document.querySelector(".accordion");
-  accordion.classList.toggle("open");
+function toggleAccordion(el) {
+  const acc = el.parentElement;
+  acc.classList.toggle("open");
 }
 </script>
 
