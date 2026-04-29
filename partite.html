@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Partite</title>
 
-  <!-- =======================
-       CSS
-  ======================== -->
   <style>
 
   body {
@@ -71,7 +68,15 @@
   }
 
   /* =======================
-     TOURNAMENT SECTIONS
+     GIRONI + FASI STYLE
+  ======================== */
+  h2 {
+    margin-left: 15px;
+    color: #0072ff;
+  }
+
+  /* =======================
+     STAGE ACCORDION
   ======================== */
   .stage {
     margin: 15px;
@@ -137,11 +142,6 @@
     border-top-right-radius: 24px;
 
     box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-
-    transform: translateY(0);
-    opacity: 1;
-
-    transition: all 0.35s ease;
   }
 
   .menu-item {
@@ -184,7 +184,12 @@
 </div>
 
 <!-- =======================
-     TORNEO SECTIONS
+     GIRONI (GIÀ ESISTENTE)
+======================== -->
+<div id="contenitore"></div>
+
+<!-- =======================
+     ALTRE FASI TORNEO
 ======================== -->
 <div id="torneo"></div>
 
@@ -217,8 +222,85 @@
 ======================== -->
 <script>
 
+const urlGironi = "CSV_GIRONI.csv";
+
 /* =======================
-   FASI TORNEO
+   GIRONI (COME PRIMA)
+======================== */
+fetch(urlGironi)
+  .then(res => res.text())
+  .then(data => {
+
+    const righe = data.split("\n").slice(1);
+    const contenitore = document.getElementById("contenitore");
+
+    let gironi = {};
+
+    righe.forEach(riga => {
+
+      const col = riga.split(",");
+      if (col.length < 6) return;
+
+      const girone = col[0];
+
+      if (!gironi[girone]) {
+        gironi[girone] = [];
+      }
+
+      gironi[girone].push(col);
+    });
+
+    Object.keys(gironi).sort().forEach(g => {
+
+      const titolo = document.createElement("h2");
+      titolo.innerText = "Girone " + g;
+      contenitore.appendChild(titolo);
+
+      gironi[g].forEach(col => {
+
+        let squadraA = col[1];
+        let squadraB = col[2];
+        let puntiA = parseInt(col[3]);
+        let puntiB = parseInt(col[4]);
+
+        let classeA = "";
+        let classeB = "";
+
+        if (col[5].trim().toLowerCase() === "finita") {
+          if (puntiA > puntiB) {
+            classeA = "winner";
+            classeB = "loser";
+          } else {
+            classeB = "winner";
+            classeA = "loser";
+          }
+        }
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="match">
+            <span class="${classeA}">${squadraA}</span>
+
+            <div class="center">
+              <div class="status">${col[5]}</div>
+              <div class="score">${col[3]} - ${col[4]}</div>
+            </div>
+
+            <span class="${classeB}">${squadraB}</span>
+          </div>
+        `;
+
+        contenitore.appendChild(card);
+      });
+
+    });
+
+  });
+
+/* =======================
+   FASI TORNEO (SOTTO GIRONI)
 ======================== */
 const fasi = [
   { nome: "Sedicesimi", url: "CSV_SEDICESIMI.csv" },
@@ -230,9 +312,6 @@ const fasi = [
 
 const torneo = document.getElementById("torneo");
 
-/* =======================
-   CREA STAGE
-======================== */
 function creaStage(nome, url) {
 
   const stage = document.createElement("div");
@@ -285,7 +364,6 @@ function creaStage(nome, url) {
         card.className = "card";
 
         card.innerHTML = `
-
           <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;font-weight:600;">
             <div>🕒 ${orario || "-"}</div>
             <div>📍 ${luogo || "-"}</div>
@@ -301,7 +379,6 @@ function creaStage(nome, url) {
 
             <span class="${classeB}">${squadraB}</span>
           </div>
-
         `;
 
         content.appendChild(card);
@@ -312,26 +389,16 @@ function creaStage(nome, url) {
   torneo.appendChild(stage);
 }
 
-/* =======================
-   CREA TUTTE LE FASI
-======================== */
+/* INIT FASI */
 fasi.forEach(f => creaStage(f.nome, f.url));
 
-/* =======================
-   TOGGLE STAGE
-======================== */
+/* TOGGLE */
 function toggleStage(el) {
-
   const parent = el.parentElement;
   parent.classList.toggle("open");
 
   const arrow = el.querySelector("span:last-child");
-
-  if (parent.classList.contains("open")) {
-    arrow.textContent = "▼";
-  } else {
-    arrow.textContent = "▶";
-  }
+  arrow.textContent = parent.classList.contains("open") ? "▼" : "▶";
 }
 
 </script>
