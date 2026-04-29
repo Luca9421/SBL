@@ -1,341 +1,271 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+  <!-- METADATA -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Summer Beach League</title>
 
+  <!-- FONT -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- =======================
+       STILI CSS
+  ======================== -->
   <style>
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #eef4fb;
-  color: #222;
-  padding-bottom: 90px;
-  overflow-x: hidden;
-}
-
-/* HERO */
-
-.hero {
-  position: relative;
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,40,90,0.15) 0%,
-      rgba(0,70,140,0.35) 30%,
-      rgba(0,100,180,0.15) 60%,
-      #eef4fb 100%
-    ),
-
-    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop');
-
-  background-size: cover;
-  background-position: center;
-
-  color: white;
-
-  padding: 40px 25px 140px;
-
-  text-align: center;
-}
-
-/* BALL */
-
-.ball-icon {
-  margin-bottom: 15px;
-}
-
-.ball-icon img {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
-
-  filter:
-    drop-shadow(0 4px 12px rgba(0,0,0,0.25));
-}
-
-/* TITLE */
-
-.hero h1 {
-  margin: 0;
-
-  font-size: 46px;
-  font-weight: 900;
-  font-style: italic;
-
-  text-transform: uppercase;
-  letter-spacing: 1px;
-
-  line-height: 1;
-
-  font-family:
-    Impact,
-    Haettenschweiler,
-    'Arial Narrow Bold',
-    sans-serif;
-
-  text-shadow:
-    0 4px 12px rgba(0,0,0,0.35);
-}
-
-/* SUBTITLE */
-
-.hero h2 {
-  margin-top: 14px;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  color: #ffd84f;
-
-  letter-spacing: 3px;
-
-  text-transform: uppercase;
-}
-
-/* HERO INFO */
-
-.hero-info {
-  margin-top: 18px;
-
-  font-size: 15px;
-  line-height: 1.7;
-
-  color: rgba(255,255,255,0.92);
-}
-
-/* COUNTDOWN */
-
-.countdown-box {
-  margin: 30px auto 0;
-
-  width: 100%;
-  max-width: 370px;
-
-  background: rgba(0,0,0,0.22);
-
-  backdrop-filter: blur(10px);
-
-  border-radius: 30px;
-
-  padding: 20px;
-
-  border:
-    1px solid rgba(255,255,255,0.15);
-
-  box-shadow:
-    0 8px 25px rgba(0,0,0,0.15);
-}
-
-.countdown-title {
-  font-size: 14px;
-  margin-bottom: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-}
-
-#timer {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.time-box {
-  width: 74px;
-
-  background:
-    rgba(255,255,255,0.12);
-
-  border-radius: 20px;
-
-  padding: 14px 8px;
-
-  text-align: center;
-
-  border:
-    1px solid rgba(255,255,255,0.12);
-}
-
-.time-value {
-  font-size: 30px;
-  font-weight: 800;
-  color: white;
-}
-
-.time-label {
-  margin-top: 5px;
-
-  font-size: 10px;
-
-  letter-spacing: 1px;
-
-  color:
-    rgba(255,255,255,0.85);
-}
-
-/* INFO CARDS */
-
-.info-cards {
-  display: flex;
-
-  gap: 14px;
-
-  margin:
-    -80px 18px 25px;
-
-  position: relative;
-
-  z-index: 5;
-}
-
-.info-card {
-  flex: 1;
-
-  background: white;
-
-  border-radius: 26px;
-
-  padding: 24px 16px;
-
-  text-align: center;
-
-  box-shadow:
-    0 8px 25px rgba(0,0,0,0.08);
-}
-
-.info-card h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-
-  font-size: 18px;
-
-  color: #0f172a;
-}
-
-.info-card p {
-  margin: 0;
-
-  font-size: 14px;
-
-  line-height: 1.5;
-
-  color: #555;
-}
-
-/* SECTIONS */
-
-.section {
-  background: white;
-
-  margin: 22px 18px;
-
-  padding: 25px;
-
-  border-radius: 26px;
-
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.06);
-}
-
-.section h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-
-  font-size: 22px;
-
-  color: #0f172a;
-}
-
-.section p {
-  color: #555;
-
-  line-height: 1.6;
-
-  font-size: 14px;
-}
-
-/* BUTTONS */
-
-.btn {
-  display: inline-block;
-
-  width: 100%;
-
-  margin-top: 18px;
-
-  padding: 17px;
-
-  border-radius: 18px;
-
-  text-decoration: none;
-
-  color: white;
-
-  font-weight: 700;
-
-  font-size: 15px;
-
-  text-align: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      #00b4ff,
-      #0066ff
-    );
-
-  box-shadow:
-    0 6px 15px rgba(0,114,255,0.25);
-
-  transition:
-    transform 0.2s ease;
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-	  
-
-.info-icon {
-  width: 42px;
-  height: 42px;
-
-  object-fit: contain;
-
-  margin-bottom: 12px;
-}
-	  
-/* INSTAGRAM */
-.social-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.social-title img {
-  width: 35px;
-  height: 35px;
-  object-fit: contain;
-}
-
-.social-title h3 {
-  margin: 0;
-}
-.instagram {
-  background:
-    linear-gradient(
+  /* RESET BASE */
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #eef4fb;
+    color: #222;
+    padding-bottom: 90px;
+    overflow-x: hidden;
+  }
+
+  /* =======================
+     HERO SECTION
+  ======================== */
+  .hero {
+    position: relative;
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0,40,90,0.15) 0%,
+        rgba(0,70,140,0.35) 30%,
+        rgba(0,100,180,0.15) 60%,
+        #eef4fb 100%
+      ),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop');
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+    padding: 40px 25px 140px;
+    text-align: center;
+  }
+
+  /* BALL ICON */
+  .ball-icon {
+    margin-bottom: 15px;
+  }
+
+  .ball-icon img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+  }
+
+  /* TITOLI HERO */
+  .hero h1 {
+    margin: 0;
+    font-size: 46px;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1;
+
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+    text-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  }
+
+  .hero h2 {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffd84f;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .hero-info {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.92);
+  }
+
+  /* =======================
+     COUNTDOWN
+  ======================== */
+  .countdown-box {
+    margin: 30px auto 0;
+    width: 100%;
+    max-width: 370px;
+
+    background: rgba(0,0,0,0.22);
+    backdrop-filter: blur(10px);
+
+    border-radius: 30px;
+    padding: 20px;
+
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  .countdown-title {
+    font-size: 14px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  #timer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .time-box {
+    width: 74px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .time-value {
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .time-label {
+    margin-top: 5px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* =======================
+     INFO CARDS
+  ======================== */
+  .info-cards {
+    display: flex;
+    gap: 14px;
+    margin: -80px 18px 25px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .info-card {
+    flex: 1;
+    background: white;
+    border-radius: 26px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  }
+
+  .info-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #0f172a;
+  }
+
+  .info-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+  }
+
+  /* =======================
+     SEZIONI GENERALI
+  ======================== */
+  .section {
+    background: white;
+    margin: 22px 18px;
+    padding: 25px;
+    border-radius: 26px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  .section h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .section p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  /* =======================
+     BUTTON
+  ======================== */
+  .btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 17px;
+
+    border-radius: 18px;
+    text-decoration: none;
+
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+
+    background: linear-gradient(135deg, #00b4ff, #0066ff);
+    box-shadow: 0 6px 15px rgba(0,114,255,0.25);
+
+    transition: transform 0.2s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  /* ICONE */
+  .info-icon {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    margin-bottom: 12px;
+  }
+
+  /* =======================
+     SOCIAL
+  ======================== */
+  .social-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .social-title img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+  }
+
+  .social-title h3 {
+    margin: 0;
+  }
+
+  .instagram {
+    background: linear-gradient(
       45deg,
       #f09433,
       #e6683c,
@@ -344,487 +274,930 @@ body {
       #bc1888
     );
 
-  box-shadow:
-    0 6px 15px rgba(204,35,102,0.25);
-}
-
-/* SPONSOR */
-
-.sponsor-section {
-  margin-top: 35px;
-
-  text-align: center;
-}
-
-.sponsor-section h3 {
-  margin-bottom: 20px;
-
-  font-size: 22px;
-
-  color: #0f172a;
-}
-
-.carousel-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.carousel {
-  display: flex;
-
-  gap: 30px;
-
-  width: max-content;
-
-  animation:
-    scroll 35s linear infinite;
-
-  padding-bottom: 40px;
-  padding-top: 10px;
-}
-
-.carousel a {
-  flex-shrink: 0;
-}
-
-.carousel img {
-  width: 200px;
-  height: 200px;
-
-  object-fit: contain;
-
-  background: white;
-
-  padding: 14px;
-
-  border-radius: 24px;
-
-  box-shadow:
-    0 6px 20px rgba(0,0,0,0.08);
-}
-
-@keyframes scroll {
-  from {
-    transform: translateX(0);
+    box-shadow: 0 6px 15px rgba(204,35,102,0.25);
   }
 
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* MENU */
-
-.menu {
-  position: fixed;
-
-  bottom: 0;
-  left: 0;
-
-  width: 100%;
-
-  background:
-    rgba(255,255,255,0.95);
-
-  backdrop-filter: blur(10px);
-
-  display: flex;
-
-  justify-content: space-around;
-  align-items: center;
-
-  padding: 14px 0;
-
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-
-  box-shadow:
-    0 -4px 20px rgba(0,0,0,0.08);
-	  transform: translateY(100%);
-  opacity: 0;
-
-  transition: all 0.35s ease;
-}
-	  
-.menu.show {
-  transform: translateY(0);
-  opacity: 1;
-}
-.menu-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-
-  text-decoration: none;
-
-  color: #555;
-
-  font-size: 12px;
-
-  font-weight: 600;
-
-  transition: 0.2s;
-}
-
-.menu-item img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-.menu-item.active {
-  color: #0066ff;
-}
-
-/* MOBILE */
-
-@media (max-width: 480px) {
-
-  .hero h1 {
-    font-size: 36px;
+  /* =======================
+     SPONSOR
+  ======================== */
+  .sponsor-section {
+    margin-top: 35px;
+    text-align: center;
   }
 
-  .ball-icon {
-    font-size: 58px;
+  .sponsor-section h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #0f172a;
   }
 
-  .time-box {
-    width: 68px;
+  .carousel-container {
+    overflow: hidden;
+    width: 100%;
   }
 
-  .time-value {
-    font-size: 26px;
+  .carousel {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: scroll 35s linear infinite;
+    padding-bottom: 40px;
+    padding-top: 10px;
+  }
+
+  .carousel a {
+    flex-shrink: 0;
   }
 
   .carousel img {
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    background: white;
+    padding: 14px;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   }
 
-}
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 
-</style>
+  /* =======================
+     MENU (hidden on load)
+  ======================== */
+  .menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.35s ease;
+  }
+
+  .menu.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: 0.2s;
+  }
+
+  .menu-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .menu-item.active {
+    color: #0066ff;
+  }
+
+  /* =======================
+     MOBILE
+  ======================== */
+  @media (max-width: 480px) {
+
+    .hero h1 {
+      font-size: 36px;
+    }
+
+    .ball-icon {
+      font-size: 58px;
+    }
+
+    .time-box {
+      width: 68px;
+    }
+
+    .time-value {
+      font-size: 26px;
+    }
+
+    .carousel img {
+      width: 180px;
+      height: 180px;
+    }
+  }
+
+  </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
+<!-- =======================
+     HERO
+======================== -->
+<div class="hero">
 
-  <div class="hero">
-
-    <div class="ball-icon">
-		 <img src="volleyball.png" alt="Beach Volley Ball">
-	</div>
-
-    <h1>Summer Beach League</h1>
-
-    <h2>SECONDA EDIZIONE</h2>
-
-    <div class="hero-info">
-      Beach Volley Tournament
-    </div>
-
-    <!-- COUNTDOWN -->
-
-    <div class="countdown-box">
-
-      <div class="countdown-title">
-        ⏳ INIZIO TORNEO TRA:
-      </div>
-
-      <div id="timer"></div>
-
-    </div>
-
+  <div class="ball-icon">
+    <img src="volleyball.png" alt="Beach Volley Ball">
   </div>
 
-  <!-- INFO TORNEO -->
+  <h1>Summer Beach League</h1>
+  <h2>SECONDA EDIZIONE</h2>
 
-  <div class="info-cards">
+  <div class="hero-info">
+    Beach Volley Tournament
+  </div>
 
-    <!-- DATA -->
-  <div class="info-card">
+  <!-- COUNTDOWN -->
+  <div class="countdown-box">
 
-  <img src="calendar.png" class="info-icon" alt="Date">
+    <div class="countdown-title">
+      ⏳ INIZIO TORNEO TRA:
+    </div>
 
-  <h3>Date</h3>
+    <div id="timer"></div>
 
-  <p>
-    12 - 13 - 14 Giugno 2026
-  </p>
+  </div>
 
 </div>
 
-    <!-- LUOGO -->
-<div class="info-card">
+<!-- =======================
+     INFO CARDS
+======================== -->
+<div class="info-cards">
 
-  <img src="pin.png" class="info-icon" alt="Luogo">
+  <div class="info-card">
+    <img src="calendar.png" class="info-icon" alt="Date">
+    <h3>Date</h3>
+    <p>12 - 13 - 14 Giugno 2026</p>
+  </div>
 
-  <h3>Luogo</h3>
+  <div class="info-card">
+    <img src="pin.png" class="info-icon" alt="Luogo">
+    <h3>Luogo</h3>
+    <p>Bagni Alberto Cesare e Bagni Riccardo, Marotta</p>
+  </div>
+
+</div>
+
+<!-- =======================
+     ISCRIZIONE
+======================== -->
+<div class="section">
+
+  <div class="social-title">
+    <img src="form.png" alt="Iscrizione">
+    <h3>Iscrizioni al torneo</h3>
+  </div>
+
+  <p>Partecipa alla Summer Beach League!</p>
+
+  <a href="https://forms.gle/7B8LuGqy8eq6JKmJA" target="_blank" class="btn">
+    Iscriviti ora
+  </a>
+
+</div>
+
+<!-- =======================
+     INSTAGRAM
+======================== -->
+<div class="section">
+
+  <div class="social-title">
+    <img src="instagram.png" alt="Instagram">
+    <h3>Seguici su Instagram</h3>
+  </div>
 
   <p>
-    Bagni Alberto Cesare e Bagni Riccardo, Marotta
+    Guarda highlights, stories, foto delle partite e aggiornamenti.
   </p>
- </div>
 
-  </div>
+  <a href="https://www.instagram.com/summer_beach_league?igsh=dHQ4cW9lOW12Mzdz"
+     target="_blank"
+     class="btn instagram">
+    Vai alla pagina Instagram
+  </a>
 
-  <!-- ISCRIZIONI -->
+</div>
 
-  <div class="section">
+<!-- =======================
+     SPONSOR
+======================== -->
+<div class="sponsor-section">
 
-	  	 <div class="social-title">
-		
-		 <img src="form.png" alt="Iscrizione">
-		
-		 <h3>Iscrizioni al torneo</h3>
-		
-	</div>
+  <h3>I NOSTRI SPONSOR</h3>
 
-    <p>
-      Partecipa alla Summer Beach League!
-    </p>
+  <div class="carousel-container">
+    <div class="carousel">
 
-    <a
-      href="https://forms.gle/7B8LuGqy8eq6JKmJA"
-      target="_blank"
-      class="btn"
-    >
-      Iscriviti ora
-    </a>
+      <!-- sponsor list -->
+      <a href="#"><img src="BagniAlbertoCesare_Logo.png"></a>
+      <a href="#"><img src="BagnoRiccardo_Logo.png"></a>
+      <a href="#"><img src="CentroMedico.png"></a>
+      <a href="#"><img src="OtticaSeri.png"></a>
+      <a href="#"><img src="Cortesi.png"></a>
+      <a href="#"><img src="Orobianco.png"></a>
+      <a href="#"><img src="Breccia.png"></a>
+      <a href="#"><img src="Loredana.png"></a>
+      <a href="#"><img src="GoffiAuto.png"></a>
 
-  </div>
-
-  <!-- INSTAGRAM -->
-
-  <div class="section">
-
-	 <div class="social-title">
-		
-		 <img src="instagram.png" alt="Instagram">
-		
-		 <h3>Seguici su Instagram</h3>
-		
-	</div>
-
-    <p>
-      Guarda highlights, stories, foto delle partite
-      e tutti gli aggiornamenti del torneo.
-    </p>
-
-    <a
-      href="https://www.instagram.com/summer_beach_league?igsh=dHQ4cW9lOW12Mzdz"
-      target="_blank"
-      class="btn instagram"
-    >
-      Vai alla pagina Instagram
-    </a>
-
-  </div>
-
-  <!-- SPONSOR -->
-
-  <div class="sponsor-section">
-
-    <h3>I nostri Sponsor</h3>
-
-	  
-    <div class="carousel-container">
-
-      <div class="carousel">
-
-        <!-- SPONSOR -->
-<a href="https://instagram.com/SPONSOR1" target="_blank">
-        <img src="BagniAlbertoCesare_Logo.png" alt="Bagni Alberto Cesare">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR2" target="_blank">
-        <img src="BagnoRiccardo_Logo.png" alt="Bagni Riccardo">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="CentroMedico.png" alt="Centro Medico Adriatico">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="OtticaSeri.png" alt="Ottica Seri">
-      </a>
-	  
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Cortesi.png" alt="Cortesi Immobiliare">
-      </a>
-	  
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Orobianco.png" alt="Orobianco Pizzeria">
-      </a>
-		
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Breccia.png" alt="Breccia Onoranze Funebri">
-      </a>
-
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Loredana.png" alt="Loredana Pasta Fresca">
-      </a>
-
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="GoffiAuto.png" alt="Goffi Auto">
-      </a>
-
-        <!-- DUPLICATI -->
-
-<a href="https://instagram.com/SPONSOR1" target="_blank">
-        <img src="BagniAlbertoCesare_Logo.png" alt="Bagni Alberto Cesare">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR2" target="_blank">
-        <img src="BagnoRiccardo_Logo.png" alt="Bagni Riccardo">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="CentroMedico.png" alt="Centro Medico Adriatico">
-      </a>
-
-      <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="OtticaSeri.png" alt="Ottica Seri">
-      </a>
-	  
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Cortesi.png" alt="Cortesi Immobiliare">
-      </a>
-	  
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Orobianco.png" alt="Orobianco Pizzeria">
-      </a>
-		
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Breccia.png" alt="Breccia Onoranze Funebri">
-      </a>
-
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="Loredana.png" alt="Loredana Pasta Fresca">
-      </a>
-
-	  <a href="https://instagram.com/SPONSOR3" target="_blank">
-        <img src="GoffiAuto.png" alt="Goffi Auto">
-      </a>
-
-      </div>
+      <!-- duplicati -->
+      <a href="#"><img src="BagniAlbertoCesare_Logo.png"></a>
+      <a href="#"><img src="BagnoRiccardo_Logo.png"></a>
 
     </div>
-
   </div>
 
-	
-  <!-- MENU -->
+</div>
 
-  <div class="menu">
+<!-- =======================
+     MENU
+======================== -->
+<div class="menu">
 
-<a href="index.html" class="menu-item active">
+  <a href="index.html" class="menu-item active">
+    <img src="home.png">
+    <span>Home</span>
+  </a>
 
-  <img src="home.png" alt="Home">
+  <a href="gironi.html" class="menu-item">
+    <img src="gironi.png">
+    <span>Gironi</span>
+  </a>
 
-  <span>Home</span>
+  <a href="partite.html" class="menu-item">
+    <img src="partite.png">
+    <span>Partite</span>
+  </a>
 
-</a>
+</div>
 
-	     <a href="gironi.html" class="menu-item">
+<!-- =======================
+     SCRIPT COUNTDOWN + MENU
+======================== -->
+<script>
 
-  <img src="gironi.png" alt="Gironi">
+  // COUNTDOWN
+  const torneoData = new Date("2026-06-12T18:00:00").getTime();
 
-  <span>Gironi</span>
+  const x = setInterval(function () {
 
-</a>
-	  
-    <a href="partite.html" class="menu-item">
+    const now = new Date().getTime();
+    const distance = torneoData - now;
 
-  <img src="partite.png" alt="Partite">
+    const giorni = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const ore = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minuti = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const secondi = Math.floor((distance % (1000 * 60)) / 1000);
 
-  <span>Partite</span>
+    document.getElementById("timer").innerHTML = `
+      <div class="time-box"><div class="time-value">${giorni}</div><div class="time-label">GIORNI</div></div>
+      <div class="time-box"><div class="time-value">${ore}</div><div class="time-label">ORE</div></div>
+      <div class="time-box"><div class="time-value">${minuti}</div><div class="time-label">MINUTI</div></div>
+      <div class="time-box"><div class="time-value">${secondi}</div><div class="time-label">SECONDI</div></div>
+    `;
 
-</a>
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("timer").innerHTML = "TORNEO IN CORSO!";
+    }
 
-  </div>
+  }, 1000);
 
-  <!-- COUNTDOWN SCRIPT -->
+  // MENU SHOW ON SCROLL
+  const menu = document.querySelector(".menu");
 
-  <script>
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      menu.classList.add("show");
+    } else {
+      menu.classList.remove("show");
+    }
+  });
 
-    const torneoData =
-      new Date("2026-06-12T18:00:00").getTime();
+</script>
 
-    const x = setInterval(function() {
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
 
-      const now = new Date().getTime();
+  <!-- METADATA -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summer Beach League</title>
 
-      const distance =
-        torneoData - now;
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-      const giorni = Math.floor(
-        distance / (1000 * 60 * 60 * 24)
-      );
+  <!-- =======================
+       STILI CSS
+  ======================== -->
+  <style>
 
-      const ore = Math.floor(
-        (distance % (1000 * 60 * 60 * 24))
-        / (1000 * 60 * 60)
-      );
-
-      const minuti = Math.floor(
-        (distance % (1000 * 60 * 60))
-        / (1000 * 60)
-      );
-
-      const secondi = Math.floor(
-        (distance % (1000 * 60))
-        / 1000
-      );
-
-      document.getElementById("timer").innerHTML = `
-
-        <div class="time-box">
-          <div class="time-value">${giorni}</div>
-          <div class="time-label">GIORNI</div>
-        </div>
-
-        <div class="time-box">
-          <div class="time-value">${ore}</div>
-          <div class="time-label">ORE</div>
-        </div>
-
-        <div class="time-box">
-          <div class="time-value">${minuti}</div>
-          <div class="time-label">MINUTI</div>
-        </div>
-
-        <div class="time-box">
-          <div class="time-value">${secondi}</div>
-          <div class="time-label">SECONDI</div>
-        </div>
-
-      `;
-
-      if (distance < 0) {
-
-        clearInterval(x);
-
-        document.getElementById("timer").innerHTML =
-          "TORNEO IN CORSO!";
-
-      }
-
-    }, 1000);
-
-const menu = document.querySelector(".menu");
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 120) {
-    menu.classList.add("show");
-  } else {
-    menu.classList.remove("show");
+  /* RESET BASE */
+  * {
+    box-sizing: border-box;
   }
-});
-	  
-  </script>
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #eef4fb;
+    color: #222;
+    padding-bottom: 90px;
+    overflow-x: hidden;
+  }
+
+  /* =======================
+     HERO SECTION
+  ======================== */
+  .hero {
+    position: relative;
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0,40,90,0.15) 0%,
+        rgba(0,70,140,0.35) 30%,
+        rgba(0,100,180,0.15) 60%,
+        #eef4fb 100%
+      ),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop');
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+    padding: 40px 25px 140px;
+    text-align: center;
+  }
+
+  /* BALL ICON */
+  .ball-icon {
+    margin-bottom: 15px;
+  }
+
+  .ball-icon img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+  }
+
+  /* TITOLI HERO */
+  .hero h1 {
+    margin: 0;
+    font-size: 46px;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1;
+
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+    text-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  }
+
+  .hero h2 {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffd84f;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .hero-info {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.92);
+  }
+
+  /* =======================
+     COUNTDOWN
+  ======================== */
+  .countdown-box {
+    margin: 30px auto 0;
+    width: 100%;
+    max-width: 370px;
+
+    background: rgba(0,0,0,0.22);
+    backdrop-filter: blur(10px);
+
+    border-radius: 30px;
+    padding: 20px;
+
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  .countdown-title {
+    font-size: 14px;
+    margin-bottom: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  #timer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .time-box {
+    width: 74px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .time-value {
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .time-label {
+    margin-top: 5px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* =======================
+     INFO CARDS
+  ======================== */
+  .info-cards {
+    display: flex;
+    gap: 14px;
+    margin: -80px 18px 25px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .info-card {
+    flex: 1;
+    background: white;
+    border-radius: 26px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  }
+
+  .info-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #0f172a;
+  }
+
+  .info-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+  }
+
+  /* =======================
+     SEZIONI GENERALI
+  ======================== */
+  .section {
+    background: white;
+    margin: 22px 18px;
+    padding: 25px;
+    border-radius: 26px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  .section h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .section p {
+    color: #555;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  /* =======================
+     BUTTON
+  ======================== */
+  .btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 18px;
+    padding: 17px;
+
+    border-radius: 18px;
+    text-decoration: none;
+
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: center;
+
+    background: linear-gradient(135deg, #00b4ff, #0066ff);
+    box-shadow: 0 6px 15px rgba(0,114,255,0.25);
+
+    transition: transform 0.2s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  /* ICONE */
+  .info-icon {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    margin-bottom: 12px;
+  }
+
+  /* =======================
+     SOCIAL
+  ======================== */
+  .social-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .social-title img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+  }
+
+  .social-title h3 {
+    margin: 0;
+  }
+
+  .instagram {
+    background: linear-gradient(
+      45deg,
+      #f09433,
+      #e6683c,
+      #dc2743,
+      #cc2366,
+      #bc1888
+    );
+
+    box-shadow: 0 6px 15px rgba(204,35,102,0.25);
+  }
+
+  /* =======================
+     SPONSOR
+  ======================== */
+  .sponsor-section {
+    margin-top: 35px;
+    text-align: center;
+  }
+
+  .sponsor-section h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .carousel-container {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: scroll 35s linear infinite;
+    padding-bottom: 40px;
+    padding-top: 10px;
+  }
+
+  .carousel a {
+    flex-shrink: 0;
+  }
+
+  .carousel img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    background: white;
+    padding: 14px;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* =======================
+     MENU (hidden on load)
+  ======================== */
+  .menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+
+    transform: translateY(100%);
+    opacity: 0;
+    transition: all 0.35s ease;
+  }
+
+  .menu.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+
+    transition: 0.2s;
+  }
+
+  .menu-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .menu-item.active {
+    color: #0066ff;
+  }
+
+  /* =======================
+     MOBILE
+  ======================== */
+  @media (max-width: 480px) {
+
+    .hero h1 {
+      font-size: 36px;
+    }
+
+    .ball-icon {
+      font-size: 58px;
+    }
+
+    .time-box {
+      width: 68px;
+    }
+
+    .time-value {
+      font-size: 26px;
+    }
+
+    .carousel img {
+      width: 180px;
+      height: 180px;
+    }
+  }
+
+  </style>
+</head>
+
+<body>
+
+<!-- =======================
+     HERO
+======================== -->
+<div class="hero">
+
+  <div class="ball-icon">
+    <img src="volleyball.png" alt="Beach Volley Ball">
+  </div>
+
+  <h1>Summer Beach League</h1>
+  <h2>SECONDA EDIZIONE</h2>
+
+  <div class="hero-info">
+    Beach Volley Tournament
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-box">
+
+    <div class="countdown-title">
+      ⏳ INIZIO TORNEO TRA:
+    </div>
+
+    <div id="timer"></div>
+
+  </div>
+
+</div>
+
+<!-- =======================
+     INFO CARDS
+======================== -->
+<div class="info-cards">
+
+  <div class="info-card">
+    <img src="calendar.png" class="info-icon" alt="Date">
+    <h3>Date</h3>
+    <p>12 - 13 - 14 Giugno 2026</p>
+  </div>
+
+  <div class="info-card">
+    <img src="pin.png" class="info-icon" alt="Luogo">
+    <h3>Luogo</h3>
+    <p>Bagni Alberto Cesare e Bagni Riccardo, Marotta</p>
+  </div>
+
+</div>
+
+<!-- =======================
+     ISCRIZIONE
+======================== -->
+<div class="section">
+
+  <div class="social-title">
+    <img src="form.png" alt="Iscrizione">
+    <h3>Iscrizioni al torneo</h3>
+  </div>
+
+  <p>Partecipa alla Summer Beach League!</p>
+
+  <a href="https://forms.gle/7B8LuGqy8eq6JKmJA" target="_blank" class="btn">
+    Iscriviti ora
+  </a>
+
+</div>
+
+<!-- =======================
+     INSTAGRAM
+======================== -->
+<div class="section">
+
+  <div class="social-title">
+    <img src="instagram.png" alt="Instagram">
+    <h3>Seguici su Instagram</h3>
+  </div>
+
+  <p>
+    Guarda highlights, stories, foto delle partite e aggiornamenti.
+  </p>
+
+  <a href="https://www.instagram.com/summer_beach_league?igsh=dHQ4cW9lOW12Mzdz"
+     target="_blank"
+     class="btn instagram">
+    Vai alla pagina Instagram
+  </a>
+
+</div>
+
+<!-- =======================
+     SPONSOR
+======================== -->
+<div class="sponsor-section">
+
+  <h3>I NOSTRI SPONSOR</h3>
+
+  <div class="carousel-container">
+    <div class="carousel">
+
+      <!-- sponsor list -->
+      <a href="#"><img src="BagniAlbertoCesare_Logo.png"></a>
+      <a href="#"><img src="BagnoRiccardo_Logo.png"></a>
+      <a href="#"><img src="CentroMedico.png"></a>
+      <a href="#"><img src="OtticaSeri.png"></a>
+      <a href="#"><img src="Cortesi.png"></a>
+      <a href="#"><img src="Orobianco.png"></a>
+      <a href="#"><img src="Breccia.png"></a>
+      <a href="#"><img src="Loredana.png"></a>
+      <a href="#"><img src="GoffiAuto.png"></a>
+
+      <!-- duplicati -->
+      <a href="#"><img src="BagniAlbertoCesare_Logo.png"></a>
+      <a href="#"><img src="BagnoRiccardo_Logo.png"></a>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- =======================
+     MENU
+======================== -->
+<div class="menu">
+
+  <a href="index.html" class="menu-item active">
+    <img src="home.png">
+    <span>Home</span>
+  </a>
+
+  <a href="gironi.html" class="menu-item">
+    <img src="gironi.png">
+    <span>Gironi</span>
+  </a>
+
+  <a href="partite.html" class="menu-item">
+    <img src="partite.png">
+    <span>Partite</span>
+  </a>
+
+</div>
+
+<!-- =======================
+     SCRIPT COUNTDOWN + MENU
+======================== -->
+<script>
+
+  // COUNTDOWN
+  const torneoData = new Date("2026-06-12T18:00:00").getTime();
+
+  const x = setInterval(function () {
+
+    const now = new Date().getTime();
+    const distance = torneoData - now;
+
+    const giorni = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const ore = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minuti = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const secondi = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML = `
+      <div class="time-box"><div class="time-value">${giorni}</div><div class="time-label">GIORNI</div></div>
+      <div class="time-box"><div class="time-value">${ore}</div><div class="time-label">ORE</div></div>
+      <div class="time-box"><div class="time-value">${minuti}</div><div class="time-label">MINUTI</div></div>
+      <div class="time-box"><div class="time-value">${secondi}</div><div class="time-label">SECONDI</div></div>
+    `;
+
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("timer").innerHTML = "TORNEO IN CORSO!";
+    }
+
+  }, 1000);
+
+  // MENU SHOW ON SCROLL
+  const menu = document.querySelector(".menu");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 120) {
+      menu.classList.add("show");
+    } else {
+      menu.classList.remove("show");
+    }
+  });
+
+</script>
 
 </body>
 </html>
