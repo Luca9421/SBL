@@ -308,21 +308,27 @@ body {
 }
 	  
 .section-title {
-/*display: flex;*/
+  display: flex;
   align-items: center;
   gap: 12px;
 
   margin-bottom: 12px;
+
+  width: 100%;
 }
 
 .section-title img {
   width: 40px;
   height: 40px;
   object-fit: contain;
+
+  flex-shrink: 0;
 }
 
 .section-title h3 {
   margin: 0;
+
+  display: block;
 }
 	  
 .info-icon {
