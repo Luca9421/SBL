@@ -51,7 +51,9 @@
       justify-content: space-between;
       margin: 10px 0;
     }
-
+.match span {
+  line-height: 1.2;
+}
     .score {
       font-weight: bold;
     }
@@ -303,8 +305,8 @@ const col = riga.split(",").map(c => c.trim());
 
         gironi[g].forEach(col => {
 
-         let squadraA = col[1];
-let squadraB = col[2];
+         let squadraA = col[1].replace("|", "<br>");
+let squadraB = col[2].replace("|", "<br>");
 let puntiA = parseInt(col[3]);
 let puntiB = parseInt(col[4]);
 
