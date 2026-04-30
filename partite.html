@@ -280,8 +280,8 @@
 
       /* RAGGRUPPA PER GIRONI */
       righe.forEach(riga => {
-
-        const col = riga.split(",");
+const col = riga.split(",").map(c => c.trim());
+        
         if (col.length < 6) return;
 
         const girone = col[0];
@@ -311,7 +311,10 @@ let puntiB = parseInt(col[4]);
 let stato = col[5];
 let orario = col[6];
 let luogo = col[7];
+let classeA = "";
+let classeB = "";
 
+         
           if (col[5].trim().toLowerCase() === "finita") {
 
             if (puntiA > puntiB) {
