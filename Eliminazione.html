@@ -289,8 +289,8 @@ function renderBO3(rows, content) {
 
     let results = "";
 
-    let teamA = s.a.replaceAll("|","<br>");
-    let teamB = s.b.replaceAll("|","<br>");
+    const teamA = s.a.replaceAll("|","<br>");
+    const teamB = s.b.replaceAll("|","<br>");
 
     s.matches.forEach((col, i) => {
 
@@ -305,16 +305,19 @@ function renderBO3(rows, content) {
         else if (pb > pa) { winsB++; cb = "winner"; ca = "loser"; }
       }
 
+      //  NO COLORI AI PUNTEGGI
       results += `
-        <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #eee;">
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          padding:6px 0;
+          border-top:1px solid #eee;
+          font-size:13px;
+        ">
 
           <div>Game ${i+1}</div>
 
-          <div>
-            <span style="color:${ca==='winner'?'green':ca==='loser'?'red':''};font-weight:bold;">${col[2]}</span>
-            -
-            <span style="color:${cb==='winner'?'green':cb==='loser'?'red':''};font-weight:bold;">${col[3]}</span>
-          </div>
+          <div>${col[2]} - ${col[3]}</div>
 
         </div>
       `;
@@ -334,10 +337,10 @@ function renderBO3(rows, content) {
         gap:10px;
       ">
 
-        <!-- SQUADRA 1 (DESTRA) -->
+        <!-- SQUADRA 1 (SINISTRA) -->
         <div style="
           flex:1;
-          text-align:right;
+          text-align:left;
           line-height:1.2;
           font-weight:bold;
           color:${winsA > winsB ? 'green' : winsA < winsB ? 'red' : '#0072ff'};
@@ -355,10 +358,10 @@ function renderBO3(rows, content) {
           VS
         </div>
 
-        <!-- SQUADRA 2 (SINISTRA) -->
+        <!-- SQUADRA 2 (DESTRA) -->
         <div style="
           flex:1;
-          text-align:left;
+          text-align:right;
           line-height:1.2;
           font-weight:bold;
           color:${winsB > winsA ? 'green' : winsB < winsA ? 'red' : '#0072ff'};
@@ -386,7 +389,6 @@ function renderBO3(rows, content) {
     content.appendChild(card);
   });
 }
-
 /* =========================
    LOAD
 ========================= */
