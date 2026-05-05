@@ -289,6 +289,9 @@ function renderBO3(rows, content) {
 
     let results = "";
 
+    let teamA = s.a.replaceAll("|","<br>");
+    let teamB = s.b.replaceAll("|","<br>");
+
     s.matches.forEach((col, i) => {
 
       const pa = parseInt(col[2]);
@@ -304,12 +307,15 @@ function renderBO3(rows, content) {
 
       results += `
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #eee;">
+
           <div>Game ${i+1}</div>
+
           <div>
             <span style="color:${ca==='winner'?'green':ca==='loser'?'red':''};font-weight:bold;">${col[2]}</span>
             -
             <span style="color:${cb==='winner'?'green':cb==='loser'?'red':''};font-weight:bold;">${col[3]}</span>
           </div>
+
         </div>
       `;
     });
@@ -320,16 +326,44 @@ function renderBO3(rows, content) {
     card.innerHTML = `
 
       <!-- HEADER -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:8px;
+        gap:10px;
+      ">
 
-        <div style="text-align:right;flex:1;font-weight:bold;">
-          ${s.a.replaceAll("|","<br>")}
+        <!-- SQUADRA 1 (DESTRA) -->
+        <div style="
+          flex:1;
+          text-align:right;
+          line-height:1.2;
+          font-weight:bold;
+          color:${winsA > winsB ? 'green' : winsA < winsB ? 'red' : '#0072ff'};
+        ">
+          ${teamA}
         </div>
 
-        <div style="padding:0 10px;">VS</div>
+        <!-- VS -->
+        <div style="
+          padding:0 8px;
+          font-size:12px;
+          font-weight:700;
+          color:#666;
+        ">
+          VS
+        </div>
 
-        <div style="text-align:left;flex:1;font-weight:bold;">
-          ${s.b.replaceAll("|","<br>")}
+        <!-- SQUADRA 2 (SINISTRA) -->
+        <div style="
+          flex:1;
+          text-align:left;
+          line-height:1.2;
+          font-weight:bold;
+          color:${winsB > winsA ? 'green' : winsB < winsA ? 'red' : '#0072ff'};
+        ">
+          ${teamB}
         </div>
 
       </div>
@@ -338,7 +372,12 @@ function renderBO3(rows, content) {
       ${results}
 
       <!-- SCORE -->
-      <div style="margin-top:10px;text-align:center;font-weight:bold;color:#0072ff;">
+      <div style="
+        margin-top:10px;
+        text-align:center;
+        font-weight:bold;
+        color:#0072ff;
+      ">
         Vittorie: ${winsA} - ${winsB}
       </div>
 
