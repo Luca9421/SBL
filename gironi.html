@@ -306,17 +306,65 @@
 
         gironi[g].forEach(s => {
 
-          squadreHTML += `
-            <div style="
-              padding:10px 0;
-              border-bottom:1px solid #eee;
-            ">
-              ${s}
-            </div>
-          `;
 
-        });
+  const squadra = s[0];
+  const vittorie = s[1];
+  const ptFatti = s[2];
+  const ptSubiti = s[3];
+  const quoziente = s[4];
 
+  squadreHTML += `
+
+    <div style="
+      padding:12px 0;
+      border-bottom:1px solid #eee;
+    ">
+
+      <!-- NOME SQUADRA -->
+      <div style="
+        font-weight:700;
+        margin-bottom:8px;
+      ">
+        ${squadra.replace("|","<br>")}
+      </div>
+
+      <!-- STATISTICHE -->
+      <div style="
+        display:grid;
+        grid-template-columns: repeat(4,1fr);
+        gap:8px;
+        text-align:center;
+        font-size:12px;
+      ">
+
+        <div>
+          <div style="color:gray;">V</div>
+          <div>${vittorie}</div>
+        </div>
+
+        <div>
+          <div style="color:gray;">PF</div>
+          <div>${ptFatti}</div>
+        </div>
+
+        <div>
+          <div style="color:gray;">PS</div>
+          <div>${ptSubiti}</div>
+        </div>
+
+        <div>
+          <div style="color:gray;">QP</div>
+          <div>${quoziente}</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+});
+          
         card.innerHTML = `
           <div class="girone">
             Girone ${g}
