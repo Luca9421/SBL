@@ -289,14 +289,23 @@
 
         const girone = col[0];
         const squadra = col[1];
+const vittorie = col[2];
+const ptFatti = col[3];
+const ptSubiti = col[4];
+const quoziente = col[5];
 
-        if (!gironi[girone]) {
-          gironi[girone] = [];
-        }
+if (!gironi[girone]) {
+  gironi[girone] = [];
+}
 
-        gironi[girone].push(squadra);
-      });
-
+gironi[girone].push([
+  squadra,
+  vittorie,
+  ptFatti,
+  ptSubiti,
+  quoziente
+]);
+});
       Object.keys(gironi).sort().forEach(g => {
 
         const card = document.createElement("div");
