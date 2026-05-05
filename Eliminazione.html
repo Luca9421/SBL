@@ -1,1 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELIMINAZIONE DIRETTA</title>
 
+  <style>
+
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f2f4f8;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .card {
+      background: white;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .match {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .status {
+      font-size: 12px;
+      color: gray;
+      margin-top: 3px;
+    }
+
+    .winner { color: green; font-weight: bold; }
+    .loser { color: red; }
+
+    /* ACCORDION */
+    .accordion {
+      margin: 15px;
+    }
+
+    .accordion-header {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .accordion-header:hover {
+      transform: scale(1.01);
+    }
+
+    .accordion-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #0072ff;
+    }
+
+    .arrow {
+      transition: transform 0.35s ease;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: 0.4s ease;
+      border-radius: 15px;
+    }
+
+    .accordion.open .accordion-content {
+      max-height: 10000px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .accordion.open .arrow {
+      transform: rotate(90deg);
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>ELIMINAZIONE DIRETTA</h1>
+</div>
+
+<!-- ACCORDION TEMPLATE -->
+<div id="container"></div>
+
+<script>
+
+function toggleAccordion(el) {
+  el.parentElement.classList.toggle("open");
+}
+
+/* =========================
+   FUNZIONE CARICAMENTO
+========================= */
+
+function loadPartite(url, container, titolo) {
+
+  fetch(url)
+    .then(r => r.text())
+    .then(data => {
+
+      const righe = data.split("\n").slice(1);
+
+      let gironi = {};
+
+      righe.forEach(riga => {
+
+        const col = riga.split(",").map(c => c.trim());
+        if (col.length < 6) return;
+
+        const girone = col[0];
+
+        if (!gironi[girone]) gironi[girone] = [];
+        gironi[girone].push(col);
+      });
+
+      const accordion = document.createElement("div");
+      accordion.className = "accordion";
+
+      const header = document.createElement("div");
+      header.className = "accordion-header";
+      header.innerHTML = `
+        <h2>${titolo}</h2>
+        <span class="arrow">▶</span>
+      `;
+      header.onclick = () => toggleAccordion(header);
+
+      const content = document.createElement("div");
+      content.className = "accordion-content";
+
+      Object.keys(gironi)
+        .sort((a,b) => a.localeCompare(b, undefined, { numeric: true }))
+        .forEach(g => {
+
+          const title = document.createElement("h3");
+          title.style.margin = "15px";
+          title.innerText = "Girone " + g;
+
+          content.appendChild(title);
+
+          gironi[g].forEach(col => {
+
+            let squadraA = col[1].replace("|","<br>");
+            let squadraB = col[2].replace("|","<br>");
+
+            let puntiA = parseInt(col[3]);
+            let puntiB = parseInt(col[4]);
+
+            let stato = col[5];
+            let orario = col[6];
+            let luogo = col[7];
+
+            let classeA = "";
+            let classeB = "";
+
+            if (stato && stato.toLowerCase() === "finita") {
+              if (puntiA > puntiB) {
+                classeA = "winner";
+                classeB = "loser";
+              } else if (puntiB > puntiA) {
+                classeB = "winner";
+                classeA = "loser";
+              }
+            }
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;">
+                <div>${orario || "-"}</div>
+                <div>${luogo || "-"}</div>
+              </div>
+
+              <div class="match">
+
+                <span class="${classeA}">${squadraA}</span>
+
+                <div class="center">
+                  <div class="status">${stato || ""}</div>
+                  <div><b>${col[3]} - ${col[4]}</b></div>
+                </div>
+
+                <span class="${classeB}">${squadraB}</span>
+
+              </div>
+            `;
+
+            content.appendChild(card);
+          });
+
+        });
+
+      accordion.appendChild(header);
+      accordion.appendChild(content);
+
+      container.appendChild(accordion);
+
+    });
+
+}
+
+/* =========================
+   URL CSV (SOSTITUISCI QUI)
+========================= */
+
+const urls = {
+  sedicesimi: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv",
+  ottavi: "URL_OTTAVI",
+  quarti: "URL_QUARTI",
+  semifinali: "URL_SEMIFINALI",
+  finali: "URL_FINALI"
+};
+
+/* =========================
+   LOAD ALL
+========================= */
+
+const container = document.getElementById("container");
+
+loadPartite(urls.sedicesimi, container, "SEDICESIMI");
+loadPartite(urls.ottavi, container, "OTTAVI");
+loadPartite(urls.quarti, container, "QUARTI");
+loadPartite(urls.semifinali, container, "SEMIFINALI");
+loadPartite(urls.finali, container, "FINALI");
+
+</script>
+
+</body>
+</html>
