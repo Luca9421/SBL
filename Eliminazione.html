@@ -49,11 +49,6 @@ h1 {
   align-items: center;
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  transition: 0.3s;
-}
-
-.accordion-header:hover {
-  transform: scale(1.01);
 }
 
 .accordion-header h2 {
@@ -63,7 +58,7 @@ h1 {
 }
 
 .arrow {
-  transition: 0.35s;
+  transition: 0.3s;
 }
 
 .accordion-content {
@@ -71,7 +66,7 @@ h1 {
   overflow: hidden;
   opacity: 0;
   transform: translateY(-10px);
-  transition: 0.4s;
+  transition: 0.4s ease;
 }
 
 .accordion.open .accordion-content {
@@ -94,7 +89,6 @@ h1 {
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-around;
-  align-items: center;
   padding: 14px 0;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
@@ -120,6 +114,17 @@ h1 {
 
 .spacer {
   height: 90px;
+}
+
+/* COLORI */
+.winner {
+  color: green;
+  font-weight: bold;
+}
+
+.loser {
+  color: red;
+  font-weight: bold;
 }
 
 </style>
@@ -164,7 +169,7 @@ function toggleAccordion(el) {
 const container = document.getElementById("container");
 
 /* =========================
-   CSV PARSER ROBUSTO
+   CSV ROBUSTO
 ========================= */
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/).slice(1);
@@ -179,7 +184,9 @@ function parseCSV(text) {
       else if (c === ',' && !q) {
         res.push(cur.trim());
         cur = "";
-      } else cur += c;
+      } else {
+        cur += c;
+      }
     }
 
     res.push(cur.trim());
@@ -188,7 +195,7 @@ function parseCSV(text) {
 }
 
 /* =========================
-   CONFIG FASI
+   CONFIG
 ========================= */
 
 	const fasi = [
@@ -202,17 +209,29 @@ function parseCSV(text) {
 /* =========================
    MATCH SINGOLO
 ========================= */
+
 function renderSingle(rows, content) {
 
   rows.forEach(col => {
 
     if (col.length < 7) return;
 
+    const a = col[0].replaceAll("|","<br>");
+    const b = col[1].replaceAll("|","<br>");
+
+    const pa = parseInt(col[2]);
+    const pb = parseInt(col[3]);
+
+    let ca = "";
+    let cb = "";
+
+    if ((col[4] || "").toLowerCase() === "finita") {
+      if (pa > pb) { ca = "winner"; cb = "loser"; }
+      else if (pb > pa) { cb = "winner"; ca = "loser"; }
+    }
+
     const card = document.createElement("div");
     card.className = "card";
-
-    let a = col[0].replaceAll("|","<br>");
-    let b = col[1].replaceAll("|","<br>");
 
     card.innerHTML = `
       <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;">
@@ -222,14 +241,14 @@ function renderSingle(rows, content) {
 
       <div style="display:flex;justify-content:space-between;margin-top:10px;">
 
-        <span>${a}</span>
+        <span class="${ca}">${a}</span>
 
         <div style="text-align:center;">
           <div>${col[4]}</div>
           <b>${col[2]} - ${col[3]}</b>
         </div>
 
-        <span>${b}</span>
+        <span class="${cb}">${b}</span>
 
       </div>
     `;
@@ -239,8 +258,9 @@ function renderSingle(rows, content) {
 }
 
 /* =========================
-   BO3 FIXATO
+   BO3 DEFINITIVO
 ========================= */
+
 function renderBO3(rows, content) {
 
   const serie = {};
@@ -267,20 +287,12 @@ function renderBO3(rows, content) {
     let winsA = 0;
     let winsB = 0;
 
-    let orario = "-";
-    let campo = "-";
-
     let results = "";
 
     s.matches.forEach((col, i) => {
 
-      if (i === 0) {
-        orario = col[5];
-        campo = col[6];
-      }
-
-      let pa = parseInt(col[2]);
-      let pb = parseInt(col[3]);
+      const pa = parseInt(col[2]);
+      const pb = parseInt(col[3]);
 
       let ca = "";
       let cb = "";
@@ -294,7 +306,9 @@ function renderBO3(rows, content) {
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #eee;">
           <div>Game ${i+1}</div>
           <div>
-            <span class="${ca}">${col[2]}</span> - <span class="${cb}">${col[3]}</span>
+            <span style="color:${ca==='winner'?'green':ca==='loser'?'red':''};font-weight:bold;">${col[2]}</span>
+            -
+            <span style="color:${cb==='winner'?'green':cb==='loser'?'red':''};font-weight:bold;">${col[3]}</span>
           </div>
         </div>
       `;
@@ -305,6 +319,7 @@ function renderBO3(rows, content) {
 
     card.innerHTML = `
 
+      <!-- HEADER -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
 
         <div style="text-align:right;flex:1;font-weight:bold;">
@@ -319,13 +334,10 @@ function renderBO3(rows, content) {
 
       </div>
 
-      <div style="font-size:12px;color:#666;display:flex;justify-content:space-between;margin-bottom:10px;">
-        <div>${orario}</div>
-        <div>${campo}</div>
-      </div>
-
+      <!-- MATCHES -->
       ${results}
 
+      <!-- SCORE -->
       <div style="margin-top:10px;text-align:center;font-weight:bold;color:#0072ff;">
         Vittorie: ${winsA} - ${winsB}
       </div>
