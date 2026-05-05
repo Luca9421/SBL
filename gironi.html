@@ -74,9 +74,7 @@
       color: red;
     }
 
-    /* =======================
-       ACCORDION
-    ======================== */
+    /* ACCORDION */
 
     .accordion {
       margin: 15px;
@@ -131,7 +129,7 @@
     }
 
     .accordion.open .accordion-content {
-      max-height: 3000px;
+      max-height: 5000px;
       opacity: 1;
       transform: translateY(0);
     }
@@ -204,7 +202,7 @@
 </div>
 
 <!-- =======================
-     ACCORDION SQUADRE
+     ACCORDION COMPOSIZIONE
 ======================== -->
 <div class="accordion">
 
@@ -231,6 +229,20 @@
 
 </div>
 
+<!-- =======================
+     ACCORDION CLASSIFICA AVULSA
+======================== -->
+<div class="accordion">
+
+  <div class="accordion-header" onclick="toggleAccordion(this)">
+    <h2>CLASSIFICA AVULSA</h2>
+    <span class="arrow">▶</span>
+  </div>
+
+  <div id="contenitoreAvulsa" class="accordion-content"></div>
+
+</div>
+
 <div class="spacer"></div>
 
 <!-- MENU -->
@@ -253,22 +265,22 @@
 
 </div>
 
-<!-- SCRIPT -->
 <script>
 
   /* =======================
      TOGGLE ACCORDION
   ======================== */
+
   function toggleAccordion(element) {
     const accordion = element.parentElement;
     accordion.classList.toggle("open");
   }
 
   /* =======================
-     CSV SQUADRE
+     CSV COMPOSIZIONE
   ======================== */
 
-  const urlSquadre = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMtFe_MpqUIVxGI0jVMJI4Y66ZhiUC-UAWMSFD9H8XSW8esfu6OjpqjQ9OoAwOS6MxTPHowZNMHGmi/pub?output=csv";
+  const urlSquadre = "LINK_CSV_COMPOSIZIONE";
 
   fetch(urlSquadre)
     .then(res => res.text())
@@ -285,27 +297,29 @@
 
         const col = riga.split(",").map(c => c.trim());
 
-        if (col.length < 2) return;
+        if (col.length < 6) return;
 
         const girone = col[0];
         const squadra = col[1];
-const vittorie = col[2];
-const ptFatti = col[3];
-const ptSubiti = col[4];
-const quoziente = col[5];
+        const vittorie = col[2];
+        const ptFatti = col[3];
+        const ptSubiti = col[4];
+        const quoziente = col[5];
 
-if (!gironi[girone]) {
-  gironi[girone] = [];
-}
+        if (!gironi[girone]) {
+          gironi[girone] = [];
+        }
 
-gironi[girone].push([
-  squadra,
-  vittorie,
-  ptFatti,
-  ptSubiti,
-  quoziente
-]);
-});
+        gironi[girone].push([
+          squadra,
+          vittorie,
+          ptFatti,
+          ptSubiti,
+          quoziente
+        ]);
+
+      });
+
       Object.keys(gironi).sort().forEach(g => {
 
         const card = document.createElement("div");
@@ -315,65 +329,62 @@ gironi[girone].push([
 
         gironi[g].forEach(s => {
 
+          const squadra = s[0];
+          const vittorie = s[1];
+          const ptFatti = s[2];
+          const ptSubiti = s[3];
+          const quoziente = s[4];
 
-  const squadra = s[0];
-  const vittorie = s[1];
-  const ptFatti = s[2];
-  const ptSubiti = s[3];
-  const quoziente = s[4];
+          squadreHTML += `
 
-  squadreHTML += `
+            <div style="
+              padding:12px 0;
+              border-bottom:1px solid #eee;
+            ">
 
-    <div style="
-      padding:12px 0;
-      border-bottom:1px solid #eee;
-    ">
+              <div style="
+                font-weight:700;
+                margin-bottom:8px;
+              ">
+                ${squadra.replace("|","<br>")}
+              </div>
 
-      <!-- NOME SQUADRA -->
-      <div style="
-        font-weight:700;
-        margin-bottom:8px;
-      ">
-        ${squadra.replace("|","<br>")}
-      </div>
+              <div style="
+                display:grid;
+                grid-template-columns: repeat(4,1fr);
+                gap:8px;
+                text-align:center;
+                font-size:12px;
+              ">
 
-      <!-- STATISTICHE -->
-      <div style="
-        display:grid;
-        grid-template-columns: repeat(4,1fr);
-        gap:8px;
-        text-align:center;
-        font-size:12px;
-      ">
+                <div>
+                  <div style="color:gray;">V</div>
+                  <div>${vittorie}</div>
+                </div>
 
-        <div>
-          <div style="color:gray;">V</div>
-          <div>${vittorie}</div>
-        </div>
+                <div>
+                  <div style="color:gray;">PF</div>
+                  <div>${ptFatti}</div>
+                </div>
 
-        <div>
-          <div style="color:gray;">PF</div>
-          <div>${ptFatti}</div>
-        </div>
+                <div>
+                  <div style="color:gray;">PS</div>
+                  <div>${ptSubiti}</div>
+                </div>
 
-        <div>
-          <div style="color:gray;">PS</div>
-          <div>${ptSubiti}</div>
-        </div>
+                <div>
+                  <div style="color:gray;">QP</div>
+                  <div>${quoziente}</div>
+                </div>
 
-        <div>
-          <div style="color:gray;">QP</div>
-          <div>${quoziente}</div>
-        </div>
+              </div>
 
-      </div>
+            </div>
 
-    </div>
+          `;
 
-  `;
+        });
 
-});
-          
         card.innerHTML = `
           <div class="girone">
             Girone ${g}
@@ -392,7 +403,7 @@ gironi[girone].push([
      CSV PARTITE
   ======================== */
 
-  const urlPartite = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+  const urlPartite = "LINK_CSV_PARTITE";
 
   fetch(urlPartite)
     .then(res => res.text())
@@ -462,7 +473,7 @@ gironi[girone].push([
           card.className = "card";
 
           card.innerHTML = `
-            
+
             <div style="
               display:flex;
               justify-content:space-between;
@@ -500,6 +511,119 @@ gironi[girone].push([
         });
 
       });
+
+    });
+
+  /* =======================
+     CSV CLASSIFICA AVULSA
+  ======================== */
+
+  const urlAvulsa = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSHUmkziViOa-WwXJkXHmfD9Ns816nAUuq_BxAvDMYpNtwbaaAmYtunvxEcmJlrKBaHmwa3byi_x3x/pub?output=csv";
+
+  fetch(urlAvulsa)
+    .then(res => res.text())
+    .then(data => {
+
+      const righe = data.split("\n").slice(1);
+
+      const contenitore =
+        document.getElementById("contenitoreAvulsa");
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      let classificaHTML = "";
+
+      righe.forEach(riga => {
+
+        const col = riga.split(",").map(c => c.trim());
+
+        if (col.length < 6) return;
+
+        const posizione = col[0];
+        const squadra = col[1];
+        const vittorie = col[2];
+        const ptFatti = col[3];
+        const ptSubiti = col[4];
+        const quoziente = col[5];
+
+        classificaHTML += `
+
+          <div style="
+            padding:14px 0;
+            border-bottom:1px solid #eee;
+          ">
+
+            <div style="
+              display:flex;
+              align-items:center;
+              gap:12px;
+              margin-bottom:10px;
+            ">
+
+              <div style="
+                width:32px;
+                height:32px;
+                border-radius:50%;
+                background:#0072ff;
+                color:white;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-weight:bold;
+                flex-shrink:0;
+              ">
+                ${posizione}
+              </div>
+
+              <div style="
+                font-weight:700;
+                line-height:1.2;
+              ">
+                ${squadra.replace("|","<br>")}
+              </div>
+
+            </div>
+
+            <div style="
+              display:grid;
+              grid-template-columns: repeat(4,1fr);
+              gap:8px;
+              text-align:center;
+              font-size:12px;
+            ">
+
+              <div>
+                <div style="color:gray;">V</div>
+                <div>${vittorie}</div>
+              </div>
+
+              <div>
+                <div style="color:gray;">PF</div>
+                <div>${ptFatti}</div>
+              </div>
+
+              <div>
+                <div style="color:gray;">PS</div>
+                <div>${ptSubiti}</div>
+              </div>
+
+              <div>
+                <div style="color:gray;">QP</div>
+                <div>${quoziente}</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        `;
+
+      });
+
+      card.innerHTML = classificaHTML;
+
+      contenitore.appendChild(card);
 
     });
 
