@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ELIMINAZIONE DIRETTA</title>
+  <title>PARTITE</title>
 
   <style>
 
@@ -103,26 +103,20 @@
       transform: rotate(90deg);
     }
 
-    /* MENU IDENTICO ORIGINALE */
+    /* MENU */
     .menu {
       position: fixed;
       bottom: 0;
       left: 0;
-
       width: 100%;
-
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(10px);
-
       display: flex;
       justify-content: space-around;
       align-items: center;
-
       padding: 14px 0;
-
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
-
       box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
     }
 
@@ -131,10 +125,8 @@
       flex-direction: column;
       align-items: center;
       gap: 5px;
-
       text-decoration: none;
       color: #555;
-
       font-size: 12px;
       font-weight: 600;
     }
@@ -158,31 +150,29 @@
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
-  <h1>ELIMINAZIONE DIRETTA</h1>
+  <h1>PARTITE</h1>
 </div>
 
-<!-- ACCORDION -->
 <div id="container"></div>
 
 <div class="spacer"></div>
 
-<!-- MENU  -->
+<!-- MENU -->
 <div class="menu">
 
   <a href="index.html" class="menu-item">
-    <img src="home.png" alt="Home">
+    <img src="home.png">
     <span>Home</span>
   </a>
 
   <a href="gironi.html" class="menu-item">
-    <img src="gironi.png" alt="Gironi">
+    <img src="gironi.png">
     <span>Gironi</span>
   </a>
 
   <a href="Eliminazione.html" class="menu-item active">
-    <img src="partite.png" alt="Partite">
+    <img src="partite.png">
     <span>Elimin.<br>diretta</span>
   </a>
 
@@ -194,134 +184,206 @@ function toggleAccordion(el) {
   el.parentElement.classList.toggle("open");
 }
 
+const container = document.getElementById("container");
+
 /* =========================
-   ORDINE ACCORDION FISSO
+   FASI IN ORDINE
 ========================= */
 
 const fasi = [
-  { nome: "SEDICESIMI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv" },
-  { nome: "OTTAVI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv" },
-  { nome: "QUARTI", url: "URL_QUARTI" },
-  { nome: "SEMIFINALI", url: "URL_SEMIFINALI" },
-  { nome: "FINALI", url: "URL_FINALI" }
+  { nome: "SEDICESIMI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv", bo3: false },
+  { nome: "OTTAVI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv", bo3: false },
+  { nome: "QUARTI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv", bo3: true },
+  { nome: "SEMIFINALI", url: "URL_SEMIFINALI", bo3: true },
+  { nome: "FINALI", url: "URL_FINALI", bo3: true }
 ];
 
-const container = document.getElementById("container");
+/* =========================
+   LOAD MATCH SINGOLI
+========================= */
 
-function toggleAccordion(el) {
-  el.parentElement.classList.toggle("open");
+function renderSingle(rows, content) {
+
+  rows.forEach(col => {
+
+    const squadraA = col[0]?.replace("|","<br>");
+    const squadraB = col[1]?.replace("|","<br>");
+
+    const puntiA = parseInt(col[2]);
+    const puntiB = parseInt(col[3]);
+
+    const stato = col[4];
+    const orario = col[5];
+    const luogo = col[6];
+
+    let classeA = "";
+    let classeB = "";
+
+    if ((stato || "").toLowerCase() === "finita") {
+      if (puntiA > puntiB) {
+        classeA = "winner";
+        classeB = "loser";
+      } else if (puntiB > puntiA) {
+        classeB = "winner";
+        classeA = "loser";
+      }
+    }
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;font-weight:600;">
+        <div>${orario || "-"}</div>
+        <div>${luogo || "-"}</div>
+      </div>
+
+      <div class="match">
+
+        <span class="${classeA}">${squadraA}</span>
+
+        <div class="center">
+          <div class="status">${stato || ""}</div>
+          <div><b>${col[2]} - ${col[3]}</b></div>
+        </div>
+
+        <span class="${classeB}">${squadraB}</span>
+
+      </div>
+    `;
+
+    content.appendChild(card);
+  });
 }
 
 /* =========================
-   CARICAMENTO FASE
+   BO3 (QUARTI+)
 ========================= */
 
-function loadPartite(url, titolo) {
+function renderBO3(rows, content) {
 
-  return fetch(url)
-    .then(r => r.text())
-    .then(data => {
+  const serie = {};
 
-      const righe = data.trim().split(/\r?\n/).slice(1);
+  rows.forEach(col => {
 
-      const accordion = document.createElement("div");
-      accordion.className = "accordion";
+    const key = [col[0], col[1]].sort().join("||");
 
-      const header = document.createElement("div");
-      header.className = "accordion-header";
-      header.innerHTML = `
-        <h2>${titolo}</h2>
-        <span class="arrow">▶</span>
-      `;
-      header.onclick = () => toggleAccordion(header);
+    if (!serie[key]) {
+      serie[key] = {
+        a: col[0],
+        b: col[1],
+        matches: []
+      };
+    }
 
-      const content = document.createElement("div");
-      content.className = "accordion-content";
+    serie[key].matches.push(col);
+  });
 
-      righe.forEach(riga => {
+  Object.values(serie).forEach(s => {
 
-        const col = riga.split(",").map(c => c.trim());
+    let winsA = 0;
+    let winsB = 0;
 
-        if (col.length < 7) return;
+    const card = document.createElement("div");
+    card.className = "card";
 
-        const squadraA = col[0]?.replace("|", "<br>");
-        const squadraB = col[1]?.replace("|", "<br>");
+    let html = `
+      <div style="font-weight:bold;color:#0072ff;margin-bottom:10px;">
+        ${s.a} vs ${s.b} (BO3)
+      </div>
+    `;
 
-        const puntiA = parseInt(col[2]);
-        const puntiB = parseInt(col[3]);
+    s.matches.forEach(col => {
 
-        const stato = col[4];
-        const orario = col[5];
-        const luogo = col[6];
+      const puntiA = parseInt(col[2]);
+      const puntiB = parseInt(col[3]);
 
-        let classeA = "";
-        let classeB = "";
+      let classeA = "";
+      let classeB = "";
 
-        if ((stato || "").toLowerCase() === "finita") {
-          if (puntiA > puntiB) {
-            classeA = "winner";
-            classeB = "loser";
-          } else if (puntiB > puntiA) {
-            classeB = "winner";
-            classeA = "loser";
-          }
+      if ((col[4] || "").toLowerCase() === "finita") {
+        if (puntiA > puntiB) {
+          classeA = "winner";
+          classeB = "loser";
+          winsA++;
+        } else if (puntiB > puntiA) {
+          classeB = "winner";
+          classeA = "loser";
+          winsB++;
         }
+      }
 
-        const card = document.createElement("div");
-        card.className = "card";
+      html += `
+        <div style="border-top:1px solid #eee;padding-top:10px;margin-top:10px;">
 
-        card.innerHTML = `
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            font-size:12px;
-            color:#666;
-            margin-bottom:8px;
-            font-weight:600;
-          ">
-            <div>${orario || "-"}</div>
-            <div>${luogo || "-"}</div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;">
+            <div>${col[5] || "-"}</div>
+            <div>${col[6] || "-"}</div>
           </div>
 
           <div class="match">
 
-            <span class="${classeA}">
-              ${squadraA}
-            </span>
+            <span class="${classeA}">${col[0]}</span>
 
             <div class="center">
-              <div class="status">${stato || ""}</div>
-              <div class="score">${col[2]} - ${col[3]}</div>
+              <div class="status">${col[4]}</div>
+              <div><b>${col[2]} - ${col[3]}</b></div>
             </div>
 
-            <span class="${classeB}">
-              ${squadraB}
-            </span>
+            <span class="${classeB}">${col[1]}</span>
 
           </div>
-        `;
-
-        content.appendChild(card);
-
-      });
-
-      accordion.appendChild(header);
-      accordion.appendChild(content);
-
-      container.appendChild(accordion);
-
+        </div>
+      `;
     });
 
+    html += `
+      <div style="margin-top:10px;text-align:center;font-weight:bold;">
+        Serie: ${winsA} - ${winsB}
+      </div>
+    `;
+
+    card.innerHTML = html;
+    content.appendChild(card);
+  });
 }
 
 /* =========================
-   CARICAMENTO ORDINATO
+   LOAD FASI
 ========================= */
 
 (async () => {
+
   for (const fase of fasi) {
-    await loadPartite(fase.url, fase.nome);
+
+    const accordion = document.createElement("div");
+    accordion.className = "accordion";
+
+    const header = document.createElement("div");
+    header.className = "accordion-header";
+    header.innerHTML = `
+      <h2>${fase.nome}</h2>
+      <span class="arrow">▶</span>
+    `;
+    header.onclick = () => toggleAccordion(header);
+
+    const content = document.createElement("div");
+    content.className = "accordion-content";
+
+    const res = await fetch(fase.url);
+    const text = await res.text();
+
+    const rows = text.trim().split(/\r?\n/).slice(1);
+
+    if (fase.bo3) renderBO3(rows, content);
+    else renderSingle(rows, content);
+
+    accordion.appendChild(header);
+    accordion.appendChild(content);
+
+    container.appendChild(accordion);
   }
+
 })();
 
 </script>
