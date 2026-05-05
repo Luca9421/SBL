@@ -6,14 +6,12 @@
   <title>GIRONI</title>
 
   <style>
-
     body {
       margin: 0;
       font-family: Arial;
       background: #f2f4f8;
     }
 
-    /* HEADER */
     .header {
       background: linear-gradient(135deg, #00c6ff, #0072ff);
       color: white;
@@ -21,12 +19,8 @@
       text-align: center;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+    h1 { margin: 0; font-size: 24px; }
 
-    /* CARD */
     .card {
       background: white;
       margin: 15px;
@@ -47,59 +41,26 @@
       margin: 10px 0;
     }
 
-    .match span {
-      line-height: 1.2;
-    }
+    .score { font-weight: bold; }
 
-    .score {
-      font-weight: bold;
-    }
+    .center { text-align: center; }
 
-    .center {
-      text-align: center;
-    }
+    .status { font-size: 12px; color: gray; margin-top: 3px; }
 
-    .status {
-      font-size: 12px;
-      color: gray;
-      margin-top: 3px;
-    }
+    .winner { color: green; font-weight: bold; }
+    .loser { color: red; }
 
-    .winner {
-      color: green;
-      font-weight: bold;
-    }
-
-    .loser {
-      color: red;
-    }
-
-    /* ACCORDION */
-
-    .accordion {
-      margin: 15px;
-    }
+    .accordion { margin: 15px; }
 
     .accordion-header {
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(10px);
-
       padding: 15px;
       border-radius: 18px;
-
       display: flex;
       justify-content: space-between;
-      align-items: center;
-
       cursor: pointer;
-
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-
-      transition: all 0.3s ease;
-    }
-
-    .accordion-header:hover {
-      transform: scale(1.01);
     }
 
     .accordion-header h2 {
@@ -108,24 +69,14 @@
       color: #0072ff;
     }
 
-    .arrow {
-      font-size: 18px;
-      transition: transform 0.35s ease;
-    }
+    .arrow { transition: transform 0.35s ease; }
 
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-
       opacity: 0;
       transform: translateY(-10px);
-
-      transition:
-        max-height 0.5s ease,
-        opacity 0.4s ease,
-        transform 0.4s ease;
-
-      border-radius: 15px;
+      transition: all 0.4s ease;
     }
 
     .accordion.open .accordion-content {
@@ -134,498 +85,270 @@
       transform: translateY(0);
     }
 
-    .accordion.open .arrow {
-      transform: rotate(90deg);
-    }
-
-    /* MENU */
+    .accordion.open .arrow { transform: rotate(90deg); }
 
     .menu {
       position: fixed;
       bottom: 0;
-      left: 0;
-
       width: 100%;
-
       background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
-
       display: flex;
       justify-content: space-around;
-      align-items: center;
-
       padding: 14px 0;
-
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-
       box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-
-      transition: all 0.35s ease;
     }
 
     .menu-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-
+      font-size: 12px;
       text-decoration: none;
       color: #555;
-
-      font-size: 12px;
-      font-weight: 600;
     }
 
-    .menu-item img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-    }
+    .menu-item.active { color: #0066ff; }
 
-    .menu-item.active {
-      color: #0066ff;
-    }
-
-    .spacer {
-      height: 90px;
-    }
+    .spacer { height: 90px; }
 
   </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <h1>GIRONI</h1>
 </div>
 
-<!-- =======================
-     ACCORDION COMPOSIZIONE
-======================== -->
+<!-- ACCORDION COMPOSIZIONE -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>COMPOSIZIONE</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitoreSquadre" class="accordion-content"></div>
-
 </div>
 
-<!-- =======================
-     ACCORDION PARTITE
-======================== -->
+<!-- ACCORDION PARTITE -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>PARTITE</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitorePartite" class="accordion-content"></div>
-
 </div>
 
-<!-- =======================
-     ACCORDION CLASSIFICA AVULSA
-======================== -->
+<!-- ACCORDION AVULSA -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>CLASSIFICA AVULSA</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitoreAvulsa" class="accordion-content"></div>
-
 </div>
 
 <div class="spacer"></div>
 
-<!-- MENU -->
 <div class="menu">
-
-  <a href="index.html" class="menu-item">
-    <img src="home.png" alt="Home">
-    <span>Home</span>
-  </a>
-
-  <a href="gironi.html" class="menu-item active">
-    <img src="gironi.png" alt="Gironi">
-    <span>Gironi</span>
-  </a>
-
-  <a href="Eliminazione.html" class="menu-item">
-    <img src="partite.png" alt="Partite">
-    <span>Elimin.<br>diretta</span>
-  </a>
-
+  <a href="index.html" class="menu-item">🏠 Home</a>
+  <a href="gironi.html" class="menu-item active">🏆 Gironi</a>
+  <a href="Eliminazione.html" class="menu-item">⚽ Elimin.</a>
 </div>
 
 <script>
 
-  /* =======================
-     TOGGLE ACCORDION
-  ======================== */
+function toggleAccordion(el) {
+  el.parentElement.classList.toggle("open");
+}
 
-  function toggleAccordion(element) {
-    const accordion = element.parentElement;
-    accordion.classList.toggle("open");
+/* =======================
+   CSV PARSER ROBUSTO
+======================= */
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+
+    if (char === '"' && line[i + 1] === '"') {
+      current += '"';
+      i++;
+    } 
+    else if (char === '"') {
+      inQuotes = !inQuotes;
+    } 
+    else if (char === "," && !inQuotes) {
+      result.push(current.trim());
+      current = "";
+    } 
+    else {
+      current += char;
+    }
   }
 
-  /* =======================
-     CSV COMPOSIZIONE
-  ======================== */
+  result.push(current.trim());
+  return result;
+}
 
-  const urlSquadre = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMtFe_MpqUIVxGI0jVMJI4Y66ZhiUC-UAWMSFD9H8XSW8esfu6OjpqjQ9OoAwOS6MxTPHowZNMHGmi/pub?output=csv";
+/* =======================
+   COMPOSIZIONE
+======================= */
 
-  fetch(urlSquadre)
-    .then(res => res.text())
-    .then(data => {
+const urlSquadre = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMtFe_MpqUIVxGI0jVMJI4Y66ZhiUC-UAWMSFD9H8XSW8esfu6OjpqjQ9OoAwOS6MxTPHowZNMHGmi/pub?output=csv";
 
-      const righe = data.split("\n").slice(1);
+fetch(urlSquadre)
+.then(r => r.text())
+.then(data => {
 
-      const contenitore =
-        document.getElementById("contenitoreSquadre");
+  const righe = data.split(/\r?\n/).slice(1);
+  const contenitore = document.getElementById("contenitoreSquadre");
 
-      let gironi = {};
+  let gironi = {};
 
-      righe.forEach(riga => {
+  righe.forEach(riga => {
 
-        const col = riga.split(",").map(c => c.trim());
+    const col = parseCSVLine(riga);
+    if (col.length < 6) return;
 
-        if (col.length < 6) return;
+    const girone = col[0];
 
-        const girone = col[0];
-        const squadra = col[1];
-        const vittorie = col[2];
-        const ptFatti = col[3];
-        const ptSubiti = col[4];
-        const quoziente = col[5];
+    if (!gironi[girone]) gironi[girone] = [];
 
-        if (!gironi[girone]) {
-          gironi[girone] = [];
-        }
+    gironi[girone].push(col);
+  });
 
-        gironi[girone].push([
-          squadra,
-          vittorie,
-          ptFatti,
-          ptSubiti,
-          quoziente
-        ]);
+  Object.keys(gironi).sort().forEach(g => {
 
-      });
+    const card = document.createElement("div");
+    card.className = "card";
 
-      Object.keys(gironi).sort().forEach(g => {
+    let html = "";
 
-        const card = document.createElement("div");
-        card.className = "card";
+    gironi[g].forEach(s => {
 
-        let squadreHTML = "";
-
-        gironi[g].forEach(s => {
-
-          const squadra = s[0];
-          const vittorie = s[1];
-          const ptFatti = s[2];
-          const ptSubiti = s[3];
-          const quoziente = s[4];
-
-          squadreHTML += `
-
-            <div style="
-              padding:12px 0;
-              border-bottom:1px solid #eee;
-            ">
-
-              <div style="
-                font-weight:700;
-                margin-bottom:8px;
-              ">
-                ${squadra.replace("|","<br>")}
-              </div>
-
-              <div style="
-                display:grid;
-                grid-template-columns: repeat(4,1fr);
-                gap:8px;
-                text-align:center;
-                font-size:12px;
-              ">
-
-                <div>
-                  <div style="color:gray;">V</div>
-                  <div>${vittorie}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">PF</div>
-                  <div>${ptFatti}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">PS</div>
-                  <div>${ptSubiti}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">QP</div>
-                  <div>${quoziente}</div>
-                </div>
-
-              </div>
-
-            </div>
-
-          `;
-
-        });
-
-        card.innerHTML = `
-          <div class="girone">
-            Girone ${g}
+      html += `
+        <div style="padding:10px 0;border-bottom:1px solid #eee">
+          <b>${s[1].replace("|","<br>")}</b>
+          <div style="font-size:12px;display:grid;grid-template-columns:repeat(4,1fr);text-align:center">
+            <div>V<br>${s[2]}</div>
+            <div>PF<br>${s[3]}</div>
+            <div>PS<br>${s[4]}</div>
+            <div>QP<br>${s[5]}</div>
           </div>
-
-          ${squadreHTML}
-        `;
-
-        contenitore.appendChild(card);
-
-      });
-
+        </div>
+      `;
     });
 
-  /* =======================
-     CSV PARTITE
-  ======================== */
+    card.innerHTML = `<div class="girone">Girone ${g}</div>${html}`;
+    contenitore.appendChild(card);
+  });
+});
 
-  const urlPartite = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+/* =======================
+   PARTITE
+======================= */
 
-  fetch(urlPartite)
-    .then(res => res.text())
-    .then(data => {
+const urlPartite = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
 
-      const righe = data.split("\n").slice(1);
+fetch(urlPartite)
+.then(r => r.text())
+.then(data => {
 
-      const contenitore =
-        document.getElementById("contenitorePartite");
+  const righe = data.split(/\r?\n/).slice(1);
+  const contenitore = document.getElementById("contenitorePartite");
 
-      let gironi = {};
+  let gironi = {};
 
-      righe.forEach(riga => {
+  righe.forEach(riga => {
 
-        const col = riga.split(",").map(c => c.trim());
+    const col = parseCSVLine(riga);
+    if (col.length < 6) return;
 
-        if (col.length < 6) return;
+    const g = col[0];
+    if (!gironi[g]) gironi[g] = [];
 
-        const girone = col[0];
+    gironi[g].push(col);
+  });
 
-        if (!gironi[girone]) {
-          gironi[girone] = [];
-        }
+  Object.keys(gironi).sort().forEach(g => {
 
-        gironi[girone].push(col);
+    const titolo = document.createElement("h2");
+    titolo.style.marginLeft = "15px";
+    titolo.innerText = "Girone " + g;
+    contenitore.appendChild(titolo);
 
-      });
-
-      Object.keys(gironi).sort().forEach(g => {
-
-        const titolo = document.createElement("h2");
-
-        titolo.style.marginLeft = "15px";
-        titolo.innerText = "Girone " + g;
-
-        contenitore.appendChild(titolo);
-
-        gironi[g].forEach(col => {
-
-          let squadraA = col[1].replace("|", "<br>");
-          let squadraB = col[2].replace("|", "<br>");
-
-          let puntiA = parseInt(col[3]);
-          let puntiB = parseInt(col[4]);
-
-          let stato = col[5];
-          let orario = col[6];
-          let luogo = col[7];
-
-          let classeA = "";
-          let classeB = "";
-
-          if (stato.trim().toLowerCase() === "finita") {
-
-            if (puntiA > puntiB) {
-              classeA = "winner";
-              classeB = "loser";
-            }
-
-            else if (puntiB > puntiA) {
-              classeB = "winner";
-              classeA = "loser";
-            }
-          }
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          card.innerHTML = `
-
-            <div style="
-              display:flex;
-              justify-content:space-between;
-              font-size:12px;
-              color:#666;
-              margin-bottom:8px;
-              font-weight:600;
-            ">
-              <div>${orario || "-"}</div>
-              <div>${luogo || "-"}</div>
-            </div>
-
-            <div class="match">
-
-              <span class="${classeA}">
-                ${squadraA}
-              </span>
-
-              <div class="center">
-                <div class="status">${stato}</div>
-                <div class="score">
-                  ${col[3]} - ${col[4]}
-                </div>
-              </div>
-
-              <span class="${classeB}">
-                ${squadraB}
-              </span>
-
-            </div>
-          `;
-
-          contenitore.appendChild(card);
-
-        });
-
-      });
-
-    });
-
-  /* =======================
-     CSV CLASSIFICA AVULSA
-  ======================== */
-
-  const urlAvulsa = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSHUmkziViOa-WwXJkXHmfD9Ns816nAUuq_BxAvDMYpNtwbaaAmYtunvxEcmJlrKBaHmwa3byi_x3x/pub?output=csv";
-
-  fetch(urlAvulsa)
-    .then(res => res.text())
-    .then(data => {
-
-      const righe = data.split("\n").slice(1);
-
-      const contenitore =
-        document.getElementById("contenitoreAvulsa");
+    gironi[g].forEach(c => {
 
       const card = document.createElement("div");
       card.className = "card";
 
-      let classificaHTML = "";
+      let a = c[1].replace("|","<br>");
+      let b = c[2].replace("|","<br>");
 
-      righe.forEach(riga => {
+      let pa = parseInt(c[3]);
+      let pb = parseInt(c[4]);
 
-        const col = riga.split(",").map(c => c.trim());
+      let wa = "";
+      let wb = "";
 
-        if (col.length < 6) return;
+      if (c[5].toLowerCase() === "finita") {
+        if (pa > pb) wa = "winner", wb = "loser";
+        else if (pb > pa) wb = "winner", wa = "loser";
+      }
 
-        const posizione = col[0];
-        const squadra = col[1];
-        const vittorie = col[2];
-        const ptFatti = col[3];
-        const ptSubiti = col[4];
-        const quoziente = col[5];
-
-        classificaHTML += `
-
-          <div style="
-            padding:14px 0;
-            border-bottom:1px solid #eee;
-          ">
-
-            <div style="
-              display:flex;
-              align-items:center;
-              gap:12px;
-              margin-bottom:10px;
-            ">
-
-              <div style="
-                width:32px;
-                height:32px;
-                border-radius:50%;
-                background:#0072ff;
-                color:white;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                font-weight:bold;
-                flex-shrink:0;
-              ">
-                ${posizione}
-              </div>
-
-              <div style="
-                font-weight:700;
-                line-height:1.2;
-              ">
-                ${squadra.replace("|","<br>")}
-              </div>
-
-            </div>
-
-            <div style="
-              display:grid;
-              grid-template-columns: repeat(4,1fr);
-              gap:8px;
-              text-align:center;
-              font-size:12px;
-            ">
-
-              <div>
-                <div style="color:gray;">V</div>
-                <div>${vittorie}</div>
-              </div>
-
-              <div>
-                <div style="color:gray;">PF</div>
-                <div>${ptFatti}</div>
-              </div>
-
-              <div>
-                <div style="color:gray;">PS</div>
-                <div>${ptSubiti}</div>
-              </div>
-
-              <div>
-                <div style="color:gray;">QP</div>
-                <div>${quoziente}</div>
-              </div>
-
-            </div>
-
+      card.innerHTML = `
+        <div class="match">
+          <span class="${wa}">${a}</span>
+          <div class="center">
+            <div class="status">${c[5]}</div>
+            <div class="score">${c[3]} - ${c[4]}</div>
           </div>
-
-        `;
-
-      });
-
-      card.innerHTML = classificaHTML;
+          <span class="${wb}">${b}</span>
+        </div>
+      `;
 
       contenitore.appendChild(card);
-
     });
+  });
+});
+
+/* =======================
+   AVULSA
+======================= */
+
+const urlAvulsa = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSHUmkziViOa-WwXJkXHmfD9Ns816nAUuq_BxAvDMYpNtwbaaAmYtunvxEcmJlrKBaHmwa3byi_x3x/pub?output=csv";
+
+fetch(urlAvulsa)
+.then(r => r.text())
+.then(data => {
+
+  const righe = data.split(/\r?\n/).slice(1);
+  const contenitore = document.getElementById("contenitoreAvulsa");
+
+  let html = "";
+
+  righe.forEach(riga => {
+
+    const c = parseCSVLine(riga);
+    if (c.length < 6) return;
+
+    html += `
+      <div style="padding:10px;border-bottom:1px solid #eee">
+        <b>${c[0]} - ${c[1]}</b><br>
+        V:${c[2]} PF:${c[3]} PS:${c[4]} QP:${c[5]}
+      </div>
+    `;
+  });
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = html;
+
+  contenitore.appendChild(card);
+});
 
 </script>
 
