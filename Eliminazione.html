@@ -261,7 +261,7 @@ function renderSingle(rows, content) {
    BO3 DEFINITIVO
 ========================= */
 
-function renderBO3(rows, content) {
+function renderBO3(rows, content, faseNome = "") {
 
   const serie = {};
 
@@ -282,7 +282,11 @@ function renderBO3(rows, content) {
     serie[key].matches.push(col);
   });
 
+  let index = 0;
+
   Object.values(serie).forEach(s => {
+
+    index++;
 
     let winsA = 0;
     let winsB = 0;
@@ -305,7 +309,6 @@ function renderBO3(rows, content) {
         else if (pb > pa) { winsB++; cb = "winner"; ca = "loser"; }
       }
 
-      //  NO COLORI AI PUNTEGGI
       results += `
         <div style="
           display:flex;
@@ -314,19 +317,37 @@ function renderBO3(rows, content) {
           border-top:1px solid #eee;
           font-size:13px;
         ">
-
           <div>Game ${i+1}</div>
-
           <div>${col[2]} - ${col[3]}</div>
-
         </div>
       `;
     });
+
+    /*  TITOLO SPECIALE SOLO PER FINALI */
+    let titoloSerie = "";
+
+    if (faseNome === "FINALI") {
+      titoloSerie = index === 1
+        ? "FINALE 3° - 4° POSTO"
+        : "FINALE 1° - 2° POSTO";
+    }
 
     const card = document.createElement("div");
     card.className = "card";
 
     card.innerHTML = `
+
+      <!-- TITOLO SERIE -->
+      ${titoloSerie ? `
+        <div style="
+          text-align:center;
+          font-weight:bold;
+          color:#0072ff;
+          margin-bottom:10px;
+        ">
+          ${titoloSerie}
+        </div>
+      ` : ""}
 
       <!-- HEADER -->
       <div style="
@@ -337,18 +358,15 @@ function renderBO3(rows, content) {
         gap:10px;
       ">
 
-        <!-- SQUADRA 1 (SINISTRA) -->
         <div style="
           flex:1;
           text-align:left;
-          line-height:1.2;
           font-weight:bold;
           color:${winsA > winsB ? 'green' : winsA < winsB ? 'red' : '#0072ff'};
         ">
           ${teamA}
         </div>
 
-        <!-- VS -->
         <div style="
           padding:0 8px;
           font-size:12px;
@@ -358,11 +376,9 @@ function renderBO3(rows, content) {
           VS
         </div>
 
-        <!-- SQUADRA 2 (DESTRA) -->
         <div style="
           flex:1;
           text-align:right;
-          line-height:1.2;
           font-weight:bold;
           color:${winsB > winsA ? 'green' : winsB < winsA ? 'red' : '#0072ff'};
         ">
@@ -371,10 +387,8 @@ function renderBO3(rows, content) {
 
       </div>
 
-      <!-- MATCHES -->
       ${results}
 
-      <!-- SCORE -->
       <div style="
         margin-top:10px;
         text-align:center;
@@ -412,7 +426,7 @@ function renderBO3(rows, content) {
     const text = await res.text();
     const rows = parseCSV(text);
 
-    if (f.bo3) renderBO3(rows, c);
+    if (f.bo3) renderBO3(rows, c,f.nome);
     else renderSingle(rows, c);
 
     acc.appendChild(h);
