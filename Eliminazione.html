@@ -1,150 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PARTITE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARTITE</title>
 
-  <style>
+<style>
 
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #f2f4f8;
-    }
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f2f4f8;
+}
 
-    .header {
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+.header {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
 
-    .card {
-      background: white;
-      margin: 15px;
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+/* CARD */
+.card {
+  background: white;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-    .match {
-      display: flex;
-      justify-content: space-between;
-      margin: 10px 0;
-    }
+/* ACCORDION */
+.accordion {
+  margin: 15px;
+}
 
-    .center {
-      text-align: center;
-    }
+.accordion-header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
 
-    .status {
-      font-size: 12px;
-      color: gray;
-      margin-top: 3px;
-    }
+.accordion-header:hover {
+  transform: scale(1.01);
+}
 
-    .winner { color: green; font-weight: bold; }
-    .loser { color: red; }
+.accordion-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0072ff;
+}
 
-    /* ACCORDION */
-    .accordion {
-      margin: 15px;
-    }
+.arrow {
+  transition: 0.35s;
+}
 
-    .accordion-header {
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      padding: 15px;
-      border-radius: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
-    }
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: 0.4s;
+}
 
-    .accordion-header:hover {
-      transform: scale(1.01);
-    }
+.accordion.open .accordion-content {
+  max-height: 10000px;
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    .accordion-header h2 {
-      margin: 0;
-      font-size: 18px;
-      color: #0072ff;
-    }
+.accordion.open .arrow {
+  transform: rotate(90deg);
+}
 
-    .arrow {
-      transition: transform 0.35s ease;
-    }
+/* MENU */
+.menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 14px 0;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
 
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: 0.4s ease;
-      border-radius: 15px;
-    }
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  text-decoration: none;
+  color: #555;
+}
 
-    .accordion.open .accordion-content {
-      max-height: 10000px;
-      opacity: 1;
-      transform: translateY(0);
-    }
+.menu-item img {
+  width: 28px;
+}
 
-    .accordion.open .arrow {
-      transform: rotate(90deg);
-    }
+.menu-item.active {
+  color: #0066ff;
+}
 
-    /* MENU */
-    .menu {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 14px 0;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-    }
+.spacer {
+  height: 90px;
+}
 
-    .menu-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      text-decoration: none;
-      color: #555;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .menu-item img {
-      width: 28px;
-      height: 28px;
-    }
-
-    .menu-item.active {
-      color: #0066ff;
-    }
-
-    .spacer {
-      height: 90px;
-    }
-
-  </style>
+</style>
 </head>
 
 <body>
@@ -172,7 +150,7 @@
 
   <a href="Eliminazione.html" class="menu-item active">
     <img src="partite.png">
-    <span>Elimin.<br>diretta</span>
+    <span>Elimin.</span>
   </a>
 
 </div>
@@ -188,30 +166,24 @@ const container = document.getElementById("container");
 /* =========================
    CSV PARSER ROBUSTO
 ========================= */
-
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/).slice(1);
 
   return lines.map(line => {
-    const result = [];
-    let current = "";
-    let inQuotes = false;
+    const res = [];
+    let cur = "";
+    let q = false;
 
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        result.push(current.trim());
-        current = "";
-      } else {
-        current += char;
-      }
+    for (let c of line) {
+      if (c === '"') q = !q;
+      else if (c === ',' && !q) {
+        res.push(cur.trim());
+        cur = "";
+      } else cur += c;
     }
 
-    result.push(current.trim());
-    return result;
+    res.push(cur.trim());
+    return res;
   });
 }
 
@@ -219,7 +191,7 @@ function parseCSV(text) {
    CONFIG FASI
 ========================= */
 
-const fasi = [
+	const fasi = [
   { nome: "SEDICESIMI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv", bo3: false },
   { nome: "OTTAVI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv", bo3: false },
   { nome: "QUARTI", url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv", bo3: true },
@@ -230,55 +202,34 @@ const fasi = [
 /* =========================
    MATCH SINGOLO
 ========================= */
-
 function renderSingle(rows, content) {
 
   rows.forEach(col => {
 
     if (col.length < 7) return;
 
-    const squadraA = col[0]?.replace("|","<br>");
-    const squadraB = col[1]?.replace("|","<br>");
-
-    const puntiA = parseInt(col[2]);
-    const puntiB = parseInt(col[3]);
-
-    const stato = col[4];
-    const orario = col[5];
-    const luogo = col[6];
-
-    let classeA = "";
-    let classeB = "";
-
-    if ((stato || "").toLowerCase() === "finita") {
-      if (puntiA > puntiB) {
-        classeA = "winner";
-        classeB = "loser";
-      } else if (puntiB > puntiA) {
-        classeB = "winner";
-        classeA = "loser";
-      }
-    }
-
     const card = document.createElement("div");
     card.className = "card";
 
+    let a = col[0].replaceAll("|","<br>");
+    let b = col[1].replaceAll("|","<br>");
+
     card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px;font-weight:600;">
-        <div>${orario || "-"}</div>
-        <div>${luogo || "-"}</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;">
+        <div>${col[5] || "-"}</div>
+        <div>${col[6] || "-"}</div>
       </div>
 
-      <div class="match">
+      <div style="display:flex;justify-content:space-between;margin-top:10px;">
 
-        <span class="${classeA}">${squadraA}</span>
+        <span>${a}</span>
 
-        <div class="center">
-          <div class="status">${stato || ""}</div>
-          <div><b>${col[2]} - ${col[3]}</b></div>
+        <div style="text-align:center;">
+          <div>${col[4]}</div>
+          <b>${col[2]} - ${col[3]}</b>
         </div>
 
-        <span class="${classeB}">${squadraB}</span>
+        <span>${b}</span>
 
       </div>
     `;
@@ -288,9 +239,8 @@ function renderSingle(rows, content) {
 }
 
 /* =========================
-   BO3
+   BO3 FIXATO
 ========================= */
-
 function renderBO3(rows, content) {
 
   const serie = {};
@@ -317,104 +267,66 @@ function renderBO3(rows, content) {
     let winsA = 0;
     let winsB = 0;
 
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const teamA = (s.a || "").replaceAll("|", "<br>");
-    const teamB = (s.b || "").replaceAll("|", "<br>");
-
     let orario = "-";
     let campo = "-";
 
-    let resultsHTML = "";
+    let results = "";
 
     s.matches.forEach((col, i) => {
 
-      const puntiA = parseInt(col[2]);
-      const puntiB = parseInt(col[3]);
-
-      // prendo info generali dal primo match valido
       if (i === 0) {
-        orario = col[5] || "-";
-        campo = col[6] || "-";
+        orario = col[5];
+        campo = col[6];
       }
 
-      let classeA = "";
-      let classeB = "";
+      let pa = parseInt(col[2]);
+      let pb = parseInt(col[3]);
+
+      let ca = "";
+      let cb = "";
 
       if ((col[4] || "").toLowerCase() === "finita") {
-
-        if (puntiA > puntiB) {
-          winsA++;
-          classeA = "winner";
-          classeB = "loser";
-        } else if (puntiB > puntiA) {
-          winsB++;
-          classeB = "winner";
-          classeA = "loser";
-        }
+        if (pa > pb) { winsA++; ca = "winner"; cb = "loser"; }
+        else if (pb > pa) { winsB++; cb = "winner"; ca = "loser"; }
       }
 
-      resultsHTML += `
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          padding:6px 0;
-          border-top:1px solid #eee;
-          font-size:13px;
-        ">
-
-          <div style="font-weight:600;">
-            Game ${i + 1}
-          </div>
-
+      results += `
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #eee;">
+          <div>Game ${i+1}</div>
           <div>
-            <span class="${classeA}">${col[2]}</span>
-            -
-            <span class="${classeB}">${col[3]}</span>
+            <span class="${ca}">${col[2]}</span> - <span class="${cb}">${col[3]}</span>
           </div>
-
         </div>
       `;
     });
 
+    const card = document.createElement("div");
+    card.className = "card";
+
     card.innerHTML = `
-      
-      <!-- HEADER MATCH -->
-      <div style="
-        font-weight:bold;
-        color:#0072ff;
-        margin-bottom:6px;
-        line-height:1.3;
-        font-size:15px;
-      ">
-        ${teamA}
-        <div style="font-weight:600;color:#666;font-size:12px;">vs</div>
-        ${teamB}
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+
+        <div style="text-align:right;flex:1;font-weight:bold;">
+          ${s.a.replaceAll("|","<br>")}
+        </div>
+
+        <div style="padding:0 10px;">VS</div>
+
+        <div style="text-align:left;flex:1;font-weight:bold;">
+          ${s.b.replaceAll("|","<br>")}
+        </div>
+
       </div>
 
-      <!-- INFO -->
-      <div style="
-        font-size:12px;
-        color:#666;
-        margin-bottom:10px;
-        display:flex;
-        justify-content:space-between;
-      ">
+      <div style="font-size:12px;color:#666;display:flex;justify-content:space-between;margin-bottom:10px;">
         <div>${orario}</div>
         <div>${campo}</div>
       </div>
 
-      <!-- MATCHES -->
-      ${resultsHTML}
+      ${results}
 
-      <!-- SCORE FINALE -->
-      <div style="
-        margin-top:10px;
-        text-align:center;
-        font-weight:bold;
-        color:#0072ff;
-      ">
+      <div style="margin-top:10px;text-align:center;font-weight:bold;color:#0072ff;">
         Vittorie: ${winsA} - ${winsB}
       </div>
 
@@ -425,38 +337,34 @@ function renderBO3(rows, content) {
 }
 
 /* =========================
-   LOAD TUTTO
+   LOAD
 ========================= */
 
 (async () => {
 
-  for (const fase of fasi) {
+  for (const f of fasi) {
 
-    const accordion = document.createElement("div");
-    accordion.className = "accordion";
+    const acc = document.createElement("div");
+    acc.className = "accordion";
 
-    const header = document.createElement("div");
-    header.className = "accordion-header";
-    header.innerHTML = `
-      <h2>${fase.nome}</h2>
-      <span class="arrow">▶</span>
-    `;
-    header.onclick = () => toggleAccordion(header);
+    const h = document.createElement("div");
+    h.className = "accordion-header";
+    h.innerHTML = `<h2>${f.nome}</h2><span class="arrow">▶</span>`;
+    h.onclick = () => toggleAccordion(h);
 
-    const content = document.createElement("div");
-    content.className = "accordion-content";
+    const c = document.createElement("div");
+    c.className = "accordion-content";
 
-    const res = await fetch(fase.url);
+    const res = await fetch(f.url);
     const text = await res.text();
-
     const rows = parseCSV(text);
 
-    if (fase.bo3) renderBO3(rows, content);
-    else renderSingle(rows, content);
+    if (f.bo3) renderBO3(rows, c);
+    else renderSingle(rows, c);
 
-    accordion.appendChild(header);
-    accordion.appendChild(content);
-    container.appendChild(accordion);
+    acc.appendChild(h);
+    acc.appendChild(c);
+    container.appendChild(acc);
   }
 
 })();
