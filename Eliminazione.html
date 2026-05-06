@@ -90,9 +90,8 @@ h1{
 .accordion.open .arrow{
   transform:rotate(90deg);
 }
-/* =========================
-   LOADING
-========================= */
+
+/* LOADING */
 
 #loading{
   display:flex;
@@ -119,6 +118,7 @@ h1{
 }
 
 @keyframes spin{
+
   from{
     transform:rotate(0deg);
   }
@@ -127,6 +127,7 @@ h1{
     transform:rotate(360deg);
   }
 }
+
 /* MENU */
 
 .menu{
@@ -186,10 +187,6 @@ h1{
   <h1>PARTITE</h1>
 </div>
 
-<div id="container"></div>
-<!-- AGGIUNGI QUESTO SUBITO DOPO -->
-<!-- <div id="container"></div> -->
-
 <div id="loading">
 
   <div class="spinner"></div>
@@ -199,6 +196,9 @@ h1{
   </div>
 
 </div>
+
+<div id="container"></div>
+
 <div class="spacer"></div>
 
 <!-- MENU -->
@@ -237,16 +237,19 @@ function toggleAccordion(button){
 
   if(accordion.classList.contains("open")){
     content.style.maxHeight = content.scrollHeight + "px";
-  }else{
+  }
+
+  else{
     content.style.maxHeight = null;
   }
 }
 
 /* =========================
-   CONTAINER
+   ELEMENTI
 ========================= */
 
 const container = document.getElementById("container");
+const loading = document.getElementById("loading");
 
 /* =========================
    CSV PARSER
@@ -573,8 +576,6 @@ function renderBO3(rows, content, faseNome=""){
 
       ` : ""}
 
-      <!-- INFO -->
-
       <div style="
         display:flex;
         justify-content:space-between;
@@ -590,8 +591,6 @@ function renderBO3(rows, content, faseNome=""){
         <div>${luogo}</div>
 
       </div>
-
-      <!-- SQUADRE -->
 
       <div style="
         display:flex;
@@ -699,7 +698,9 @@ function renderBO3(rows, content, faseNome=""){
 
       if(f.bo3){
         renderBO3(rows, content, f.nome);
-      }else{
+      }
+
+      else{
         renderSingle(rows, content);
       }
 
@@ -725,22 +726,10 @@ function renderBO3(rows, content, faseNome=""){
 
   container.appendChild(fragment);
 
+  loading.style.display = "none";
+
 })();
-/* =========================
-   ELEMENTI
-========================= */
 
-const container = document.getElementById("container");
-const loading = document.getElementById("loading");
-/* =========================
-   FINE LOAD
-========================= */
-
-container.appendChild(fragment);
-
-/* NASCONDI LOADING */
-
-loading.style.display = "none";
 </script>
 
 </body>
