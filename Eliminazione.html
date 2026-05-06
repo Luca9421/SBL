@@ -202,7 +202,7 @@ function toggleAccordion(button){
 const container = document.getElementById("container");
 
 /* =========================
-   CSV PARSER ROBUSTO
+   CSV PARSER
 ========================= */
 
 function parseCSV(text){
@@ -311,7 +311,7 @@ function renderSingle(rows, content){
 
     const stato = escapeHTML(col[4] || "-");
     const data = escapeHTML(col[5] || "-");
-    const ora = escapeHTML(col[6] || "-");
+    const luogo = escapeHTML(col[6] || "-");
 
     let ca = "";
     let cb = "";
@@ -330,6 +330,7 @@ function renderSingle(rows, content){
     }
 
     const card = document.createElement("div");
+
     card.className = "card";
 
     card.innerHTML = `
@@ -340,13 +341,27 @@ function renderSingle(rows, content){
         font-size:12px;
         color:#666;
       ">
+
         <div>${data}</div>
-        <div>${ora}</div>
+
+        <div>${luogo}</div>
+
+      </div>
+
+      <div style="
+        text-align:center;
+        margin-top:6px;
+        margin-bottom:6px;
+        font-size:12px;
+        color:#666;
+      ">
+        ${stato}
       </div>
 
       <div style="
         display:flex;
         justify-content:space-between;
+        align-items:center;
         margin-top:10px;
         gap:10px;
       ">
@@ -356,8 +371,6 @@ function renderSingle(rows, content){
         </span>
 
         <div style="text-align:center;">
-
-          <div>${stato}</div>
 
           <b>
             ${pa} - ${pb}
@@ -388,10 +401,6 @@ function renderBO3(rows, content, faseNome=""){
   rows.forEach(col => {
 
     if(col.length < 7) return;
-
-    /* =========================
-       CHIAVE SERIE
-    ========================= */
 
     const squadraA = col[0].trim();
     const squadraB = col[1].trim();
@@ -429,14 +438,33 @@ function renderBO3(rows, content, faseNome=""){
     const teamB = escapeHTML(s.b)
       .replaceAll("|","<br>");
 
+    const firstMatch = s.matches[0];
+
+    const data = escapeHTML(firstMatch[5] || "-");
+    const luogo = escapeHTML(firstMatch[6] || "-");
+
+    const stati = s.matches.map(m =>
+      (m[4] || "").toLowerCase().trim()
+    );
+
+    let statoSerie = "Da giocare";
+
+    if(stati.every(st => st === "finita")){
+      statoSerie = "Finita";
+    }
+
+    else if(stati.some(st => st === "finita")){
+      statoSerie = "In corso";
+    }
+
     s.matches.forEach((col,i) => {
 
       const pa = parseInt(col[2]) || 0;
       const pb = parseInt(col[3]) || 0;
 
-      const stato = escapeHTML(col[4] || "-");
+      const stato = (col[4] || "").toLowerCase();
 
-      if(stato.toLowerCase() === "finita"){
+      if(stato === "finita"){
 
         if(pa > pb){
           winsA++;
@@ -447,71 +475,28 @@ function renderBO3(rows, content, faseNome=""){
         }
       }
 
-const data = escapeHTML(col[5] || "-");
-const ora = escapeHTML(col[6] || "-");
-const luogo = escapeHTML(col[7] || "-");
+      results += `
 
-results += `
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          padding:6px 0;
+          border-top:1px solid #eee;
+          font-size:13px;
+        ">
 
-  <div style="
-    border-top:1px solid #eee;
-    padding:10px 0;
-    font-size:13px;
-  ">
+          <div>
+            Game ${i+1}
+          </div>
 
-    <!-- DATA / ORA -->
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      color:#666;
-      font-size:12px;
-      margin-bottom:6px;
-    ">
-      <div>${data}</div>
-      <div>${ora}</div>
-    </div>
+          <div>
+            ${pa} - ${pb}
+          </div>
 
-    <!-- CONTENUTO -->
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    ">
-
-      <div>
-        Game ${i+1}
-      </div>
-
-      <div style="text-align:center;">
-
-        <div>
-          ${stato}
         </div>
 
-        <b>
-          ${pa} - ${pb}
-        </b>
-
-      </div>
-
-      <div style="
-        text-align:right;
-        color:#666;
-        font-size:12px;
-      ">
-        ${luogo}
-      </div>
-
-    </div>
-
-  </div>
-
-`;
+      `;
     });
-
-    /* =========================
-       TITOLO FINALI
-    ========================= */
 
     let titoloSerie = "";
 
@@ -521,10 +506,6 @@ results += `
         ? "FINALE 3° - 4° POSTO"
         : "FINALE 1° - 2° POSTO";
     }
-
-    /* =========================
-       CARD
-    ========================= */
 
     const card = document.createElement("div");
 
@@ -544,6 +525,26 @@ results += `
         </div>
 
       ` : ""}
+
+      <!-- INFO -->
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        font-size:12px;
+        color:#666;
+        margin-bottom:8px;
+      ">
+
+        <div>${data}</div>
+
+        <div>${statoSerie}</div>
+
+        <div>${luogo}</div>
+
+      </div>
+
+      <!-- SQUADRE -->
 
       <div style="
         display:flex;
@@ -660,6 +661,7 @@ results += `
     catch(err){
 
       const errorCard = document.createElement("div");
+
       errorCard.className = "card";
 
       errorCard.textContent =
