@@ -126,8 +126,7 @@ h1{
   }
 
 .menu-item.active{
-  align-items:center;
-  color:#0066ff;
+   color:#0066ff;
 }
 
 .spacer{
@@ -556,9 +555,9 @@ function renderBO3(rows, content, faseNome=""){
   winsA > winsB ? "bold" : "normal"
 };
           color:${
-            winsA > winsB
+            statoSerie === "finita" && winsA > winsB
             ? "green"
-            : winsA < winsB
+            : statoSerie === "finita" && winsA < winsB
             ? "red"
             : "#666"
           };
@@ -591,10 +590,10 @@ function renderBO3(rows, content, faseNome=""){
         font-weight:${
   winsB > winsA ? "bold" : "normal"
 };
-          color:${stato === "finita" &&
+          color:${statoSerie === "finita" &&
             winsB > winsA
             ? "green"
-            : stato === "finita" && winsB < winsA
+            : statoSerie === "finita" && winsB < winsA
             ? "red"
             : "#666"
           };
