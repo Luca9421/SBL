@@ -15,6 +15,7 @@ body{
   background:#f2f4f8;
 }
 
+/* HEADER */
 .header{
   background:linear-gradient(135deg,#00c6ff,#0072ff);
   color:white;
@@ -24,6 +25,7 @@ body{
 
 h1{margin:0;font-size:24px;}
 
+/* CARD */
 .card{
   background:white;
   margin:15px;
@@ -46,6 +48,7 @@ h1{margin:0;font-size:24px;}
   justify-content:space-between;
   align-items:center;
   cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
 }
 
 .accordion-header h2{
@@ -60,34 +63,33 @@ h1{margin:0;font-size:24px;}
   max-height:0;
   overflow:hidden;
   opacity:0;
+  transform:translateY(-10px);
   transition:0.4s ease;
 }
 
 .accordion.open .accordion-content{
   opacity:1;
+  transform:translateY(0);
 }
 
-.accordion.open .arrow{transform:rotate(90deg);}
-
-.winner{
-  color:green;
-  font-weight:800;
+.accordion.open .arrow{
+  transform:rotate(90deg);
 }
 
-.loser{
-  color:red;
-  font-weight:600;
-}
-
+/* MENU (RESTORED IDENTICO) */
 .menu{
   position:fixed;
   bottom:0;
   left:0;
   width:100%;
   background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(6px);
   display:flex;
   justify-content:space-around;
   padding:14px 0;
+  border-top-left-radius:24px;
+  border-top-right-radius:24px;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.08);
 }
 
 .menu-item{
@@ -95,13 +97,26 @@ h1{margin:0;font-size:24px;}
   flex-direction:column;
   align-items:center;
   font-size:12px;
-  color:#555;
   text-decoration:none;
+  color:#555;
 }
+
+.menu-item img{width:28px;}
 
 .menu-item.active{color:#0066ff;}
 
 .spacer{height:90px;}
+
+/* COLORI */
+.winner{
+  color:green;
+  font-weight:bold;
+}
+
+.loser{
+  color:red;
+  font-weight:bold;
+}
 
 </style>
 </head>
@@ -116,29 +131,37 @@ h1{margin:0;font-size:24px;}
 
 <div class="spacer"></div>
 
+<!-- MENU RIPRISTINATO -->
+<div class="menu">
+
+  <a href="index.html" class="menu-item">
+    <img src="home.png">
+    <span>Home</span>
+  </a>
+
+  <a href="gironi.html" class="menu-item">
+    <img src="gironi.png">
+    <span>Gironi</span>
+  </a>
+
+  <a href="Eliminazione.html" class="menu-item active">
+    <img src="partite.png">
+    <span>Elimin.<br>diretta</span>
+  </a>
+
+</div>
+
 <script>
-
-/* =========================
-   CONFIG
-========================= */
-
-const fasi=[
-  {nome:"SEDICESIMI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv",bo3:false},
-  {nome:"OTTAVI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv",bo3:false},
-  {nome:"QUARTI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv",bo3:true},
-  {nome:"SEMIFINALI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv",bo3:true},
-  {nome:"FINALI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv",bo3:true}
-];
 
 const container=document.getElementById("container");
 
-/* =========================
-   CSV
-========================= */
-
+/* CSV */
 function parseCSV(text){
-  return text.trim().split(/\r?\n/).slice(1).map(line=>{
+  const lines=text.trim().split(/\r?\n/).slice(1);
+
+  return lines.map(line=>{
     const res=[]; let cur="",q=false;
+
     for(let c of line){
       if(c=='"') q=!q;
       else if(c==","&&!q){res.push(cur);cur="";}
@@ -150,26 +173,36 @@ function parseCSV(text){
 }
 
 function esc(s){
-  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;");
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;");
 }
 
-/* =========================
-   SINGLE
-========================= */
+/* CONFIG */
+const fasi=[
+  {nome:"SEDICESIMI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv",bo3:false},
+  {nome:"OTTAVI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv",bo3:false},
+  {nome:"QUARTI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv",bo3:true},
+  {nome:"SEMIFINALI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv",bo3:true},
+  {nome:"FINALI",url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv",bo3:true}
+];
 
+/* SINGLE */
 function renderSingle(rows,content){
 
   rows.forEach(c=>{
     if(c.length<7) return;
 
-    const a=esc(c[0]), b=esc(c[1]);
+    const a=esc(c[0]).replaceAll("|","<br>");
+    const b=esc(c[1]).replaceAll("|","<br>");
+
     const pa=+c[2]||0, pb=+c[3]||0;
     const stato=c[4]||"-";
     const data=c[5]||"-";
     const luogo=c[6]||"-";
 
     let ca="",cb="";
-
     if(stato.toLowerCase()==="finita"){
       if(pa>pb) ca="winner";
       else cb="winner";
@@ -179,29 +212,29 @@ function renderSingle(rows,content){
     card.className="card";
 
     card.innerHTML=`
-      <div style="font-size:12px;font-weight:bold;">
-        ${data} — ${luogo}
+
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;font-weight:bold;">
+        <div>${data}</div>
+        <div>${luogo}</div>
       </div>
 
-      <div style="text-align:center;font-size:12px;color:#666;">
+      <div style="text-align:center;font-size:12px;color:#666;margin-top:2px;">
         ${stato}
       </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
         <span class="${ca}">${a}</span>
         <b>${pa} - ${pb}</b>
         <span class="${cb}">${b}</span>
       </div>
+
     `;
 
     content.appendChild(card);
   });
 }
 
-/* =========================
-   BO3
-========================= */
-
+/* BO3 */
 function renderBO3(rows,content){
 
   const serie={};
@@ -210,7 +243,7 @@ function renderBO3(rows,content){
     if(c.length<7) return;
 
     const a=c[0],b=c[1];
-    const k=[a.toLowerCase(),b.toLowerCase()].sort().join("||");
+    const k=[a,b].sort().join("||");
 
     if(!serie[k]) serie[k]={a,b,m:[]};
     serie[k].m.push(c);
@@ -227,11 +260,8 @@ function renderBO3(rows,content){
     let stato="Da giocare";
     const stati=s.m.map(x=>(x[4]||"").toLowerCase());
 
-    if(stati.every(x=>"finita"===x)) stato="Finita";
-    else if(stati.some(x=>"finita"===x)) stato="In corso";
-
-    const card=document.createElement("div");
-    card.className="card";
+    if(stati.every(x==="finita")) stato="Finita";
+    else if(stati.some(x==="finita")) stato="In corso";
 
     let results="";
 
@@ -253,16 +283,21 @@ function renderBO3(rows,content){
     const winA=wa>wb?"winner":"";
     const winB=wb>wa?"winner":"";
 
+    const card=document.createElement("div");
+    card.className="card";
+
     card.innerHTML=`
-      <div style="font-size:12px;font-weight:bold;">
-        <b>${data}</b> — <b>${luogo}</b>
+
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;font-weight:bold;">
+        <div>${data}</div>
+        <div>${luogo}</div>
       </div>
 
-      <div style="text-align:center;font-size:12px;color:#666;">
+      <div style="text-align:center;font-size:12px;color:#666;margin-top:2px;">
         ${stato}
       </div>
 
-      <div style="display:flex;justify-content:space-between;margin:6px 0;">
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
         <span class="${winA}">${s.a}</span>
         <b>VS</b>
         <span class="${winB}">${s.b}</span>
@@ -273,43 +308,33 @@ function renderBO3(rows,content){
       <div style="text-align:center;margin-top:6px;font-weight:bold;color:#0072ff;">
         Vittorie ${wa} - ${wb}
       </div>
+
     `;
 
     content.appendChild(card);
   });
 }
 
-/* =========================
-   LAZY ACCORDION (QUI LA VERA OTTIMIZZAZIONE)
-========================= */
+/* LAZY LOAD */
+async function loadFase(content,f){
 
-async function loadFase(accordion,content,f){
-
-  if(content.dataset.loaded==="true") return;
+  if(content.dataset.loaded) return;
 
   content.innerHTML=`<div class="card">Caricamento...</div>`;
 
-  try{
-    const res=await fetch(f.url,{cache:"no-store"});
-    const text=await res.text();
-    const rows=parseCSV(text);
+  const res=await fetch(f.url,{cache:"no-store"});
+  const text=await res.text();
+  const rows=parseCSV(text);
 
-    content.innerHTML="";
+  content.innerHTML="";
 
-    if(f.bo3) renderBO3(rows,content);
-    else renderSingle(rows,content);
+  if(f.bo3) renderBO3(rows,content);
+  else renderSingle(rows,content);
 
-    content.dataset.loaded="true";
-
-  }catch(e){
-    content.innerHTML=`<div class="card">Errore caricamento</div>`;
-  }
+  content.dataset.loaded="true";
 }
 
-/* =========================
-   CREATE UI (NO FETCH ALL INIT)
-========================= */
-
+/* ACCORDION */
 fasi.forEach(f=>{
 
   const acc=document.createElement("div");
@@ -324,11 +349,12 @@ fasi.forEach(f=>{
   btn.innerHTML=`<h2>${f.nome}</h2><span class="arrow">▶</span>`;
 
   btn.onclick=()=>{
+
     acc.classList.toggle("open");
 
     if(acc.classList.contains("open")){
       content.style.maxHeight="2000px";
-      loadFase(acc,content,f);
+      loadFase(content,f);
     }else{
       content.style.maxHeight=null;
     }
@@ -336,8 +362,8 @@ fasi.forEach(f=>{
 
   acc.appendChild(btn);
   acc.appendChild(content);
-
   container.appendChild(acc);
+
 });
 
 </script>
