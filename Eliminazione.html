@@ -385,24 +385,31 @@ function renderBO3(rows, content, faseNome=""){
 
   const serie = {};
 
-  rows.forEach((col,index) => {
+  rows.forEach(col => {
 
     if(col.length < 7) return;
 
-    const id = col[7]
-      ? escapeHTML(col[7])
-      : `${faseNome}_${index}`;
+    /* =========================
+       CHIAVE SERIE
+    ========================= */
 
-    if(!serie[id]){
+    const squadraA = col[0].trim();
+    const squadraB = col[1].trim();
 
-      serie[id] = {
-        a:col[0],
-        b:col[1],
+    const key = [squadraA, squadraB]
+      .sort()
+      .join("||");
+
+    if(!serie[key]){
+
+      serie[key] = {
+        a:squadraA,
+        b:squadraB,
         matches:[]
       };
     }
 
-    serie[id].matches.push(col);
+    serie[key].matches.push(col);
   });
 
   let serieIndex = 0;
@@ -416,8 +423,11 @@ function renderBO3(rows, content, faseNome=""){
 
     let results = "";
 
-    const teamA = escapeHTML(s.a).replaceAll("|","<br>");
-    const teamB = escapeHTML(s.b).replaceAll("|","<br>");
+    const teamA = escapeHTML(s.a)
+      .replaceAll("|","<br>");
+
+    const teamB = escapeHTML(s.b)
+      .replaceAll("|","<br>");
 
     s.matches.forEach((col,i) => {
 
@@ -458,6 +468,10 @@ function renderBO3(rows, content, faseNome=""){
       `;
     });
 
+    /* =========================
+       TITOLO FINALI
+    ========================= */
+
     let titoloSerie = "";
 
     if(faseNome === "FINALI"){
@@ -467,7 +481,12 @@ function renderBO3(rows, content, faseNome=""){
         : "FINALE 1° - 2° POSTO";
     }
 
+    /* =========================
+       CARD
+    ========================= */
+
     const card = document.createElement("div");
+
     card.className = "card";
 
     card.innerHTML = `
