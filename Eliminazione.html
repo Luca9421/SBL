@@ -138,7 +138,6 @@ h1{
 
 .loser{
   color:red;
-  font-weight:bold;
 }
 
 </style>
@@ -342,41 +341,32 @@ function renderSingle(rows, content){
         color:#666;
       ">
 
-        <div>${data}</div>
+       <div><b>${data}</b></div>
 
-        <div>${luogo}</div>
+       <div><b>${luogo}</b></div>
 
       </div>
 
-      <div style="
-        text-align:center;
-        margin-top:6px;
-        margin-bottom:6px;
-        font-size:12px;
-        color:#666;
-      ">
-        ${stato}
-      </div>
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-top:10px;
-        gap:10px;
-      ">
+
+<div style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:6px;
+  gap:10px;
+">
 
         <span class="${ca}">
           ${a}
         </span>
 
-        <div style="text-align:center;">
-
-          <b>
-            ${pa} - ${pb}
-          </b>
-
-        </div>
+       <div style="text-align:center;">
+  <b>${pa} - ${pb}</b>
+  <div style="font-size:12px; color:#666;">
+    ${stato}
+  </div>
+</div>
 
         <span class="${cb}">
           ${b}
