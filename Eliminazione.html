@@ -555,9 +555,9 @@ function renderBO3(rows, content, faseNome=""){
   winsA > winsB ? "bold" : "normal"
 };
           color:${
-            statoSerie === "finita" && winsA > winsB
+            statoSerie === "Finita" && winsA > winsB
             ? "green"
-            : statoSerie === "finita" && winsA < winsB
+            : statoSerie === "Finita" && winsA < winsB
             ? "red"
             : "#666"
           };
@@ -590,10 +590,10 @@ function renderBO3(rows, content, faseNome=""){
         font-weight:${
   winsB > winsA ? "bold" : "normal"
 };
-          color:${statoSerie === "finita" &&
+          color:${statoSerie === "Finita" &&
             winsB > winsA
             ? "green"
-            : statoSerie === "finita" && winsB < winsA
+            : statoSerie === "Finita" && winsB < winsA
             ? "red"
             : "#666"
           };
