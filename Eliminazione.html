@@ -102,7 +102,7 @@ h1{
   backdrop-filter:blur(10px);
   display:flex;
   justify-content:space-around;
-  padding:14px 0;
+  padding:16px 0;
   border-top-left-radius:24px;
   border-top-right-radius:24px;
   box-shadow:0 -4px 20px rgba(0,0,0,0.08);
@@ -552,7 +552,7 @@ function renderBO3(rows, content, faseNome=""){
           flex:1;
           text-align:left;
           font-weight:${
-  winsA > winsB ? "bold" : "normal"
+ statoSerie === "Finita" && winsA > winsB ? "bold" : "normal"
 };
           color:${
             statoSerie === "Finita" && winsA > winsB
@@ -588,7 +588,7 @@ function renderBO3(rows, content, faseNome=""){
           flex:1;
           text-align:right;
         font-weight:${
-  winsB > winsA ? "bold" : "normal"
+ statoSerie === "Finita" && winsB > winsA ? "bold" : "normal"
 };
           color:${statoSerie === "Finita" &&
             winsB > winsA
