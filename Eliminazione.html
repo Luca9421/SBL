@@ -353,7 +353,7 @@ function renderSingle(rows, content){
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:6px;
+  margin-top:8px;
   gap:10px;
 ">
 
@@ -527,14 +527,19 @@ function renderBO3(rows, content, faseNome=""){
         margin-bottom:8px;
       ">
 
-        <div>${data}</div>
+     <div><b>${data}</b></div>
 
-        <div>${statoSerie}</div>
-
-        <div>${luogo}</div>
+<div><b>${luogo}</b></div>
 
       </div>
-
+<div style="
+  text-align:center;
+  font-size:12px;
+  color:#666;
+  margin-bottom:6px;
+">
+  ${statoSerie}
+</div>
       <!-- SQUADRE -->
 
       <div style="
