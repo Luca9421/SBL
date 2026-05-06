@@ -591,10 +591,10 @@ function renderBO3(rows, content, faseNome=""){
         font-weight:${
   winsB > winsA ? "bold" : "normal"
 };
-          color:${
+          color:${stato === "finita" &&
             winsB > winsA
             ? "green"
-            : winsB < winsA
+            : stato === "finita" && winsB < winsA
             ? "red"
             : "#666"
           };
