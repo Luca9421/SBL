@@ -15,7 +15,6 @@ body{
   background:#f2f4f8;
 }
 
-/* HEADER */
 .header{
   background:linear-gradient(135deg,#00c6ff,#0072ff);
   color:white;
@@ -25,7 +24,6 @@ body{
 
 h1{margin:0;font-size:24px;}
 
-/* CARD */
 .card{
   background:white;
   margin:15px;
@@ -59,7 +57,7 @@ h1{margin:0;font-size:24px;}
   overflow:hidden;
   opacity:0;
   transform:translateY(-10px);
-  transition:.4s;
+  transition:0.4s ease;
 }
 
 .accordion.open .accordion-content{
@@ -70,24 +68,23 @@ h1{margin:0;font-size:24px;}
 .accordion.open .arrow{transform:rotate(90deg);}
 
 /* SKELETON */
-.skeleton-card{
+.skeleton{
   background:white;
   margin:15px;
   padding:15px;
   border-radius:15px;
-  overflow:hidden;
 }
 
-.skeleton-line{
+.shimmer{
   height:12px;
   background:#e6e6e6;
-  border-radius:6px;
   margin:10px 0;
+  border-radius:6px;
   position:relative;
   overflow:hidden;
 }
 
-.skeleton-line::after{
+.shimmer::after{
   content:"";
   position:absolute;
   width:150px;
@@ -97,29 +94,21 @@ h1{margin:0;font-size:24px;}
 }
 
 @keyframes shimmer{
-  0%{left:-150px;}
-  100%{left:100%;}
+  0%{left:-150px}
+  100%{left:100%}
 }
 
-/* MENU */
 .menu{
   position:fixed;
   bottom:0;
   width:100%;
-  background:rgba(255,255,255,0.95);
+  background:#fff;
   display:flex;
   justify-content:space-around;
   padding:14px 0;
 }
 
-.menu-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  font-size:12px;
-  color:#555;
-  text-decoration:none;
-}
+.menu-item{font-size:12px;color:#555;text-decoration:none;}
 
 .menu-item.active{color:#0066ff;}
 
@@ -133,12 +122,9 @@ h1{margin:0;font-size:24px;}
 
 <body>
 
-<div class="header">
-  <h1>PARTITE</h1>
-</div>
+<div class="header"><h1>PARTITE</h1></div>
 
 <div id="container"></div>
-
 <div class="spacer"></div>
 
 <div class="menu">
@@ -153,7 +139,7 @@ h1{margin:0;font-size:24px;}
    CACHE
 ========================= */
 
-const CACHE_PREFIX="cache_partite_";
+const CACHE_PREFIX="cache_";
 const CACHE_TIME=1000*60*10;
 
 function getCache(k){
@@ -188,9 +174,7 @@ function parseCSV(t){
 }
 
 function esc(s){
-  return String(s).replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;");
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
 }
 
 /* =========================
@@ -212,38 +196,28 @@ const fasi=[
 ];
 
 /* =========================
-   SKELETON
+   ACCORDION
 ========================= */
 
-function skeleton(){
-  const c=document.getElementById("container");
-  c.innerHTML="";
-  for(let i=0;i<3;i++){
-    const s=document.createElement("div");
-    s.className="skeleton-card";
-    s.innerHTML=`<div class="skeleton-line"></div><div class="skeleton-line"></div>`;
-    c.appendChild(s);
-  }
+function toggleAccordion(btn){
+  const acc=btn.parentElement;
+  const c=acc.querySelector(".accordion-content");
+  acc.classList.toggle("open");
+
+  if(acc.classList.contains("open"))
+    c.style.maxHeight=c.scrollHeight+"px";
+  else
+    c.style.maxHeight="0px";
 }
 
 /* =========================
-   RENDER HELPERS
+   SINGLE MATCH
 ========================= */
 
-const DOM_MAP=new Map();
-
-/* =========================
-   RENDER SINGLE
-========================= */
-
-function renderSingle(row,f,container){
-
-  const id=row.join("|");
+function single(row,cont){
 
   const card=document.createElement("div");
   card.className="card";
-
-  card.dataset.id=id;
 
   function draw(){
 
@@ -253,11 +227,11 @@ function renderSingle(row,f,container){
     const pa=parseInt(row[2])||0;
     const pb=parseInt(row[3])||0;
 
-    const stato=row[4];
+    const st=row[4];
 
     let ca="",cb="";
 
-    if(stato==="finita"){
+    if(st==="finita"){
       if(pa>pb) ca="winner",cb="loser";
       else cb="winner",ca="loser";
     }
@@ -268,7 +242,7 @@ function renderSingle(row,f,container){
         <div>${row[6]||""}</div>
       </div>
 
-      <div style="text-align:center;font-size:12px">${stato}</div>
+      <div style="text-align:center;font-size:12px">${st}</div>
 
       <div style="display:flex;justify-content:space-between">
         <span class="${ca}">${a}</span>
@@ -279,35 +253,30 @@ function renderSingle(row,f,container){
   }
 
   draw();
+  cont.appendChild(card);
 
-  container.appendChild(card);
-
-  DOM_MAP.set(id,card);
-
-  return {id,draw};
+  return {draw};
 }
 
 /* =========================
-   RENDER BO3 (semplificato + diff update)
+   BO3 (GRUPPO CORRETTO)
 ========================= */
 
-function renderBO3(group,f,container){
-
-  const key=group.map(r=>r.join("|")).join("##");
+function bo3(rows,cont){
 
   const card=document.createElement("div");
   card.className="card";
 
   function draw(){
 
+    const A=esc(rows[0][0]);
+    const B=esc(rows[0][1]);
+
     let wA=0,wB=0;
 
     let html="";
 
-    const A=esc(group[0][0]);
-    const B=esc(group[0][1]);
-
-    group.forEach((r,i)=>{
+    rows.forEach((r,i)=>{
 
       const pa=parseInt(r[2])||0;
       const pb=parseInt(r[3])||0;
@@ -317,9 +286,11 @@ function renderBO3(group,f,container){
         else wB++;
       }
 
-      html+=`<div style="display:flex;justify-content:space-between;border-top:1px solid #eee">
-        <div>Game ${i+1}</div><div>${pa}-${pb}</div>
-      </div>`;
+      html+=`
+        <div style="display:flex;justify-content:space-between;border-top:1px solid #eee">
+          <div>Game ${i+1}</div><div>${pa}-${pb}</div>
+        </div>
+      `;
     });
 
     card.innerHTML=`
@@ -332,14 +303,28 @@ function renderBO3(group,f,container){
   }
 
   draw();
-
-  container.appendChild(card);
+  cont.appendChild(card);
 
   return {draw};
 }
 
 /* =========================
-   LOAD + REFRESH SMART
+   SKELETON
+========================= */
+
+function skeleton(){
+  const c=document.getElementById("container");
+  c.innerHTML="";
+  for(let i=0;i<3;i++){
+    const s=document.createElement("div");
+    s.className="skeleton";
+    s.innerHTML=`<div class="shimmer"></div><div class="shimmer"></div>`;
+    c.appendChild(s);
+  }
+}
+
+/* =========================
+   LOAD + SMART REFRESH
 ========================= */
 
 (async()=>{
@@ -348,7 +333,7 @@ function renderBO3(group,f,container){
 
   skeleton();
 
-  const accData=[];
+  const data=[];
 
   for(const f of fasi){
 
@@ -360,14 +345,16 @@ function renderBO3(group,f,container){
       setCache(f.nome,rows);
     }
 
-    accData.push({f,rows});
+    data.push({f,rows});
   }
 
   container.innerHTML="";
 
   const renders=[];
 
-  for(const item of accData){
+  const frag=document.createDocumentFragment();
+
+  for(const item of data){
 
     const acc=document.createElement("div");
     acc.className="accordion";
@@ -380,25 +367,28 @@ function renderBO3(group,f,container){
     const cont=document.createElement("div");
     cont.className="accordion-content";
 
-    const localRenders=[];
+    let local=[];
 
-    item.rows.forEach(r=>{
-      if(item.f.bo3){
-        localRenders.push(renderBO3([r],item.f,cont));
-      }else{
-        localRenders.push(renderSingle(r,item.f,cont));
-      }
-    });
+    if(item.f.bo3){
+      local.push(bo3(item.rows,cont));
+    }else{
+      item.rows.forEach(r=>{
+        local.push(single(r,cont));
+      });
+    }
 
     acc.appendChild(head);
     acc.appendChild(cont);
-    container.appendChild(acc);
 
-    renders.push({f:item.f,rows:item.rows,localRenders});
+    frag.appendChild(acc);
+
+    renders.push({f:item.f,rows:item.rows,local});
   }
 
+  container.appendChild(frag);
+
   /* =========================
-     BACKGROUND REFRESH (DIFF ONLY)
+     REFRESH SOLO CAMBIATI
   ========================= */
 
   async function refresh(){
@@ -418,9 +408,7 @@ function renderBO3(group,f,container){
 
           const acc=renders.find(x=>x.f.nome===f.nome);
 
-          if(!acc) continue;
-
-          acc.localRenders.forEach(r=>r.draw());
+          acc.local.forEach(x=>x.draw());
 
         }
 
