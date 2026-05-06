@@ -447,25 +447,66 @@ function renderBO3(rows, content, faseNome=""){
         }
       }
 
-      results += `
+const data = escapeHTML(col[5] || "-");
+const ora = escapeHTML(col[6] || "-");
+const luogo = escapeHTML(col[7] || "-");
 
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          padding:6px 0;
-          border-top:1px solid #eee;
-          font-size:13px;
-        ">
+results += `
 
-          <div>Game ${i+1}</div>
+  <div style="
+    border-top:1px solid #eee;
+    padding:10px 0;
+    font-size:13px;
+  ">
 
-          <div>
-            ${pa} - ${pb}
-          </div>
+    <!-- DATA / ORA -->
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      color:#666;
+      font-size:12px;
+      margin-bottom:6px;
+    ">
+      <div>${data}</div>
+      <div>${ora}</div>
+    </div>
 
+    <!-- CONTENUTO -->
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    ">
+
+      <div>
+        Game ${i+1}
+      </div>
+
+      <div style="text-align:center;">
+
+        <div>
+          ${stato}
         </div>
 
-      `;
+        <b>
+          ${pa} - ${pb}
+        </b>
+
+      </div>
+
+      <div style="
+        text-align:right;
+        color:#666;
+        font-size:12px;
+      ">
+        ${luogo}
+      </div>
+
+    </div>
+
+  </div>
+
+`;
     });
 
     /* =========================
