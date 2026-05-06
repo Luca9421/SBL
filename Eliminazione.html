@@ -76,10 +76,7 @@ h1{
   overflow:hidden;
   opacity:0;
   transform:translateY(-10px);
-  transition:
-    max-height 0.4s ease,
-    opacity 0.4s ease,
-    transform 0.4s ease;
+  transition:max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
 }
 
 .accordion.open .accordion-content{
@@ -91,41 +88,42 @@ h1{
   transform:rotate(90deg);
 }
 
-/* LOADING */
+/* =========================
+   SKELETON LOADER
+========================= */
 
-#loading{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:60px 20px;
+.skeleton-card{
+  background:white;
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
 }
 
-.spinner{
-  width:55px;
-  height:55px;
-  border:5px solid rgba(0,114,255,0.15);
-  border-top:5px solid #0072ff;
-  border-radius:50%;
-  animation:spin 0.9s linear infinite;
+.skeleton-line{
+  height:12px;
+  border-radius:6px;
+  background:#e6e6e6;
+  margin:10px 0;
+  position:relative;
+  overflow:hidden;
 }
 
-.loading-text{
-  margin-top:15px;
-  color:#666;
-  font-size:14px;
-  font-weight:bold;
+.skeleton-line::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-150px;
+  height:100%;
+  width:150px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
+  animation:shimmer 1.2s infinite;
 }
 
-@keyframes spin{
-
-  from{
-    transform:rotate(0deg);
-  }
-
-  to{
-    transform:rotate(360deg);
-  }
+@keyframes shimmer{
+  0%{ left:-150px; }
+  100%{ left:100%; }
 }
 
 /* MENU */
@@ -168,15 +166,8 @@ h1{
 
 /* COLORI */
 
-.winner{
-  color:green;
-  font-weight:bold;
-}
-
-.loser{
-  color:red;
-  font-weight:bold;
-}
+.winner{ color:green; font-weight:bold; }
+.loser{ color:red; font-weight:bold; }
 
 </style>
 </head>
@@ -187,42 +178,61 @@ h1{
   <h1>PARTITE</h1>
 </div>
 
-<div id="loading">
-
-  <div class="spinner"></div>
-
-  <div class="loading-text">
-    Caricamento partite...
-  </div>
-
-</div>
-
 <div id="container"></div>
 
 <div class="spacer"></div>
 
-<!-- MENU -->
-
 <div class="menu">
 
   <a href="index.html" class="menu-item">
-    <img src="home.png" alt="Home">
+    <img src="home.png">
     <span>Home</span>
   </a>
 
   <a href="gironi.html" class="menu-item">
-    <img src="gironi.png" alt="Gironi">
+    <img src="gironi.png">
     <span>Gironi</span>
   </a>
 
   <a href="Eliminazione.html" class="menu-item active">
-    <img src="partite.png" alt="Eliminazione">
+    <img src="partite.png">
     <span>Elimin.</span>
   </a>
 
 </div>
 
 <script>
+
+/* =========================
+   CACHE PER FASE
+========================= */
+
+const CACHE_PREFIX = "partite_cache_";
+const CACHE_TIME = 1000 * 60 * 5; // 5 minuti
+
+function getCache(key){
+  try{
+    const raw = localStorage.getItem(CACHE_PREFIX + key);
+    if(!raw) return null;
+
+    const data = JSON.parse(raw);
+
+    if(Date.now() - data.time > CACHE_TIME){
+      return null;
+    }
+
+    return data.value;
+  }catch(e){
+    return null;
+  }
+}
+
+function setCache(key,value){
+  localStorage.setItem(CACHE_PREFIX + key, JSON.stringify({
+    time: Date.now(),
+    value
+  }));
+}
 
 /* =========================
    ACCORDION
@@ -237,72 +247,50 @@ function toggleAccordion(button){
 
   if(accordion.classList.contains("open")){
     content.style.maxHeight = content.scrollHeight + "px";
-  }
-
-  else{
+  }else{
     content.style.maxHeight = null;
   }
 }
 
 /* =========================
-   ELEMENTI
-========================= */
-
-const container = document.getElementById("container");
-const loading = document.getElementById("loading");
-
-/* =========================
-   CSV PARSER
+   CSV
 ========================= */
 
 function parseCSV(text){
 
-  const lines = text
-    .trim()
-    .split(/\r?\n/)
-    .slice(1);
+  const lines = text.trim().split(/\r?\n/).slice(1);
 
   return lines.map(line => {
 
-    const result = [];
+    const result=[];
+    let cur="";
+    let q=false;
 
-    let current = "";
-    let quotes = false;
-
-    for(let char of line){
-
-      if(char === '"'){
-        quotes = !quotes;
-      }
-
-      else if(char === "," && !quotes){
-        result.push(current.trim());
-        current = "";
-      }
-
-      else{
-        current += char;
+    for(const c of line){
+      if(c==='"') q=!q;
+      else if(c===',' && !q){
+        result.push(cur.trim());
+        cur="";
+      }else{
+        cur+=c;
       }
     }
 
-    result.push(current.trim());
-
+    result.push(cur.trim());
     return result;
   });
 }
 
 /* =========================
-   ESCAPE HTML
+   ESCAPE
 ========================= */
 
-function escapeHTML(str){
-
-  return String(str)
+function esc(s){
+  return String(s)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll('"',"&quot;");
 }
 
 /* =========================
@@ -311,129 +299,62 @@ function escapeHTML(str){
 
 const fasi = [
 
-  {
-    nome:"SEDICESIMI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv",
-    bo3:false
-  },
+  { nome:"SEDICESIMI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv", bo3:false },
 
-  {
-    nome:"OTTAVI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv",
-    bo3:false
-  },
+  { nome:"OTTAVI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv", bo3:false },
 
-  {
-    nome:"QUARTI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv",
-    bo3:true
-  },
+  { nome:"QUARTI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv", bo3:true },
 
-  {
-    nome:"SEMIFINALI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv",
-    bo3:true
-  },
+  { nome:"SEMIFINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv", bo3:true },
 
-  {
-    nome:"FINALI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv",
-    bo3:true
-  }
+  { nome:"FINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv", bo3:true }
 
 ];
 
 /* =========================
-   MATCH SINGOLO
+   SINGLE
 ========================= */
 
-function renderSingle(rows, content){
+function renderSingle(rows,content){
 
-  rows.forEach(col => {
+  rows.forEach(col=>{
 
-    if(col.length < 7) return;
+    if(col.length<7) return;
 
-    const a = escapeHTML(col[0]).replaceAll("|","<br>");
-    const b = escapeHTML(col[1]).replaceAll("|","<br>");
+    const a=esc(col[0]).replaceAll("|","<br>");
+    const b=esc(col[1]).replaceAll("|","<br>");
 
-    const pa = parseInt(col[2]) || 0;
-    const pb = parseInt(col[3]) || 0;
+    const pa=parseInt(col[2])||0;
+    const pb=parseInt(col[3])||0;
 
-    const stato = escapeHTML(col[4] || "-");
-    const data = escapeHTML(col[5] || "-");
-    const luogo = escapeHTML(col[6] || "-");
+    const stato=esc(col[4]||"-");
+    const data=esc(col[5]||"-");
+    const luogo=esc(col[6]||"-");
 
-    let ca = "";
-    let cb = "";
+    let ca="",cb="";
 
-    if(stato.toLowerCase() === "finita"){
-
-      if(pa > pb){
-        ca = "winner";
-        cb = "loser";
-      }
-
-      else if(pb > pa){
-        cb = "winner";
-        ca = "loser";
-      }
+    if(stato.toLowerCase()==="finita"){
+      if(pa>pb){ca="winner";cb="loser";}
+      else if(pb>pa){cb="winner";ca="loser";}
     }
 
-    const card = document.createElement("div");
+    const card=document.createElement("div");
+    card.className="card";
 
-    card.className = "card";
-
-    card.innerHTML = `
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        font-size:12px;
-        color:#666;
-      ">
-
-        <div>${data}</div>
-
-        <div>${luogo}</div>
-
+    card.innerHTML=`
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666">
+        <div>${data}</div><div>${luogo}</div>
       </div>
 
-      <div style="
-        text-align:center;
-        margin-top:6px;
-        margin-bottom:6px;
-        font-size:12px;
-        color:#666;
-      ">
+      <div style="text-align:center;font-size:12px;color:#666;margin:6px 0">
         ${stato}
       </div>
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-top:10px;
-        gap:10px;
-      ">
-
-        <span class="${ca}">
-          ${a}
-        </span>
-
-        <div style="text-align:center;">
-
-          <b>
-            ${pa} - ${pb}
-          </b>
-
-        </div>
-
-        <span class="${cb}">
-          ${b}
-        </span>
-
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="${ca}">${a}</span>
+        <b>${pa} - ${pb}</b>
+        <span class="${cb}">${b}</span>
       </div>
-
     `;
 
     content.appendChild(card);
@@ -444,214 +365,93 @@ function renderSingle(rows, content){
    BO3
 ========================= */
 
-function renderBO3(rows, content, faseNome=""){
+function renderBO3(rows,content,faseNome){
 
-  const serie = {};
+  const serie={};
 
-  rows.forEach(col => {
+  rows.forEach(col=>{
 
-    if(col.length < 7) return;
+    if(col.length<7) return;
 
-    const squadraA = col[0].trim();
-    const squadraB = col[1].trim();
-
-    const key = [squadraA, squadraB]
-      .sort()
-      .join("||");
+    const key=[col[0],col[1]].sort().join("||");
 
     if(!serie[key]){
-
-      serie[key] = {
-        a:squadraA,
-        b:squadraB,
-        matches:[]
-      };
+      serie[key]={a:col[0],b:col[1],matches:[]};
     }
 
     serie[key].matches.push(col);
   });
 
-  let serieIndex = 0;
+  let iSerie=0;
 
-  Object.values(serie).forEach(s => {
+  Object.values(serie).forEach(s=>{
 
-    serieIndex++;
+    iSerie++;
 
-    let winsA = 0;
-    let winsB = 0;
+    let wA=0,wB=0;
+    let res="";
 
-    let results = "";
+    const A=esc(s.a).replaceAll("|","<br>");
+    const B=esc(s.b).replaceAll("|","<br>");
 
-    const teamA = escapeHTML(s.a)
-      .replaceAll("|","<br>");
+    const first=s.matches[0];
 
-    const teamB = escapeHTML(s.b)
-      .replaceAll("|","<br>");
+    const data=esc(first[5]||"-");
+    const luogo=esc(first[6]||"-");
 
-    const firstMatch = s.matches[0];
+    const stati=s.matches.map(m=>(m[4]||"").toLowerCase());
 
-    const data = escapeHTML(firstMatch[5] || "-");
-    const luogo = escapeHTML(firstMatch[6] || "-");
+    let statoSerie="Da giocare";
 
-    const stati = s.matches.map(m =>
-      (m[4] || "").toLowerCase().trim()
-    );
+    if(stati.every(x=>x==="finita")) statoSerie="Finita";
+    else if(stati.some(x=>x==="finita")) statoSerie="In corso";
 
-    let statoSerie = "Da giocare";
+    s.matches.forEach((col,k)=>{
 
-    if(stati.every(st => st === "finita")){
-      statoSerie = "Finita";
-    }
+      const pa=parseInt(col[2])||0;
+      const pb=parseInt(col[3])||0;
 
-    else if(stati.some(st => st === "finita")){
-      statoSerie = "In corso";
-    }
+      const st=(col[4]||"").toLowerCase();
 
-    s.matches.forEach((col,i) => {
-
-      const pa = parseInt(col[2]) || 0;
-      const pb = parseInt(col[3]) || 0;
-
-      const stato = (col[4] || "").toLowerCase();
-
-      if(stato === "finita"){
-
-        if(pa > pb){
-          winsA++;
-        }
-
-        else if(pb > pa){
-          winsB++;
-        }
+      if(st==="finita"){
+        if(pa>pb) wA++;
+        else if(pb>pa) wB++;
       }
 
-      results += `
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          padding:6px 0;
-          border-top:1px solid #eee;
-          font-size:13px;
-        ">
-
-          <div>
-            Game ${i+1}
-          </div>
-
-          <div>
-            ${pa} - ${pb}
-          </div>
-
+      res+=`
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #eee;font-size:13px">
+          <div>Game ${k+1}</div><div>${pa} - ${pb}</div>
         </div>
-
       `;
     });
 
-    let titoloSerie = "";
+    let titolo="";
 
-    if(faseNome === "FINALI"){
-
-      titoloSerie = serieIndex === 1
-        ? "FINALE 3° - 4° POSTO"
-        : "FINALE 1° - 2° POSTO";
+    if(faseNome==="FINALI"){
+      titolo=iSerie===1?"FINALE 3°-4°":"FINALE 1°-2°";
     }
 
-    const card = document.createElement("div");
+    const card=document.createElement("div");
+    card.className="card";
 
-    card.className = "card";
+    card.innerHTML=`
+      ${titolo?`<div style="text-align:center;color:#0072ff;font-weight:bold;margin-bottom:10px">${titolo}</div>`:""}
 
-    card.innerHTML = `
-
-      ${titoloSerie ? `
-
-        <div style="
-          text-align:center;
-          font-weight:bold;
-          color:#0072ff;
-          margin-bottom:10px;
-        ">
-          ${titoloSerie}
-        </div>
-
-      ` : ""}
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        font-size:12px;
-        color:#666;
-        margin-bottom:8px;
-      ">
-
-        <div>${data}</div>
-
-        <div>${statoSerie}</div>
-
-        <div>${luogo}</div>
-
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#666;margin-bottom:8px">
+        <div>${data}</div><div>${statoSerie}</div><div>${luogo}</div>
       </div>
 
-      <div style="
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-bottom:8px;
-        gap:10px;
-      ">
-
-        <div style="
-          flex:1;
-          text-align:left;
-          font-weight:bold;
-          color:${
-            winsA > winsB
-            ? "green"
-            : winsA < winsB
-            ? "red"
-            : "#0072ff"
-          };
-        ">
-          ${teamA}
-        </div>
-
-        <div style="
-          padding:0 8px;
-          font-size:12px;
-          font-weight:700;
-          color:#666;
-        ">
-          VS
-        </div>
-
-        <div style="
-          flex:1;
-          text-align:right;
-          font-weight:bold;
-          color:${
-            winsB > winsA
-            ? "green"
-            : winsB < winsA
-            ? "red"
-            : "#0072ff"
-          };
-        ">
-          ${teamB}
-        </div>
-
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="flex:1;font-weight:bold;color:${wA>wB?"green":wA<wB?"red":"#0072ff"}">${A}</div>
+        <div>VS</div>
+        <div style="flex:1;text-align:right;font-weight:bold;color:${wB>wA?"green":wB<wA?"red":"#0072ff"}">${B}</div>
       </div>
 
-      ${results}
+      ${res}
 
-      <div style="
-        margin-top:10px;
-        text-align:center;
-        font-weight:bold;
-        color:#0072ff;
-      ">
-        Vittorie: ${winsA} - ${winsB}
+      <div style="text-align:center;margin-top:10px;color:#0072ff;font-weight:bold">
+        Vittorie: ${wA} - ${wB}
       </div>
-
     `;
 
     content.appendChild(card);
@@ -659,74 +459,102 @@ function renderBO3(rows, content, faseNome=""){
 }
 
 /* =========================
+   SKELETON
+========================= */
+
+function showSkeleton(){
+
+  const container=document.getElementById("container");
+
+  container.innerHTML="";
+
+  for(let i=0;i<4;i++){
+
+    const sk=document.createElement("div");
+    sk.className="skeleton-card";
+
+    sk.innerHTML=`
+      <div class="skeleton-line" style="width:60%"></div>
+      <div class="skeleton-line" style="width:100%"></div>
+      <div class="skeleton-line" style="width:80%"></div>
+    `;
+
+    container.appendChild(sk);
+  }
+}
+
+/* =========================
    LOAD
 ========================= */
 
-(async () => {
+(async()=>{
 
-  const fragment = document.createDocumentFragment();
+  const container=document.getElementById("container");
+  const loading=document.getElementById("loading");
+
+  const fragment=document.createDocumentFragment();
+
+  showSkeleton();
+
+  const cacheKeyAll="all";
+
+  const finalData=[];
 
   for(const f of fasi){
 
-    const accordion = document.createElement("div");
-    accordion.className = "accordion";
+    const cache=getCache(f.nome);
 
-    const header = document.createElement("button");
-    header.className = "accordion-header";
+    let rows;
 
-    header.innerHTML = `
-      <h2>${escapeHTML(f.nome)}</h2>
+    if(cache){
+      rows=cache;
+    }else{
+
+      const res=await fetch(f.url);
+      const text=await res.text();
+      rows=parseCSV(text);
+
+      setCache(f.nome,rows);
+    }
+
+    finalData.push({f,rows});
+  }
+
+  container.innerHTML="";
+
+  for(const item of finalData){
+
+    const f=item.f;
+    const rows=item.rows;
+
+    const acc=document.createElement("div");
+    acc.className="accordion";
+
+    const head=document.createElement("button");
+    head.className="accordion-header";
+
+    head.innerHTML=`
+      <h2>${esc(f.nome)}</h2>
       <span class="arrow">▶</span>
     `;
 
-    header.onclick = () => toggleAccordion(header);
+    head.onclick=()=>toggleAccordion(head);
 
-    const content = document.createElement("div");
-    content.className = "accordion-content";
+    const cont=document.createElement("div");
+    cont.className="accordion-content";
 
-    try{
+    if(f.bo3) renderBO3(rows,cont,f.nome);
+    else renderSingle(rows,cont);
 
-      const res = await fetch(f.url);
+    acc.appendChild(head);
+    acc.appendChild(cont);
 
-      if(!res.ok){
-        throw new Error("Errore rete");
-      }
-
-      const text = await res.text();
-
-      const rows = parseCSV(text);
-
-      if(f.bo3){
-        renderBO3(rows, content, f.nome);
-      }
-
-      else{
-        renderSingle(rows, content);
-      }
-
-    }
-
-    catch(err){
-
-      const errorCard = document.createElement("div");
-
-      errorCard.className = "card";
-
-      errorCard.textContent =
-        "Errore nel caricamento dati";
-
-      content.appendChild(errorCard);
-    }
-
-    accordion.appendChild(header);
-    accordion.appendChild(content);
-
-    fragment.appendChild(accordion);
+    fragment.appendChild(acc);
   }
 
   container.appendChild(fragment);
 
-  loading.style.display = "none";
+  loading.style.display="none";
 
 })();
 
