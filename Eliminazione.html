@@ -188,7 +188,7 @@ h1{
    ACCORDION
 ========================= */
 
-function toggleAccordion(button){
+async function toggleAccordion(button){
 
   const accordion = button.parentElement;
   const content = accordion.querySelector(".accordion-content");
@@ -196,12 +196,53 @@ function toggleAccordion(button){
   accordion.classList.toggle("open");
 
   if(accordion.classList.contains("open")){
+
     content.style.maxHeight = content.scrollHeight + "px";
-  }else{
+
+    // 🔥 CARICAMENTO SOLO AL PRIMO CLICK
+    if(accordion.dataset.loaded === "false"){
+
+      try{
+
+        const res = await fetch(accordion.dataset.url);
+
+        if(!res.ok){
+          throw new Error("Errore rete");
+        }
+
+        const text = await res.text();
+        const rows = parseCSV(text);
+
+        if(accordion.dataset.bo3 === "true" || accordion.dataset.bo3 === true){
+          renderBO3(rows, content, accordion.dataset.nome);
+        }else{
+          renderSingle(rows, content);
+        }
+
+        accordion.dataset.loaded = "true";
+
+        // aggiorna altezza dopo render
+        setTimeout(() => {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }, 50);
+
+      }
+
+      catch(err){
+
+        console.error(err);
+
+        const errorCard = document.createElement("div");
+        errorCard.className = "card";
+        errorCard.textContent = "Errore nel caricamento dati";
+        content.appendChild(errorCard);
+      }
+    }
+
+  } else {
     content.style.maxHeight = null;
   }
 }
-
 /* =========================
    CONTAINER
 ========================= */
@@ -636,7 +677,11 @@ function renderBO3(rows, content, faseNome=""){
 
     const accordion = document.createElement("div");
     accordion.className = "accordion";
-
+accordion.dataset.url = f.url;
+accordion.dataset.bo3 = f.bo3;
+accordion.dataset.nome = f.nome;
+accordion.dataset.loaded = "false";
+   
     const header = document.createElement("button");
     header.className = "accordion-header";
 
