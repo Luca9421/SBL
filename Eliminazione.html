@@ -99,7 +99,7 @@ h1{
   left:0;
   width:100%;
   background:rgba(255,255,255,0.95);
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(10px);
   display:flex;
   justify-content:space-around;
   padding:14px 0;
@@ -114,12 +114,16 @@ h1{
   align-items:center;
   font-size:12px;
   text-decoration:none;
+  font-weight: 600;
   color:#555;
+  gap: 5px;
 }
 
-.menu-item img{
-  width:28px;
-}
+  .menu-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
 
 .menu-item.active{
   color:#0066ff;
