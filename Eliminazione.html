@@ -93,77 +93,49 @@ h1{
 .accordion.open .arrow{
   transform:rotate(90deg);
 }
+ 
 #loader{
   position:fixed;
   inset:0;
-  background:linear-gradient(135deg,#0072ff,#00c6ff);
+  background:rgba(242,244,248,0.75);
+  backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
   justify-content:center;
   z-index:9999;
-  color:white;
-  overflow:hidden;
 }
 
-/* card centrale glass */
+/* card minimal */
 .loader-card{
-  text-align:center;
-  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:20px 24px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.8);
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
-.loader-text{
-  margin-top:140px;
-  font-size:16px;
-  font-weight:600;
-  letter-spacing:0.6px;
-}
-/* onde animate */
-.pulse-ring{
-  position:absolute;
-  width:120px;
-  height:120px;
-  border:2px solid rgba(255,255,255,0.5);
+
+/* spinner moderno */
+.spinner{
+  width:34px;
+  height:34px;
+  border:3px solid #ddd;
+  border-top:3px solid #0072ff;
   border-radius:50%;
-  animation:pulse 1.8s infinite ease-out;
+  animation:spin 1s linear infinite;
 }
 
-.pulse-ring.delay{
-  animation-delay:0.6s;
+@keyframes spin{
+  to{ transform:rotate(360deg); }
 }
 
-@keyframes pulse{
-  0%{
-    transform:scale(0.6);
-    opacity:0.8;
-  }
-  100%{
-    transform:scale(2.2);
-    opacity:0;
-  }
-}
-
-/* testo loader */
+/* testo */
 .loader-text{
-  margin-top:160px;
-  font-size:18px;
+  font-size:14px;
   font-weight:600;
-  letter-spacing:0.5px;
-}
-
-/* animazione puntini */
-.dots span{
-  animation:blink 1.4s infinite;
-}
-
-.dots span:nth-child(2){
-  animation-delay:0.2s;
-}
-.dots span:nth-child(3){
-  animation-delay:0.4s;
-}
-
-@keyframes blink{
-  0%, 100%{opacity:0.2;}
-  50%{opacity:1;}
+  color:#333;
 }
 /* MENU */
 
@@ -223,19 +195,17 @@ h1{
 </head>
 
 <body>
+ 
 <div id="loader">
   <div class="loader-card">
-    <div class="pulse-ring"></div>
-    <div class="pulse-ring delay"></div>
+    <div class="spinner"></div>
 
     <div class="loader-text">
-      Caricamento partite
-      <span class="dots">
-        <span>.</span><span>.</span><span>.</span>
-      </span>
+      Caricamento partite...
     </div>
   </div>
 </div>
+ 
 <div class="header">
   <h1>PARTITE</h1>
 </div>
@@ -817,7 +787,9 @@ accordion.dataset.loaded = "false";
   }
 
   container.appendChild(fragment);
-document.getElementById("loader").style.display = "none";
+document.getElementById("loader").style.opacity = "0";
+document.getElementById("loader").style.pointerEvents = "none";
+document.getElementById("loader").style.transition = "opacity 0.3s ease";
 })();
 
 </script>
