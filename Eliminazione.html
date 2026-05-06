@@ -542,18 +542,28 @@ function renderBO3(rows, content, faseNome=""){
 </div>
       <!-- SQUADRE -->
 
-      <div style="
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        margin-bottom:8px;
-        gap:10px;
-      ">
+<div style="
+  text-align:center;
+  font-size:12px;
+  color:#666;
+  margin-bottom:4px;
+">
+  ${statoSerie}
+</div>
+
+<div style="
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+">
 
         <div style="
           flex:1;
           text-align:left;
-          font-weight:bold;
+          font-weight:${
+  winsA > winsB ? "bold" : "normal"
+};
           color:${
             winsA > winsB
             ? "green"
@@ -577,7 +587,9 @@ function renderBO3(rows, content, faseNome=""){
         <div style="
           flex:1;
           text-align:right;
-          font-weight:bold;
+        font-weight:${
+  winsB > winsA ? "bold" : "normal"
+};
           color:${
             winsB > winsA
             ? "green"
