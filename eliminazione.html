@@ -73,9 +73,12 @@ h1{
 }
 
 .arrow{
-  transition:0.3s;
+  transition:0.35s ease;
+  display:inline-block;
 }
-
+  .accordion .arrow{
+  transform:rotate(0deg);
+}
 .accordion-content{
   max-height:0;
   overflow:hidden;
@@ -272,20 +275,13 @@ async function toggleAccordion(button){
 
   if(accordion.classList.contains("open")){
 
-    content.style.maxHeight = content.scrollHeight + "px";
+    content.style.maxHeight = "1000px";
 
     if(accordion.dataset.loaded === "false"){
 
       try{
 
-        const res = await fetch(accordion.dataset.url);
-
-        if(!res.ok){
-          throw new Error("Errore rete");
-        }
-
-        const text = await res.text();
-        const rows = parseCSV(text);
+        const rows = JSON.parse(accordion.dataset.rows);
 
         if(accordion.dataset.bo3 === "true" || accordion.dataset.bo3 === true){
           renderBO3(rows, content, accordion.dataset.nome);
@@ -314,7 +310,7 @@ async function toggleAccordion(button){
 
   } else {
 
-    content.style.maxHeight = null;
+content.style.maxHeight = "0px";
 
   }
 }
@@ -790,7 +786,7 @@ accordion.dataset.loaded = "false";
       }else{
         renderSingle(rows, content);
       }
-
+      accordion.dataset.rows = JSON.stringify(rows);
     }
 
     catch(err){
