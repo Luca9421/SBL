@@ -60,21 +60,44 @@ h1{
   align-items:center;
   cursor:pointer;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease;
 }
 
+.accordion-header:active {
+  transform: scale(0.99);
+}
 .accordion-header h2{
   margin:0;
   font-size:18px;
   color:#0072ff;
 }
 
-.arrow{
-  transition:0.35s ease;
-  display:inline-block;
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.accordion .arrow{
-  transform:rotate(0deg);
+.chevron {
+  width: 18px;
+  height: 18px;
+  stroke: #0072ff;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* stato chiuso */
+.accordion .chevron {
+  transform: rotate(0deg);
+}
+
+/* stato aperto (iOS feel: rotazione morbida + leggero shift visivo) */
+.accordion.open .chevron {
+  transform: rotate(90deg) translateX(1px);
 }
 
 .accordion-content{
@@ -91,10 +114,6 @@ h1{
 .accordion.open .accordion-content{
   opacity:1;
   transform:translateY(0);
-}
-
-.accordion.open .arrow{
-  transform:rotate(90deg);
 }
 
 /* LOADER */
@@ -443,7 +462,11 @@ function renderBO3(rows, content, faseNome=""){
     
     const header = document.createElement("button");
     header.className = "accordion-header";
-    header.innerHTML = `<h2>${escapeHTML(f.nome)}</h2><span class="arrow">▶</span>`;
+    header.innerHTML = `<h2>${escapeHTML(f.nome)}</h2><span class="arrow">
+  <svg viewBox="0 0 24 24" class="chevron">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</span>`;
     header.onclick = () => toggleAccordion(header);
 
     const content = document.createElement("div");
