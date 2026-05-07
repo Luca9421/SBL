@@ -59,7 +59,7 @@
       font-weight: bold;
       margin-bottom: 10px;
       color: #0072ff;
-      font-size:18px
+      font-size:20px
     }
 
     /* LAYOUT MATCH AGGIORNATO */
@@ -374,7 +374,7 @@
           gironi[g].forEach(s => {
             squadreHTML += `
               <div style="padding:12px 0; border-bottom:1px solid #eee;">
-                <div style="font-weight:700;font-size:16; margin-bottom:8px;">${s[0].replace("|","<br>")}</div>
+                <div style="font-weight:700;font-size:18; margin-bottom:8px;">${s[0].replace("|","<br>")}</div>
                 <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; text-align:center; font-size:15px;">
                   <div><div style="color:gray;">V</div><div>${s[1]}</div></div>
                   <div><div style="color:gray;">PF</div><div>${s[2]}</div></div>
@@ -455,9 +455,9 @@
             <div style="padding:14px 0; border-bottom:1px solid #eee;">
               <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
                 <div style="width:32px; height:32px; border-radius:50%; background:#0072ff; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">${col[0]}</div>
-                <div style="font-weight:700; line-height:1.2;">${col[1].replace("|","<br>")}</div>
+                <div style="font-weight:700;font-size:18px; line-height:1.2;">${col[1].replace("|","<br>")}</div>
               </div>
-              <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; text-align:center; font-size:12px;">
+              <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; text-align:center; font-size:15px;">
                 <div><div style="color:gray;">V</div><div>${col[2]}</div></div>
                 <div><div style="color:gray;">PF</div><div>${col[3]}</div></div>
                 <div><div style="color:gray;">PS</div><div>${col[4]}</div></div>
