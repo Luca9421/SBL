@@ -361,15 +361,13 @@ const loaderMessages = [
 
 let loaderIndex = 0;
 
-const loaderInterval = setInterval(() => {
-
-  loaderIndex =
-    (loaderIndex + 1) % loaderMessages.length;
+setTimeout(() => {
 
   document.getElementById("loaderText").textContent =
-    loaderMessages[loaderIndex];
+    "Aggiornamento risultati...";
 
-}, 1000);
+}, 1500);
+  
   (async () => {
 
     try {
