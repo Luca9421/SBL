@@ -11,7 +11,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
   box-sizing:border-box;
 }
@@ -23,7 +22,6 @@ body{
 }
 
 /* HEADER */
-
 .header{
   background:linear-gradient(135deg,#00c6ff,#0072ff);
   color:white;
@@ -37,7 +35,6 @@ h1{
 }
 
 /* CARD */
-
 .card{
   background:white;
   margin:15px;
@@ -47,7 +44,6 @@ h1{
 }
 
 /* ACCORDION */
-
 .accordion{
   margin:15px;
 }
@@ -76,9 +72,11 @@ h1{
   transition:0.35s ease;
   display:inline-block;
 }
-  .accordion .arrow{
+
+.accordion .arrow{
   transform:rotate(0deg);
 }
+
 .accordion-content{
   max-height:0;
   overflow:hidden;
@@ -100,7 +98,6 @@ h1{
 }
 
 /* LOADER */
-
 #loader{
   position:fixed;
   inset:0;
@@ -145,7 +142,6 @@ h1{
 }
 
 /* MENU */
-
 .menu{
   position:fixed;
   bottom:0;
@@ -189,7 +185,6 @@ h1{
 }
 
 /* COLORI */
-
 .winner{
   color:green;
   font-weight:bold;
@@ -198,26 +193,19 @@ h1{
 .loser{
   color:red;
 }
-
 </style>
 </head>
 
 <body>
 
 <!-- LOADER -->
-
 <div id="loader">
-
   <div class="loader-card">
-
     <div class="spinner"></div>
-
     <div class="loader-text" id="loaderText">
       Caricamento partite...
     </div>
-
   </div>
-
 </div>
 
 <div class="header">
@@ -229,134 +217,79 @@ h1{
 <div class="spacer"></div>
 
 <!-- MENU -->
-
 <div class="menu">
-
   <a href="index.html" class="menu-item">
     <img src="home.png" alt="Home">
     <span>Home</span>
   </a>
-
   <a href="gironi.html" class="menu-item">
     <img src="gironi.png" alt="Gironi">
     <span>Gironi</span>
   </a>
-
   <a href="eliminazione.html" class="menu-item active">
     <img src="partite.png" alt="Eliminazione">
     <span>Fasi<br>finali</span>
   </a>
-
 </div>
 
 <script>
-
 /* =========================
    LOADER MESSAGES
 ========================= */
-
 setTimeout(() => {
-
-  document.getElementById("loaderText").textContent =
-    "Aggiornamento risultati...";
-
+  document.getElementById("loaderText").textContent = "Aggiornamento risultati...";
 }, 3000);
 
 /* =========================
    ACCORDION
 ========================= */
-
 async function toggleAccordion(button){
-
   const accordion = button.parentElement;
   const content = accordion.querySelector(".accordion-content");
 
   accordion.classList.toggle("open");
 
   if(accordion.classList.contains("open")){
-
-    content.style.maxHeight = "1000px";
-
+    // Se non caricato inizialmente, carica ora (backup logic)
     if(accordion.dataset.loaded === "false"){
-
       try{
-
         const rows = JSON.parse(accordion.dataset.rows);
-
-        if(accordion.dataset.bo3 === "true" || accordion.dataset.bo3 === true){
+        content.innerHTML = ""; // Pulisce per sicurezza
+        if(accordion.dataset.bo3 === "true"){
           renderBO3(rows, content, accordion.dataset.nome);
         }else{
           renderSingle(rows, content);
         }
-
         accordion.dataset.loaded = "true";
-
-        setTimeout(() => {
-          content.style.maxHeight = content.scrollHeight + "px";
-        }, 50);
-
-      }
-
-      catch(err){
-
+      } catch(err){
         console.error(err);
-
-        const errorCard = document.createElement("div");
-        errorCard.className = "card";
-        errorCard.textContent = "Errore nel caricamento dati";
-        content.appendChild(errorCard);
       }
     }
-
+    content.style.maxHeight = content.scrollHeight + "px";
   } else {
-
-content.style.maxHeight = "0px";
-
+    content.style.maxHeight = "0px";
   }
 }
 
 /* =========================
-   CONTAINER
-========================= */
-
-const container = document.getElementById("container");
-
-/* =========================
    CSV PARSER
 ========================= */
-
 function parseCSV(text){
-
-  const lines = text
-    .trim()
-    .split(/\r?\n/)
-    .slice(1);
-
+  const lines = text.trim().split(/\r?\n/).slice(1);
   return lines.map(line => {
-
     const result = [];
-
     let current = "";
     let quotes = false;
-
     for(let char of line){
-
-      if(char === '"'){
-        quotes = !quotes;
-      }
-
+      if(char === '"'){ quotes = !quotes; }
       else if(char === "," && !quotes){
         result.push(current.trim());
         current = "";
-      }
-
-      else{
+      } else {
         current += char;
       }
     }
-
     result.push(current.trim());
-
     return result;
   });
 }
@@ -364,9 +297,7 @@ function parseCSV(text){
 /* =========================
    ESCAPE HTML
 ========================= */
-
 function escapeHTML(str){
-
   return String(str)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
@@ -378,128 +309,50 @@ function escapeHTML(str){
 /* =========================
    CONFIG
 ========================= */
-
 const fasi = [
-
-  {
-    nome:"SEDICESIMI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv",
-    bo3:false
-  },
-
-  {
-    nome:"OTTAVI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv",
-    bo3:false
-  },
-
-  {
-    nome:"QUARTI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv",
-    bo3:true
-  },
-
-  {
-    nome:"SEMIFINALI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv",
-    bo3:true
-  },
-
-  {
-    nome:"FINALI",
-    url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv",
-    bo3:true
-  }
-
+  { nome:"SEDICESIMI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv", bo3:false },
+  { nome:"OTTAVI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv", bo3:false },
+  { nome:"QUARTI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv", bo3:true },
+  { nome:"SEMIFINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv", bo3:true },
+  { nome:"FINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv", bo3:true }
 ];
-
 
 /* =========================
    MATCH SINGOLO
 ========================= */
-
 function renderSingle(rows, content){
-
   rows.forEach(col => {
-
     if(col.length < 7) return;
-
     const a = escapeHTML(col[0]).replaceAll("|","<br>");
     const b = escapeHTML(col[1]).replaceAll("|","<br>");
-
     const pa = parseInt(col[2]) || 0;
     const pb = parseInt(col[3]) || 0;
-
     const stato = escapeHTML(col[4] || "-");
     const data = escapeHTML(col[5] || "-");
     const luogo = escapeHTML(col[6] || "-");
 
-    let ca = "";
-    let cb = "";
-
+    let ca = "", cb = "";
     if(stato.toLowerCase() === "finita"){
-
-      if(pa > pb){
-        ca = "winner";
-        cb = "loser";
-      }
-
-      else if(pb > pa){
-        cb = "winner";
-        ca = "loser";
-      }
+      if(pa > pb){ ca = "winner"; cb = "loser"; }
+      else if(pb > pa){ cb = "winner"; ca = "loser"; }
     }
 
     const card = document.createElement("div");
-
     card.className = "card";
-
     card.innerHTML = `
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        font-size:12px;
-        color:#666;
-      ">
-
-       <div><b>${data}</b></div>
-
-       <div><b>${luogo}</b></div>
-
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
+        <div><b>${data}</b></div>
+        <div><b>${luogo}</b></div>
       </div>
-
-
-
-<div style="
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:8px;
-  gap:10px;
-  font-size:15px;
-">
-
-        <span class="${ca}">
-          ${a}
-        </span>
-
-       <div style="text-align:center;">
-        <div style="font-size:12px; color:#666;">
-    ${stato}
-  </div>
-  <b>${pa} - ${pb}</b>
- 
-</div>
-
-        <span class="${cb}">
-          ${b}
-        </span>
-
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; gap:10px; font-size:15px;">
+        <span class="${ca}">${a}</span>
+        <div style="text-align:center;">
+          <div style="font-size:12px; color:#666;">${stato}</div>
+          <b>${pa} - ${pb}</b>
+        </div>
+        <span class="${cb}">${b}</span>
       </div>
-
     `;
-
     content.appendChild(card);
   });
 }
@@ -507,234 +360,64 @@ function renderSingle(rows, content){
 /* =========================
    BO3
 ========================= */
-
 function renderBO3(rows, content, faseNome=""){
-
   const serie = {};
-
   rows.forEach(col => {
-
     if(col.length < 7) return;
-
     const squadraA = col[0].trim();
     const squadraB = col[1].trim();
-
-    const key = [squadraA, squadraB]
-      .sort()
-      .join("||");
-
+    const key = [squadraA, squadraB].sort().join("||");
     if(!serie[key]){
-
-      serie[key] = {
-        a:squadraA,
-        b:squadraB,
-        matches:[]
-      };
+      serie[key] = { a:squadraA, b:squadraB, matches:[] };
     }
-
     serie[key].matches.push(col);
   });
 
   let serieIndex = 0;
-
   Object.values(serie).forEach(s => {
-
     serieIndex++;
-
-    let winsA = 0;
-    let winsB = 0;
-
-    let results = "";
-
-    const teamA = escapeHTML(s.a)
-      .replaceAll("|","<br>");
-
-    const teamB = escapeHTML(s.b)
-      .replaceAll("|","<br>");
-
+    let winsA = 0, winsB = 0, results = "";
+    const teamA = escapeHTML(s.a).replaceAll("|","<br>");
+    const teamB = escapeHTML(s.b).replaceAll("|","<br>");
     const firstMatch = s.matches[0];
-
     const data = escapeHTML(firstMatch[5] || "-");
     const luogo = escapeHTML(firstMatch[6] || "-");
-
-    const stati = s.matches.map(m =>
-      (m[4] || "").toLowerCase().trim()
-    );
-
-    let statoSerie = "Da giocare";
-
-    if(stati.every(st => st === "finita")){
-      statoSerie = "Finita";
-    }
-
-    else if(stati.some(st => st === "finita")){
-      statoSerie = "In corso";
-    }
+    const stati = s.matches.map(m => (m[4] || "").toLowerCase().trim());
+    let statoSerie = stati.every(st => st === "finita") ? "Finita" : stati.some(st => st === "finita") ? "In corso" : "Da giocare";
 
     s.matches.forEach((col,i) => {
-
       const pa = parseInt(col[2]) || 0;
       const pb = parseInt(col[3]) || 0;
-
-      const stato = (col[4] || "").toLowerCase();
-
-      if(stato === "finita"){
-
-        if(pa > pb){
-          winsA++;
-        }
-
-        else if(pb > pa){
-          winsB++;
-        }
+      if((col[4] || "").toLowerCase() === "finita"){
+        if(pa > pb) winsA++; else if(pb > pa) winsB++;
       }
-
       results += `
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          padding:6px 0;
-          border-top:1px solid #eee;
-          font-size:15px;
-        ">
-
-          <div>
-            Set ${i+1}
-          </div>
-
-          <div>
-            ${pa} - ${pb}
-          </div>
-
+        <div style="display:flex; justify-content:space-between; padding:6px 0; border-top:1px solid #eee; font-size:15px;">
+          <div>Set ${i+1}</div>
+          <div>${pa} - ${pb}</div>
         </div>
-
       `;
     });
 
-    let titoloSerie = "";
-
-    if(faseNome === "FINALI"){
-
-      titoloSerie = serieIndex === 1
-        ? "FINALE 3° - 4° POSTO"
-        : "FINALE 1° - 2° POSTO";
-    }
-
+    let titoloSerie = (faseNome === "FINALI") ? (serieIndex === 1 ? "FINALE 3° - 4° POSTO" : "FINALE 1° - 2° POSTO") : "";
     const card = document.createElement("div");
-
     card.className = "card";
-
     card.innerHTML = `
-
-      ${titoloSerie ? `
-
-        <div style="
-          text-align:center;
-          font-weight:bold;
-          color:#0072ff;
-          margin-bottom:10px;
-        ">
-          ${titoloSerie}
-        </div>
-
-      ` : ""}
-
-      <!-- INFO -->
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        font-size:12px;
-        color:#666;
-        margin-bottom:8px;
-      ">
-
-     <div><b>${data}</b></div>
-
-<div><b>${luogo}</b></div>
-
+      ${titoloSerie ? `<div style="text-align:center; font-weight:bold; color:#0072ff; margin-bottom:10px;">${titoloSerie}</div>` : ""}
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:8px;">
+        <div><b>${data}</b></div>
+        <div><b>${luogo}</b></div>
       </div>
-
-      <!-- SQUADRE -->
-
-
-
-<div style="
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-">
-
-        <div style="
-          flex:1;
-          text-align:left;
-          font-weight:${
- statoSerie === "Finita" && winsA > winsB ? "bold" : "normal"
-};
-          color:${
-            statoSerie === "Finita" && winsA > winsB
-            ? "green"
-            : statoSerie === "Finita" && winsA < winsB
-            ? "red"
-            : "#666"
-          };
-        ">
-          ${teamA}
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <div style="flex:1; text-align:left; font-weight:${statoSerie === "Finita" && winsA > winsB ? "bold" : "normal"}; color:${statoSerie === "Finita" && winsA > winsB ? "green" : (statoSerie === "Finita" && winsA < winsB ? "red" : "#666")};">${teamA}</div>
+        <div style="padding:0 8px; font-size:12px; text-align:center; font-weight:700; color:#666;">
+          <div style="text-align:center; font-size:12px; color:#666; margin-bottom:4px; font-weight:normal;">${statoSerie}</div>VS
         </div>
-
-        <div style="
-          padding:0 8px;
-          font-size:12px;
-          text-align:center;
-          font-weight:700;
-          color:#666;
-        ">
-        <div style="
-  text-align:center;
-  font-size:12px;
-  color:#666;
-  margin-bottom:4px;
-    font-weight:normal;
-">
-  ${statoSerie}
-</div>
-          VS
-        </div>
-
-        <div style="
-          flex:1;
-          text-align:right;
-        font-weight:${
- statoSerie === "Finita" && winsB > winsA ? "bold" : "normal"
-};
-          color:${statoSerie === "Finita" &&
-            winsB > winsA
-            ? "green"
-            : statoSerie === "Finita" && winsB < winsA
-            ? "red"
-            : "#666"
-          };
-        ">
-          ${teamB}
-        </div>
-
+        <div style="flex:1; text-align:right; font-weight:${statoSerie === "Finita" && winsB > winsA ? "bold" : "normal"}; color:${statoSerie === "Finita" && winsB > winsA ? "green" : (statoSerie === "Finita" && winsB < winsA ? "red" : "#666")};">${teamB}</div>
       </div>
-
       ${results}
-
-      <div style="
-        margin-top:10px;
-        text-align:center;
-        font-weight:bold;
-        color:#0072ff;
-      ">
-        Vittorie: ${winsA} - ${winsB}
-      </div>
-
+      <div style="margin-top:10px; text-align:center; font-weight:bold; color:#0072ff;">Vittorie: ${winsA} - ${winsB}</div>
     `;
-
     content.appendChild(card);
   });
 }
@@ -742,43 +425,30 @@ function renderBO3(rows, content, faseNome=""){
 /* =========================
    LOAD
 ========================= */
-
 (async () => {
-
+  const container = document.getElementById("container");
   const fragment = document.createDocumentFragment();
 
   for(const f of fasi){
-
     const accordion = document.createElement("div");
     accordion.className = "accordion";
-accordion.dataset.url = f.url;
-accordion.dataset.bo3 = f.bo3;
-accordion.dataset.nome = f.nome;
-accordion.dataset.loaded = "false";
-   
+    accordion.dataset.url = f.url;
+    accordion.dataset.bo3 = f.bo3;
+    accordion.dataset.nome = f.nome;
+    accordion.dataset.loaded = "false";
+    
     const header = document.createElement("button");
     header.className = "accordion-header";
-
-    header.innerHTML = `
-      <h2>${escapeHTML(f.nome)}</h2>
-      <span class="arrow">▶</span>
-    `;
-
+    header.innerHTML = `<h2>${escapeHTML(f.nome)}</h2><span class="arrow">▶</span>`;
     header.onclick = () => toggleAccordion(header);
 
     const content = document.createElement("div");
     content.className = "accordion-content";
 
     try{
-
       const res = await fetch(f.url);
-
-      if(!res.ok){
-        throw new Error("Errore rete");
-      }
-
+      if(!res.ok) throw new Error("Errore rete");
       const text = await res.text();
-
       const rows = parseCSV(text);
 
       if(f.bo3){
@@ -786,33 +456,28 @@ accordion.dataset.loaded = "false";
       }else{
         renderSingle(rows, content);
       }
+      
       accordion.dataset.rows = JSON.stringify(rows);
-    }
-
-    catch(err){
-
+      // CORREZIONE: Imposto a true dopo il rendering iniziale per evitare duplicati al click
+      accordion.dataset.loaded = "true"; 
+    } catch(err){
       const errorCard = document.createElement("div");
-
       errorCard.className = "card";
-
-      errorCard.textContent =
-        "Errore nel caricamento dati";
-
+      errorCard.textContent = "Errore nel caricamento dati";
       content.appendChild(errorCard);
     }
 
     accordion.appendChild(header);
     accordion.appendChild(content);
-
     fragment.appendChild(accordion);
   }
 
   container.appendChild(fragment);
-document.getElementById("loader").style.opacity = "0";
-document.getElementById("loader").style.pointerEvents = "none";
-document.getElementById("loader").style.transition = "opacity 0.3s ease";
+  const loader = document.getElementById("loader");
+  loader.style.opacity = "0";
+  loader.style.pointerEvents = "none";
+  loader.style.transition = "opacity 0.3s ease";
 })();
-
 </script>
 
 </body>
