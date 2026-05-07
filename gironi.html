@@ -109,25 +109,16 @@
       align-items: center;
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      transition: all 0.3s ease;
+       transition: transform 0.15s ease;
     }
-
+.accordion-header:active {
+  transform: scale(0.99);
+}
     .accordion-header h2 {
       margin: 0;
       font-size: 18px;
       color: #0072ff;
     }
-.arrow {
-  transition: 0.35s ease;
-  display: inline-block;
-  transform: rotate(0deg);
-}
-
-.accordion.open .arrow {
-  transform: rotate(90deg);
-}
-
-
     .accordion-content {
       max-height: 0;
       overflow: hidden;
@@ -143,6 +134,33 @@
       transform: translateY(0);
     }
 
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  stroke: #0072ff;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* stato chiuso */
+.accordion .chevron {
+  transform: rotate(0deg);
+}
+
+/* stato aperto (iOS feel: rotazione morbida + leggero shift visivo) */
+.accordion.open .chevron {
+  transform: rotate(90deg) translateX(1px);
+}
     /* LOADER */
     #loader{
       position:fixed;
@@ -246,7 +264,11 @@
 <div class="accordion">
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>COMPOSIZIONE</h2>
-    <span class="arrow">▶</span>
+<span class="arrow">
+  <svg viewBox="0 0 24 24" class="chevron">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</span>
   </div>
   <div id="contenitoreSquadre" class="accordion-content"></div>
 </div>
@@ -254,7 +276,11 @@
 <div class="accordion">
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>PARTITE</h2>
-    <span class="arrow">▶</span>
+    <span class="arrow">
+  <svg viewBox="0 0 24 24" class="chevron">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</span>
   </div>
   <div id="contenitorePartite" class="accordion-content"></div>
 </div>
@@ -262,7 +288,11 @@
 <div class="accordion">
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>CLASSIFICA AVULSA</h2>
-    <span class="arrow">▶</span>
+<span class="arrow">
+  <svg viewBox="0 0 24 24" class="chevron">
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+</span>
   </div>
   <div id="contenitoreAvulsa" class="accordion-content"></div>
 </div>
