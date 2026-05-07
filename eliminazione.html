@@ -250,11 +250,10 @@ async function toggleAccordion(button){
   accordion.classList.toggle("open");
 
   if(accordion.classList.contains("open")){
-    // Se non caricato inizialmente, carica ora (backup logic)
     if(accordion.dataset.loaded === "false"){
       try{
         const rows = JSON.parse(accordion.dataset.rows);
-        content.innerHTML = ""; // Pulisce per sicurezza
+        content.innerHTML = ""; 
         if(accordion.dataset.bo3 === "true"){
           renderBO3(rows, content, accordion.dataset.nome);
         }else{
@@ -318,7 +317,7 @@ const fasi = [
 ];
 
 /* =========================
-   MATCH SINGOLO
+   MATCH SINGOLO (Aggiornato layout)
 ========================= */
 function renderSingle(rows, content){
   rows.forEach(col => {
@@ -340,17 +339,22 @@ function renderSingle(rows, content){
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666;">
+      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:8px;">
         <div><b>${data}</b></div>
         <div><b>${luogo}</b></div>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; gap:10px; font-size:15px;">
-        <span class="${ca}">${a}</span>
-        <div style="text-align:center;">
-          <div style="font-size:12px; color:#666;">${stato}</div>
-          <b>${pa} - ${pb}</b>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:15px;">
+        <!-- SQUADRA 1 ALLINEATA A SINISTRA -->
+        <div style="flex:1; text-align:left;" class="${ca}">${a}</div>
+        
+        <!-- STATO E PUNTEGGIO SEMPRE AL CENTRO -->
+        <div style="text-align:center; min-width:70px;">
+          <div style="font-size:11px; color:#666; text-transform:lowercase; margin-bottom:2px;">${stato}</div>
+          <div style="font-size:16px;"><b>${pa} - ${pb}</b></div>
         </div>
-        <span class="${cb}">${b}</span>
+        
+        <!-- SQUADRA 2 ALLINEATA A DESTRA -->
+        <div style="flex:1; text-align:right;" class="${cb}">${b}</div>
       </div>
     `;
     content.appendChild(card);
@@ -458,7 +462,6 @@ function renderBO3(rows, content, faseNome=""){
       }
       
       accordion.dataset.rows = JSON.stringify(rows);
-      // CORREZIONE: Imposto a true dopo il rendering iniziale per evitare duplicati al click
       accordion.dataset.loaded = "true"; 
     } catch(err){
       const errorCard = document.createElement("div");
