@@ -252,9 +252,9 @@
   <div class="loader-card">
     <div class="spinner"></div>
 
-    <div class="loader-text">
-      Caricamento gironi...
-    </div>
+<div class="loader-text" id="loaderText">
+  Caricamento gironi...
+</div>
   </div>
 </div>
 
@@ -354,7 +354,22 @@
   /* =======================
      LOAD COMPLETO
   ======================== */
+const loaderMessages = [
+  "Caricamento gironi...",
+  "Aggiornamento risultati..."
+];
 
+let loaderIndex = 0;
+
+const loaderInterval = setInterval(() => {
+
+  loaderIndex =
+    (loaderIndex + 1) % loaderMessages.length;
+
+  document.getElementById("loaderText").textContent =
+    loaderMessages[loaderIndex];
+
+}, 2000);
   (async () => {
 
     try {
@@ -715,7 +730,7 @@
       /* =======================
          HIDE LOADER
       ======================== */
-
+  clearInterval(loaderInterval);
       document.getElementById("loader").style.opacity = "0";
       document.getElementById("loader").style.pointerEvents = "none";
       document.getElementById("loader").style.transition =
