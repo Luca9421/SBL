@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -46,29 +45,44 @@
       color: #0072ff;
     }
 
+    /* LAYOUT MATCH AGGIORNATO */
     .match {
       display: flex;
+      align-items: center;
       justify-content: space-between;
+      gap: 8px;
       margin: 10px 0;
     }
 
-    .match span {
+    .team-left {
+      flex: 1;
+      text-align: left;
       line-height: 1.2;
+      font-size: 14px;
+    }
+
+    .team-right {
+      flex: 1;
+      text-align: right;
+      line-height: 1.2;
+      font-size: 14px;
+    }
+
+    .center-info {
+      text-align: center;
+      min-width: 75px; /* Spazio garantito per il punteggio */
     }
 
     .score {
-      font-size:15px;
+      font-size: 16px;
       font-weight: bold;
     }
 
-    .center {
-      text-align: center;
-    }
-
     .status {
-      font-size: 12px;
+      font-size: 11px;
       color: gray;
-      margin-top: 3px;
+      text-transform: lowercase;
+      margin-bottom: 2px;
     }
 
     .winner {
@@ -81,7 +95,6 @@
     }
 
     /* ACCORDION */
-
     .accordion {
       margin: 15px;
     }
@@ -89,23 +102,14 @@
     .accordion-header {
       background: rgba(255,255,255,0.85);
       backdrop-filter: blur(10px);
-
       padding: 15px;
       border-radius: 18px;
-
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       cursor: pointer;
-
       box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-
       transition: all 0.3s ease;
-    }
-
-    .accordion-header:hover {
-      transform: scale(1.01);
     }
 
     .accordion-header h2 {
@@ -122,15 +126,9 @@
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-
       opacity: 0;
       transform: translateY(-10px);
-
-      transition:
-        max-height 0.5s ease,
-        opacity 0.4s ease,
-        transform 0.4s ease;
-
+      transition: max-height 0.5s ease, opacity 0.4s ease, transform 0.4s ease;
       border-radius: 15px;
     }
 
@@ -145,7 +143,6 @@
     }
 
     /* LOADER */
-
     #loader{
       position:fixed;
       inset:0;
@@ -178,9 +175,7 @@
     }
 
     @keyframes spin{
-      to{
-        transform:rotate(360deg);
-      }
+      to{ transform:rotate(360deg); }
     }
 
     .loader-text{
@@ -190,29 +185,20 @@
     }
 
     /* MENU */
-
     .menu {
       position: fixed;
       bottom: 0;
       left: 0;
-
       width: 100%;
-
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(10px);
-
       display: flex;
       justify-content: space-around;
       align-items: center;
-
       padding: 14px 0;
-
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
-
       box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-
-      transition: all 0.35s ease;
     }
 
     .menu-item {
@@ -223,7 +209,6 @@
       text-align: center;
       text-decoration: none;
       color: #555;
-
       font-size: 12px;
       font-weight: 600;
     }
@@ -241,517 +226,208 @@
     .spacer {
       height: 90px;
     }
-
   </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-card">
     <div class="spinner"></div>
-
-<div class="loader-text" id="loaderText">
-  Caricamento gironi...
-</div>
+    <div class="loader-text" id="loaderText">Caricamento gironi...</div>
   </div>
 </div>
 
-<!-- HEADER -->
 <div class="header">
   <h1>GIRONI</h1>
 </div>
 
-<!-- =======================
-     ACCORDION COMPOSIZIONE
-======================== -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>COMPOSIZIONE</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitoreSquadre" class="accordion-content"></div>
-
 </div>
 
-<!-- =======================
-     ACCORDION PARTITE
-======================== -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>PARTITE</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitorePartite" class="accordion-content"></div>
-
 </div>
 
-<!-- =======================
-     ACCORDION CLASSIFICA AVULSA
-======================== -->
 <div class="accordion">
-
   <div class="accordion-header" onclick="toggleAccordion(this)">
     <h2>CLASSIFICA AVULSA</h2>
     <span class="arrow">▶</span>
   </div>
-
   <div id="contenitoreAvulsa" class="accordion-content"></div>
-
 </div>
 
 <div class="spacer"></div>
 
-<!-- MENU -->
 <div class="menu">
-
   <a href="index.html" class="menu-item">
     <img src="home.png" alt="Home">
     <span>Home</span>
   </a>
-
   <a href="gironi.html" class="menu-item active">
     <img src="gironi.png" alt="Gironi">
     <span>Gironi</span>
   </a>
-
   <a href="eliminazione.html" class="menu-item">
     <img src="partite.png" alt="Partite">
     <span>Fasi<br>finali</span>
   </a>
-
 </div>
 
 <script>
-
-  /* =======================
-     TOGGLE ACCORDION
-  ======================== */
-
   function toggleAccordion(element) {
     const accordion = element.parentElement;
     accordion.classList.toggle("open");
   }
 
-  /* =======================
-     URL CSV
-  ======================== */
+  const urlSquadre = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMtFe_MpqUIVxGI0jVMJI4Y66ZhiUC-UAWMSFD9H8XSW8esfu6OjpqjQ9OoAwOS6MxTPHowZNMHGmi/pub?output=csv";
+  const urlPartite = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
+  const urlAvulsa = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSHUmkziViOa-WwXJkXHmfD9Ns816nAUuq_BxAvDMYpNtwbaaAmYtunvxEcmJlrKBaHmwa3byi_x3x/pub?output=csv";
 
-  const urlSquadre =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRMtFe_MpqUIVxGI0jVMJI4Y66ZhiUC-UAWMSFD9H8XSW8esfu6OjpqjQ9OoAwOS6MxTPHowZNMHGmi/pub?output=csv";
-
-  const urlPartite =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTDuicnM-HJRrsrP-sKEy9xNZMk83c7xHnWwdkKDkl48DxcsMUMH3hwixUa3FlYDo1caibG5cWqC8fS/pub?output=csv";
-
-  const urlAvulsa =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSHUmkziViOa-WwXJkXHmfD9Ns816nAUuq_BxAvDMYpNtwbaaAmYtunvxEcmJlrKBaHmwa3byi_x3x/pub?output=csv";
-
-  /* =======================
-     LOAD COMPLETO
-  ======================== */
-const loaderMessages = [
-  "Caricamento gironi...",
-  "Aggiornamento risultati..."
-];
-
-let loaderIndex = 0;
-
-  const loaderText = document.getElementById("loaderText");
-setTimeout(() => {
-
-  document.getElementById("loaderText").textContent =
-    "Aggiornamento risultati...";
-
-}, 1500);
+  setTimeout(() => {
+    document.getElementById("loaderText").textContent = "Aggiornamento risultati...";
+  }, 1500);
   
   (async () => {
-
     try {
-
-      const [
-        resSquadre,
-        resPartite,
-        resAvulsa
-      ] = await Promise.all([
-        fetch(urlSquadre),
-        fetch(urlPartite),
-        fetch(urlAvulsa)
+      const [resSquadre, resPartite, resAvulsa] = await Promise.all([
+        fetch(urlSquadre), fetch(urlPartite), fetch(urlAvulsa)
       ]);
 
-      const [
-        dataSquadre,
-        dataPartite,
-        dataAvulsa
-      ] = await Promise.all([
-        resSquadre.text(),
-        resPartite.text(),
-        resAvulsa.text()
+      const [dataSquadre, dataPartite, dataAvulsa] = await Promise.all([
+        resSquadre.text(), resPartite.text(), resAvulsa.text()
       ]);
 
-      /* =======================
-         COMPOSIZIONE
-      ======================== */
-
+      /* COMPOSIZIONE */
       {
         const righe = dataSquadre.split("\n").slice(1);
-
-        const contenitore =
-          document.getElementById("contenitoreSquadre");
-
+        const contenitore = document.getElementById("contenitoreSquadre");
         let gironi = {};
-
         righe.forEach(riga => {
-
           const col = riga.split(",").map(c => c.trim());
-
           if (col.length < 6) return;
-
-          const girone = col[0];
-          const squadra = col[1];
-          const vittorie = col[2];
-          const ptFatti = col[3];
-          const ptSubiti = col[4];
-          const quoziente = col[5];
-
-          if (!gironi[girone]) {
-            gironi[girone] = [];
-          }
-
-          gironi[girone].push([
-            squadra,
-            vittorie,
-            ptFatti,
-            ptSubiti,
-            quoziente
-          ]);
-
+          if (!gironi[col[0]]) gironi[col[0]] = [];
+          gironi[col[0]].push(col.slice(1));
         });
 
         Object.keys(gironi).sort().forEach(g => {
-
           const card = document.createElement("div");
           card.className = "card";
-
           let squadreHTML = "";
-
           gironi[g].forEach(s => {
-
-            const squadra = s[0];
-            const vittorie = s[1];
-            const ptFatti = s[2];
-            const ptSubiti = s[3];
-            const quoziente = s[4];
-
             squadreHTML += `
-
-              <div style="
-                padding:12px 0;
-                border-bottom:1px solid #eee;
-              ">
-
-                <div style="
-                  font-weight:700;
-                  margin-bottom:8px;
-                ">
-                  ${squadra.replace("|","<br>")}
+              <div style="padding:12px 0; border-bottom:1px solid #eee;">
+                <div style="font-weight:700; margin-bottom:8px;">${s[0].replace("|","<br>")}</div>
+                <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; text-align:center; font-size:12px;">
+                  <div><div style="color:gray;">V</div><div>${s[1]}</div></div>
+                  <div><div style="color:gray;">PF</div><div>${s[2]}</div></div>
+                  <div><div style="color:gray;">PS</div><div>${s[3]}</div></div>
+                  <div><div style="color:gray;">QP</div><div>${s[4]}</div></div>
                 </div>
-
-                <div style="
-                  display:grid;
-                  grid-template-columns: repeat(4,1fr);
-                  gap:8px;
-                  text-align:center;
-                  font-size:12px;
-                ">
-
-                  <div>
-                    <div style="color:gray;">V</div>
-                    <div>${vittorie}</div>
-                  </div>
-
-                  <div>
-                    <div style="color:gray;">PF</div>
-                    <div>${ptFatti}</div>
-                  </div>
-
-                  <div>
-                    <div style="color:gray;">PS</div>
-                    <div>${ptSubiti}</div>
-                  </div>
-
-                  <div>
-                    <div style="color:gray;">QP</div>
-                    <div>${quoziente}</div>
-                  </div>
-
-                </div>
-
-              </div>
-
-            `;
-
+              </div>`;
           });
-
-          card.innerHTML = `
-            <div class="girone">
-              Girone ${g}
-            </div>
-
-            ${squadreHTML}
-          `;
-
+          card.innerHTML = `<div class="girone">Girone ${g}</div>${squadreHTML}`;
           contenitore.appendChild(card);
-
         });
       }
 
-      /* =======================
-         PARTITE
-      ======================== */
-
+      /* PARTITE (Layout Aggiornato) */
       {
         const righe = dataPartite.split("\n").slice(1);
-
-        const contenitore =
-          document.getElementById("contenitorePartite");
-
+        const contenitore = document.getElementById("contenitorePartite");
         let gironi = {};
-
         righe.forEach(riga => {
-
           const col = riga.split(",").map(c => c.trim());
-
           if (col.length < 6) return;
-
-          const girone = col[0];
-
-          if (!gironi[girone]) {
-            gironi[girone] = [];
-          }
-
-          gironi[girone].push(col);
-
+          if (!gironi[col[0]]) gironi[col[0]] = [];
+          gironi[col[0]].push(col);
         });
 
         Object.keys(gironi).sort().forEach(g => {
-
           const titolo = document.createElement("h2");
-
-          titolo.style.marginLeft = "15px";
+          titolo.style.cssText = "margin-left:15px; font-size:18px; color:#333;";
           titolo.innerText = "Girone " + g;
-
           contenitore.appendChild(titolo);
 
           gironi[g].forEach(col => {
-
-            let squadraA = col[1].replace("|", "<br>");
-            let squadraB = col[2].replace("|", "<br>");
-
-            let puntiA = parseInt(col[3]);
-            let puntiB = parseInt(col[4]);
-
+            let sA = col[1].replace("|", "<br>");
+            let sB = col[2].replace("|", "<br>");
+            let pA = parseInt(col[3]) || 0;
+            let pB = parseInt(col[4]) || 0;
             let stato = col[5];
             let orario = col[6];
             let luogo = col[7];
 
-            let classeA = "";
-            let classeB = "";
-
+            let clA = "", clB = "";
             if (stato.trim().toLowerCase() === "finita") {
-
-              if (puntiA > puntiB) {
-                classeA = "winner";
-                classeB = "loser";
-              }
-
-              else if (puntiB > puntiA) {
-                classeB = "winner";
-                classeA = "loser";
-              }
+              if (pA > pB) { clA = "winner"; clB = "loser"; }
+              else if (pB > pA) { clB = "winner"; clA = "loser"; }
             }
 
             const card = document.createElement("div");
             card.className = "card";
-
             card.innerHTML = `
-
-              <div style="
-                display:flex;
-                justify-content:space-between;
-                font-size:12px;
-                color:#666;
-                margin-bottom:8px;
-                font-weight:600;
-              ">
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:#666; margin-bottom:8px; font-weight:600;">
                 <div>${orario || "-"}</div>
                 <div>${luogo || "-"}</div>
               </div>
-
               <div class="match">
-
-                <span class="${classeA}">
-                  ${squadraA}
-                </span>
-
-                <div class="center">
+                <div class="team-left ${clA}">${sA}</div>
+                <div class="center-info">
                   <div class="status">${stato}</div>
-                  <div class="score">
-                    ${col[3]} - ${col[4]}
-                  </div>
+                  <div class="score">${pA} - ${pB}</div>
                 </div>
-
-                <span class="${classeB}">
-                  ${squadraB}
-                </span>
-
-              </div>
-            `;
-
+                <div class="team-right ${clB}">${sB}</div>
+              </div>`;
             contenitore.appendChild(card);
-
           });
-
         });
       }
 
-      /* =======================
-         CLASSIFICA AVULSA
-      ======================== */
-
+      /* CLASSIFICA AVULSA */
       {
         const righe = dataAvulsa.split("\n").slice(1);
-
-        const contenitore =
-          document.getElementById("contenitoreAvulsa");
-
+        const contenitore = document.getElementById("contenitoreAvulsa");
         const card = document.createElement("div");
         card.className = "card";
-
         let classificaHTML = "";
-
         righe.forEach(riga => {
-
           const col = riga.split(",").map(c => c.trim());
-
           if (col.length < 6) return;
-
-          const posizione = col[0];
-          const squadra = col[1];
-          const vittorie = col[2];
-          const ptFatti = col[3];
-          const ptSubiti = col[4];
-          const quoziente = col[5];
-
           classificaHTML += `
-
-            <div style="
-              padding:14px 0;
-              border-bottom:1px solid #eee;
-            ">
-
-              <div style="
-                display:flex;
-                align-items:center;
-                gap:12px;
-                margin-bottom:10px;
-              ">
-
-                <div style="
-                  width:32px;
-                  height:32px;
-                  border-radius:50%;
-                  background:#0072ff;
-                  color:white;
-                  display:flex;
-                  align-items:center;
-                  justify-content:center;
-                  font-weight:bold;
-                  flex-shrink:0;
-                ">
-                  ${posizione}
-                </div>
-
-                <div style="
-                  font-weight:700;
-                  line-height:1.2;
-                ">
-                  ${squadra.replace("|","<br>")}
-                </div>
-
+            <div style="padding:14px 0; border-bottom:1px solid #eee;">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                <div style="width:32px; height:32px; border-radius:50%; background:#0072ff; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; flex-shrink:0;">${col[0]}</div>
+                <div style="font-weight:700; line-height:1.2;">${col[1].replace("|","<br>")}</div>
               </div>
-
-              <div style="
-                display:grid;
-                grid-template-columns: repeat(4,1fr);
-                gap:8px;
-                text-align:center;
-                font-size:12px;
-              ">
-
-                <div>
-                  <div style="color:gray;">V</div>
-                  <div>${vittorie}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">PF</div>
-                  <div>${ptFatti}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">PS</div>
-                  <div>${ptSubiti}</div>
-                </div>
-
-                <div>
-                  <div style="color:gray;">QP</div>
-                  <div>${quoziente}</div>
-                </div>
-
+              <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; text-align:center; font-size:12px;">
+                <div><div style="color:gray;">V</div><div>${col[2]}</div></div>
+                <div><div style="color:gray;">PF</div><div>${col[3]}</div></div>
+                <div><div style="color:gray;">PS</div><div>${col[4]}</div></div>
+                <div><div style="color:gray;">QP</div><div>${col[5]}</div></div>
               </div>
-
-            </div>
-
-          `;
-
+            </div>`;
         });
-
         card.innerHTML = classificaHTML;
-
         contenitore.appendChild(card);
       }
 
-      /* =======================
-         HIDE LOADER
-      ======================== */
- 
       document.getElementById("loader").style.opacity = "0";
       document.getElementById("loader").style.pointerEvents = "none";
-      document.getElementById("loader").style.transition =
-        "opacity 0.3s ease";
-
-    }
-
-    catch(err) {
-
+    } catch(err) {
       console.error(err);
-
-      document.getElementById("loader").innerHTML = `
-        <div class="loader-card">
-          <div class="loader-text">
-            Errore nel caricamento dati
-          </div>
-        </div>
-      `;
+      document.getElementById("loader").innerHTML = `<div class="loader-card"><div class="loader-text">Errore nel caricamento dati</div></div>`;
     }
-
   })();
-
 </script>
 
 </body>
