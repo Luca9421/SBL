@@ -117,11 +117,16 @@
       font-size: 18px;
       color: #0072ff;
     }
+.arrow {
+  transition: 0.35s ease;
+  display: inline-block;
+  transform: rotate(0deg);
+}
 
-    .arrow {
-      font-size: 18px;
-      transition: transform 0.35s ease;
-    }
+.accordion.open .arrow {
+  transform: rotate(90deg);
+}
+
 
     .accordion-content {
       max-height: 0;
@@ -136,10 +141,6 @@
       max-height: 10000px;
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .accordion.open .arrow {
-      transform: rotate(90deg);
     }
 
     /* LOADER */
