@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PARTITE</title>
- <!-- FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 
 *{
@@ -16,7 +18,7 @@
 
 body{
   margin:0;
-  font-family: 'Poppins', sans-serif;;
+  font-family:'Poppins', sans-serif;
   background:#f2f4f8;
 }
 
@@ -93,7 +95,9 @@ h1{
 .accordion.open .arrow{
   transform:rotate(90deg);
 }
- 
+
+/* LOADER */
+
 #loader{
   position:fixed;
   inset:0;
@@ -105,7 +109,6 @@ h1{
   z-index:9999;
 }
 
-/* card minimal */
 .loader-card{
   display:flex;
   flex-direction:column;
@@ -117,7 +120,6 @@ h1{
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* spinner moderno */
 .spinner{
   width:34px;
   height:34px;
@@ -128,15 +130,17 @@ h1{
 }
 
 @keyframes spin{
-  to{ transform:rotate(360deg); }
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-/* testo */
 .loader-text{
   font-size:14px;
   font-weight:600;
   color:#333;
 }
+
 /* MENU */
 
 .menu{
@@ -152,7 +156,7 @@ h1{
   border-top-left-radius:24px;
   border-top-right-radius:24px;
   box-shadow:0 -4px 20px rgba(0,0,0,0.08);
-  align-items: center;
+  align-items:center;
 }
 
 .menu-item{
@@ -160,21 +164,21 @@ h1{
   flex-direction:column;
   align-items:center;
   font-size:12px;
- text-align: center;
+  text-align:center;
   text-decoration:none;
-  font-weight: 600;
+  font-weight:600;
   color:#555;
-  gap: 5px;
+  gap:5px;
 }
 
-  .menu-item img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-  }
+.menu-item img{
+  width:28px;
+  height:28px;
+  object-fit:contain;
+}
 
 .menu-item.active{
-   color:#0066ff;
+  color:#0066ff;
 }
 
 .spacer{
@@ -196,17 +200,23 @@ h1{
 </head>
 
 <body>
- 
+
+<!-- LOADER -->
+
 <div id="loader">
+
   <div class="loader-card">
+
     <div class="spinner"></div>
 
-    <div class="loader-text">
+    <div class="loader-text" id="loaderText">
       Caricamento partite...
     </div>
+
   </div>
+
 </div>
- 
+
 <div class="header">
   <h1>PARTITE</h1>
 </div>
@@ -239,6 +249,27 @@ h1{
 <script>
 
 /* =========================
+   LOADER MESSAGES
+========================= */
+
+const loaderMessages = [
+  "Caricamento partite...",
+  "Aggiornamento risultati..."
+];
+
+let loaderIndex = 0;
+
+const loaderInterval = setInterval(() => {
+
+  loaderIndex =
+    (loaderIndex + 1) % loaderMessages.length;
+
+  document.getElementById("loaderText").textContent =
+    loaderMessages[loaderIndex];
+
+}, 2000);
+
+/* =========================
    ACCORDION
 ========================= */
 
@@ -253,7 +284,6 @@ async function toggleAccordion(button){
 
     content.style.maxHeight = content.scrollHeight + "px";
 
-    // 🔥 CARICAMENTO SOLO AL PRIMO CLICK
     if(accordion.dataset.loaded === "false"){
 
       try{
@@ -275,7 +305,6 @@ async function toggleAccordion(button){
 
         accordion.dataset.loaded = "true";
 
-        // aggiorna altezza dopo render
         setTimeout(() => {
           content.style.maxHeight = content.scrollHeight + "px";
         }, 50);
@@ -294,9 +323,12 @@ async function toggleAccordion(button){
     }
 
   } else {
+
     content.style.maxHeight = null;
+
   }
 }
+
 /* =========================
    CONTAINER
 ========================= */
@@ -394,6 +426,7 @@ const fasi = [
   }
 
 ];
+
 
 /* =========================
    MATCH SINGOLO
