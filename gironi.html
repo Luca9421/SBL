@@ -361,6 +361,7 @@ const loaderMessages = [
 
 let loaderIndex = 0;
 
+  const loaderText = document.getElementById("loaderText");
 setTimeout(() => {
 
   document.getElementById("loaderText").textContent =
@@ -728,7 +729,7 @@ setTimeout(() => {
       /* =======================
          HIDE LOADER
       ======================== */
-  clearInterval(loaderInterval);
+ 
       document.getElementById("loader").style.opacity = "0";
       document.getElementById("loader").style.pointerEvents = "none";
       document.getElementById("loader").style.transition =
