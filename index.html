@@ -51,6 +51,7 @@
 
     background-size: cover;
     background-position: center;
+	background-repeat: no-repeat;
 
     color: white;
     padding: 40px 25px 140px;
@@ -383,10 +384,23 @@
   }
 
   /* =======================
-     MOBILE
+     MOBILE 480px
   ======================== */
-  @media (max-width: 480px) {
+  @media (max-width:768px) {
+  .hero {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(0,40,90,0.20) 0%,
+        rgba(0,70,140,0.45) 40%,
+        rgba(0,100,180,0.20) 70%,
+        #eef4fb 100%
+      ),
+      url('sfondo.jpeg');
 
+    background-size: cover;
+    background-position: center top;
+  }
     .hero h1 {
       font-size: 36px;
     }
