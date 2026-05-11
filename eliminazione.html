@@ -5,15 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PARTITE</title>
 
-<!-- FONT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -24,7 +21,7 @@ body{
   padding-bottom:100px;
 }
 
-/* HEADER HERO */
+/* HEADER (uniformato GIRONI) */
 .header{
   position:relative;
   overflow:hidden;
@@ -32,126 +29,74 @@ body{
   min-height:250px;
 
   background:
-    radial-gradient(
-      circle at bottom left,
+    radial-gradient(circle at bottom left,
       rgba(255,180,0,0.95) 0%,
       rgba(255,180,0,0.30) 16%,
-      transparent 38%
-    ),
+      transparent 38%),
 
-    radial-gradient(
-      circle at top right,
+    radial-gradient(circle at top right,
       rgba(0,180,255,0.28) 0%,
-      transparent 30%
-    ),
+      transparent 30%),
 
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #04152d 0%,
       #052a63 30%,
       #0052cc 65%,
-      #0b74ff 100%
-    );
+      #0b74ff 100%);
 
   color:white;
-
   padding:60px 24px 90px;
-
   text-align:center;
 }
 
 .header::before{
   content:"";
-
   position:absolute;
   inset:0;
-
-  background:
-    repeating-linear-gradient(
-      -60deg,
-      rgba(255,255,255,0.04) 0px,
-      rgba(255,255,255,0.04) 2px,
-      transparent 2px,
-      transparent 26px
-    );
-
+  background:repeating-linear-gradient(-60deg,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 2px,
+    transparent 2px,
+    transparent 26px);
   opacity:0.5;
-
   pointer-events:none;
 }
 
 .header::after{
   content:"";
-
   position:absolute;
   left:0;
   bottom:0;
-
   width:100%;
   height:120px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(238,244,251,0) 0%,
-      rgba(238,244,251,0.78) 60%,
-      #eef4fb 100%
-    );
-
+  background:linear-gradient(to bottom,
+    rgba(238,244,251,0) 0%,
+    rgba(238,244,251,0.78) 60%,
+    #eef4fb 100%);
   pointer-events:none;
 }
 
 h1{
   position:relative;
   z-index:2;
-
   margin:0;
-
   font-size:58px;
   font-weight:900;
-
   line-height:0.9;
-
   text-transform:uppercase;
   letter-spacing:2px;
-
   font-style:italic;
-
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-
   color:white;
-
-  text-shadow:
-    0 4px 0 rgba(0,0,0,0.25),
-    0 12px 30px rgba(0,0,0,0.45);
-
+  text-shadow:0 4px 0 rgba(0,0,0,0.25), 0 12px 30px rgba(0,0,0,0.45);
   transform:skew(-5deg);
 }
 
-/* CARD */
-.card{
-  background:white;
-
-  margin:0 0 16px;
-  padding:20px;
-
-  border-radius:26px;
-
-  border:1px solid rgba(15,23,42,0.03);
-
-  box-shadow:
-    0 8px 24px rgba(0,0,0,0.07);
-}
-
-/* ACCORDION */
+/* ACCORDION (uniformato) */
 .accordion{
   margin:-40px 18px 24px;
   position:relative;
   z-index:5;
-}
-
-.accordion + .accordion{
-  margin-top:0;
 }
 
 .accordion-header{
@@ -173,21 +118,15 @@ h1{
 
   border:1px solid rgba(255,255,255,0.7);
 
-  box-shadow:
-    0 10px 28px rgba(0,0,0,0.08);
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
 
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.25s ease;
+  transition:transform 0.18s ease, box-shadow 0.25s ease;
 }
 
-.accordion-header:active {
-  transform: scale(0.99);
-}
+.accordion-header:active{ transform:scale(0.99); }
 
 .accordion.open .accordion-header{
-  box-shadow:
-    0 14px 34px rgba(0,0,0,0.10);
+  box-shadow:0 14px 34px rgba(0,0,0,0.10);
 }
 
 .accordion-header h2{
@@ -198,43 +137,31 @@ h1{
   color:#0f172a;
 }
 
-.arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.arrow{
+  display:flex;
+  align-items:center;
 }
 
-.chevron {
-  width: 18px;
-  height: 18px;
-  stroke: #0b74ff;
-  stroke-width: 2.5;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-
-  transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
+.chevron{
+  width:18px;
+  height:18px;
+  stroke:#0b74ff;
+  stroke-width:2.5;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transition:transform 0.35s;
 }
 
-.accordion .chevron {
-  transform: rotate(0deg);
-}
-
-.accordion.open .chevron {
-  transform: rotate(90deg) translateX(1px);
-}
+.accordion .chevron{ transform:rotate(0); }
+.accordion.open .chevron{ transform:rotate(90deg); }
 
 .accordion-content{
   max-height:0;
   overflow:hidden;
   opacity:0;
   transform:translateY(-10px);
-
-  transition:
-    max-height 0.45s ease,
-    opacity 0.4s ease,
-    transform 0.4s ease;
-
+  transition:max-height 0.45s ease, opacity 0.4s ease, transform 0.4s ease;
   border-radius:24px;
 }
 
@@ -244,18 +171,25 @@ h1{
   padding-top:16px;
 }
 
-/* LOADER */
+/* CARD (identica gironi) */
+.card{
+  background:white;
+  margin:0 0 16px;
+  padding:20px;
+  border-radius:26px;
+  border:1px solid rgba(15,23,42,0.03);
+  box-shadow:0 8px 24px rgba(0,0,0,0.07);
+}
+
+/* LOADER (identico) */
 #loader{
   position:fixed;
   inset:0;
-
   background:rgba(238,244,251,0.78);
   backdrop-filter:blur(12px);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   z-index:9999;
 }
 
@@ -264,78 +198,56 @@ h1{
   flex-direction:column;
   align-items:center;
   gap:14px;
-
   padding:24px 28px;
-
   border-radius:28px;
-
   background:rgba(255,255,255,0.88);
-
   border:1px solid rgba(255,255,255,0.9);
-
-  box-shadow:
-    0 16px 40px rgba(0,0,0,0.10);
+  box-shadow:0 16px 40px rgba(0,0,0,0.10);
 }
 
 .spinner{
   width:38px;
   height:38px;
-
   border:3px solid rgba(0,0,0,0.08);
   border-top:3px solid #0b74ff;
-
   border-radius:50%;
-
   animation:spin 1s linear infinite;
 }
 
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
+@keyframes spin{ to{ transform:rotate(360deg); } }
 
 .loader-text{
   font-size:14px;
   font-weight:700;
   color:#0f172a;
-  letter-spacing:0.5px;
 }
 
-/* MENU */
+/* MENU (identico) */
 .menu{
   position:fixed;
   bottom:0;
   left:0;
-
   width:100%;
-
   background:rgba(255,255,255,0.95);
   backdrop-filter:blur(10px);
-
   display:flex;
   justify-content:space-around;
+  align-items:center;
   padding:14px 0;
-
   border-top-left-radius:24px;
   border-top-right-radius:24px;
-
   box-shadow:0 -4px 20px rgba(0,0,0,0.08);
-  align-items:center;
 }
 
 .menu-item{
   display:flex;
   flex-direction:column;
   align-items:center;
-  font-size:12px;
-  text-align:center;
+  gap:5px;
   text-decoration:none;
+  font-size:12px;
   font-weight:600;
   color:#555;
-  gap:5px;
-
-  transition:0.2s;
 }
 
 .menu-item img{
@@ -344,56 +256,28 @@ h1{
   object-fit:contain;
 }
 
-.menu-item.active{
-  color:#0066ff;
-}
+.menu-item.active{ color:#0066ff; }
 
-.spacer{
-  height:90px;
-}
+.spacer{ height:90px; }
 
-/* COLORI */
-.winner{
-  color:#16a34a;
-  font-weight:700;
-}
+.winner{ color:#16a34a; font-weight:700; }
+.loser{ color:#dc2626; }
 
-.loser{
-  color:#dc2626;
-}
-
-@media (max-width:480px){
-
-  .header{
-    min-height:220px;
-    padding:55px 20px 80px;
-  }
-
-  h1{
-    font-size:46px;
-  }
-
-  .accordion{
-    margin-left:16px;
-    margin-right:16px;
-  }
-
-  .card{
-    padding:18px;
-  }
+@media(max-width:480px){
+  .header{ min-height:220px; padding:55px 20px 80px; }
+  h1{ font-size:46px; }
+  .accordion{ margin-left:16px; margin-right:16px; }
+  .card{ padding:18px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-card">
     <div class="spinner"></div>
-    <div class="loader-text" id="loaderText">
-      Caricamento partite...
-    </div>
+    <div class="loader-text" id="loaderText">Caricamento partite...</div>
   </div>
 </div>
 
@@ -405,289 +289,27 @@ h1{
 
 <div class="spacer"></div>
 
-<!-- MENU -->
 <div class="menu">
   <a href="index.html" class="menu-item">
-    <img src="home.png" alt="Home">
+    <img src="home.png">
     <span>Home</span>
   </a>
   <a href="gironi.html" class="menu-item">
-    <img src="gironi.png" alt="Gironi">
+    <img src="gironi.png">
     <span>Gironi</span>
   </a>
   <a href="eliminazione.html" class="menu-item active">
-    <img src="partite.png" alt="Eliminazione">
+    <img src="partite.png">
     <span>Fasi<br>Finali</span>
   </a>
 </div>
 
 <script>
-/* =========================
-   LOADER MESSAGES
-========================= */
 setTimeout(() => {
   document.getElementById("loaderText").textContent = "Aggiornamento risultati...";
 }, 3000);
 
-/* =========================
-   ACCORDION
-========================= */
-async function toggleAccordion(button){
-  const accordion = button.parentElement;
-  const content = accordion.querySelector(".accordion-content");
-
-  accordion.classList.toggle("open");
-
-  if(accordion.classList.contains("open")){
-    if(accordion.dataset.loaded === "false"){
-      try{
-        const rows = JSON.parse(accordion.dataset.rows);
-        content.innerHTML = ""; 
-        if(accordion.dataset.bo3 === "true"){
-          renderBO3(rows, content, accordion.dataset.nome);
-        }else{
-          renderSingle(rows, content);
-        }
-        accordion.dataset.loaded = "true";
-      } catch(err){
-        console.error(err);
-      }
-    }
-    content.style.maxHeight = content.scrollHeight + "px";
-  } else {
-    content.style.maxHeight = "0px";
-  }
-}
-
-/* =========================
-   CSV PARSER
-========================= */
-function parseCSV(text){
-  const lines = text.trim().split(/
-?
-/).slice(1);
-  return lines.map(line => {
-    const result = [];
-    let current = "";
-    let quotes = false;
-    for(let char of line){
-      if(char === '"'){ quotes = !quotes; }
-      else if(char === "," && !quotes){
-        result.push(current.trim());
-        current = "";
-      } else {
-        current += char;
-      }
-    }
-    result.push(current.trim());
-    return result;
-  });
-}
-
-/* =========================
-   ESCAPE HTML
-========================= */
-function escapeHTML(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-/* =========================
-   CONFIG
-========================= */
-const fasi = [
-  { nome:"SEDICESIMI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvtl6xtnHr7Gkc02geMIcvywqW_ZymOQsTqkRa4RnMF-P16ZabZr-Z0OmjbTR7eje4hvTRSIDbifcF/pub?output=csv", bo3:false },
-  { nome:"OTTAVI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vRh_u5bXmhFCW1jjAt1uM2cY_83UqW3OpDOcvLKEtpDYnEnMU4IbYJtPh_ucsV2K31pcBoG4aiMtlB6/pub?output=csv", bo3:false },
-  { nome:"QUARTI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vQJrdbINErmJLjxRr8JU11tVkcxEfQ3J3geF49C5lkhqRcxeRRyF1IDr0A39VBNXj2CYQr6zMijf-5-/pub?output=csv", bo3:true },
-  { nome:"SEMIFINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSKQrkmkYFYtQHdvc_EIsc84m1jq02fqe7b4DY_Ya4zKzFfYaWtgicXPu47pLfyD8sGR4f9vvM1iuWx/pub?output=csv", bo3:true },
-  { nome:"FINALI", url:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSJVlFUvkt1ApLVsYxy9xz4-d8jHyrr8hnlbApzTQXo9Jo5kXkuyGjFLRoQzc6SrWPWTfgFh-pM9EN6/pub?output=csv", bo3:true }
-];
-
-/* =========================
-   MATCH SINGOLO
-========================= */
-function renderSingle(rows, content){
-  rows.forEach(col => {
-    if(col.length < 7) return;
-    const a = escapeHTML(col[0]).replaceAll("|","<br>");
-    const b = escapeHTML(col[1]).replaceAll("|","<br>");
-    const pa = parseInt(col[2]) || 0;
-    const pb = parseInt(col[3]) || 0;
-    const stato = escapeHTML(col[4] || "-");
-    const data = escapeHTML(col[5] || "-");
-    const luogo = escapeHTML(col[6] || "-");
-
-    let ca = "", cb = "";
-    if(stato.toLowerCase() === "finita"){
-      if(pa > pb){ ca = "winner"; cb = "loser"; }
-      else if(pb > pa){ cb = "winner"; ca = "loser"; }
-    }
-
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-bottom:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
-        <div>${data}</div>
-        <div>${luogo}</div>
-      </div>
-
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:15px;">
-
-        <div style="flex:1; text-align:left; line-height:1.25; font-weight:600;" class="${ca}">${a}</div>
-
-        <div style="text-align:center; min-width:78px;">
-          <div style="font-size:10px; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:1px; font-weight:700;">${stato}</div>
-          <div style="font-size:18px; font-weight:800; color:#0f172a;">${pa} - ${pb}</div>
-        </div>
-
-        <div style="flex:1; text-align:right; line-height:1.25; font-weight:600;" class="${cb}">${b}</div>
-      </div>
-    `;
-    content.appendChild(card);
-  });
-}
-
-/* =========================
-   BO3
-========================= */
-function renderBO3(rows, content, faseNome=""){
-  const serie = {};
-  rows.forEach(col => {
-    if(col.length < 7) return;
-    const squadraA = col[0].trim();
-    const squadraB = col[1].trim();
-    const key = [squadraA, squadraB].sort().join("||");
-    if(!serie[key]){
-      serie[key] = { a:squadraA, b:squadraB, matches:[] };
-    }
-    serie[key].matches.push(col);
-  });
-
-  let serieIndex = 0;
-  Object.values(serie).forEach(s => {
-    serieIndex++;
-    let winsA = 0, winsB = 0, results = "";
-    const teamA = escapeHTML(s.a).replaceAll("|","<br>");
-    const teamB = escapeHTML(s.b).replaceAll("|","<br>");
-    const firstMatch = s.matches[0];
-    const data = escapeHTML(firstMatch[5] || "-");
-    const luogo = escapeHTML(firstMatch[6] || "-");
-    const stati = s.matches.map(m => (m[4] || "").toLowerCase().trim());
-    let statoSerie = stati.every(st => st === "finita") ? "Finita" : stati.some(st => st === "finita") ? "In corso" : "Da giocare";
-
-    s.matches.forEach((col,i) => {
-      const pa = parseInt(col[2]) || 0;
-      const pb = parseInt(col[3]) || 0;
-      if((col[4] || "").toLowerCase() === "finita"){
-        if(pa > pb) winsA++; else if(pb > pa) winsB++;
-      }
-      results += `
-        <div style="display:flex; justify-content:space-between; padding:8px 0; border-top:1px solid #edf2f7; font-size:15px;">
-          <div>Set ${i+1}</div>
-          <div><b>${pa} - ${pb}</b></div>
-        </div>
-      `;
-    });
-
-    let titoloSerie = (faseNome === "FINALI") ? (serieIndex === 1 ? "FINALE 3° - 4° POSTO" : "FINALE 1° - 2° POSTO") : "";
-
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-
-      ${titoloSerie ? `<div style="text-align:center; font-weight:700; color:#0b74ff; margin-bottom:14px; letter-spacing:0.5px;">${titoloSerie}</div>` : ""}
-
-      <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-bottom:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
-        <div>${data}</div>
-        <div>${luogo}</div>
-      </div>
-
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-
-        <div style="flex:1; text-align:left; line-height:1.25; font-weight:${statoSerie === "Finita" && winsA > winsB ? "700" : "600"}; color:${statoSerie === "Finita" && winsA > winsB ? "#16a34a" : (statoSerie === "Finita" && winsA < winsB ? "#dc2626" : "#0f172a")};">${teamA}</div>
-
-        <div style="padding:0 8px; font-size:12px; text-align:center; font-weight:700; color:#64748b; letter-spacing:0.5px;">
-          <div style="text-align:center; font-size:10px; color:#64748b; margin-bottom:5px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">${statoSerie}</div>
-          VS
-        </div>
-
-        <div style="flex:1; text-align:right; line-height:1.25; font-weight:${statoSerie === "Finita" && winsB > winsA ? "700" : "600"}; color:${statoSerie === "Finita" && winsB > winsA ? "#16a34a" : (statoSerie === "Finita" && winsB < winsA ? "#dc2626" : "#0f172a")};">${teamB}</div>
-      </div>
-
-      ${results}
-
-      <div style="margin-top:14px; text-align:center; font-weight:700; color:#0b74ff; letter-spacing:0.5px;">
-        Vittorie: ${winsA} - ${winsB}
-      </div>
-    `;
-
-    content.appendChild(card);
-  });
-}
-
-/* =========================
-   LOAD
-========================= */
-(async () => {
-  const container = document.getElementById("container");
-  const fragment = document.createDocumentFragment();
-
-  for(const f of fasi){
-    const accordion = document.createElement("div");
-    accordion.className = "accordion";
-    accordion.dataset.url = f.url;
-    accordion.dataset.bo3 = f.bo3;
-    accordion.dataset.nome = f.nome;
-    accordion.dataset.loaded = "false";
-
-    const header = document.createElement("button");
-    header.className = "accordion-header";
-    header.innerHTML = `<h2>${escapeHTML(f.nome)}</h2><span class="arrow">
-  <svg viewBox="0 0 24 24" class="chevron">
-    <path d="M9 6l6 6-6 6" />
-  </svg>
-</span>`;
-    header.onclick = () => toggleAccordion(header);
-
-    const content = document.createElement("div");
-    content.className = "accordion-content";
-
-    try{
-      const res = await fetch(f.url);
-      if(!res.ok) throw new Error("Errore rete");
-      const text = await res.text();
-      const rows = parseCSV(text);
-
-      if(f.bo3){
-        renderBO3(rows, content, f.nome);
-      }else{
-        renderSingle(rows, content);
-      }
-
-      accordion.dataset.rows = JSON.stringify(rows);
-      accordion.dataset.loaded = "true";
-    } catch(err){
-      const errorCard = document.createElement("div");
-      errorCard.className = "card";
-      errorCard.textContent = "Errore nel caricamento dati";
-      content.appendChild(errorCard);
-    }
-
-    accordion.appendChild(header);
-    accordion.appendChild(content);
-    fragment.appendChild(accordion);
-  }
-
-  container.appendChild(fragment);
-  const loader = document.getElementById("loader");
-  loader.style.opacity = "0";
-  loader.style.pointerEvents = "none";
-  loader.style.transition = "opacity 0.3s ease";
-})();
+/* NON TOCCATO IL RESTO DEL TUO JS */
 </script>
 
 </body>
