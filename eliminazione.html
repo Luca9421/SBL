@@ -18,74 +18,184 @@
 body{
   margin:0;
   font-family:'Poppins', sans-serif;
-  background:#f2f4f8;
+  background:#eef4fb;
+  color:#222;
+  overflow-x:hidden;
+  padding-bottom:100px;
 }
 
-/* HEADER */
+/* HEADER HERO */
 .header{
-  background: linear-gradient(
-  to bottom,
-  #00c6ff 0%,
-  #0072ff 70%,
-  #f2f4f8 130%
-);
+  position:relative;
+  overflow:hidden;
+
+  min-height:250px;
+
+  background:
+    radial-gradient(
+      circle at bottom left,
+      rgba(255,180,0,0.95) 0%,
+      rgba(255,180,0,0.30) 16%,
+      transparent 38%
+    ),
+
+    radial-gradient(
+      circle at top right,
+      rgba(0,180,255,0.28) 0%,
+      transparent 30%
+    ),
+
+    linear-gradient(
+      135deg,
+      #04152d 0%,
+      #052a63 30%,
+      #0052cc 65%,
+      #0b74ff 100%
+    );
+
   color:white;
-  padding:20px;
+
+  padding:60px 24px 90px;
+
   text-align:center;
-  position: relative;
 }
-  
-.header::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -20px;
-  width: 100%;
-  height: 40px;
-  background: linear-gradient(to bottom, rgba(0,114,255,0.25), transparent);
-  pointer-events: none;
+
+.header::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    repeating-linear-gradient(
+      -60deg,
+      rgba(255,255,255,0.04) 0px,
+      rgba(255,255,255,0.04) 2px,
+      transparent 2px,
+      transparent 26px
+    );
+
+  opacity:0.5;
+
+  pointer-events:none;
 }
+
+.header::after{
+  content:"";
+
+  position:absolute;
+  left:0;
+  bottom:0;
+
+  width:100%;
+  height:120px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(238,244,251,0) 0%,
+      rgba(238,244,251,0.78) 60%,
+      #eef4fb 100%
+    );
+
+  pointer-events:none;
+}
+
 h1{
+  position:relative;
+  z-index:2;
+
   margin:0;
-  font-size:24px;
+
+  font-size:58px;
+  font-weight:900;
+
+  line-height:0.9;
+
+  text-transform:uppercase;
+  letter-spacing:2px;
+
+  font-style:italic;
+
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+  color:white;
+
+  text-shadow:
+    0 4px 0 rgba(0,0,0,0.25),
+    0 12px 30px rgba(0,0,0,0.45);
+
+  transform:skew(-5deg);
 }
 
 /* CARD */
 .card{
   background:white;
-  margin:15px;
-  padding:15px;
-  border-radius:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+
+  margin:0 0 16px;
+  padding:20px;
+
+  border-radius:26px;
+
+  border:1px solid rgba(15,23,42,0.03);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.07);
 }
 
 /* ACCORDION */
 .accordion{
-  margin:15px;
+  margin:-40px 18px 24px;
+  position:relative;
+  z-index:5;
+}
+
+.accordion + .accordion{
+  margin-top:0;
 }
 
 .accordion-header{
   width:100%;
   border:none;
-  background:rgba(255,255,255,0.85);
-  backdrop-filter:blur(6px);
-  padding:15px;
-  border-radius:18px;
+
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(14px);
+
+  padding:20px 22px;
+
+  border-radius:24px;
+
   display:flex;
   justify-content:space-between;
   align-items:center;
+
   cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  transition: transform 0.15s ease;
+
+  border:1px solid rgba(255,255,255,0.7);
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.08);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.25s ease;
 }
 
 .accordion-header:active {
   transform: scale(0.99);
 }
+
+.accordion.open .accordion-header{
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.10);
+}
+
 .accordion-header h2{
   margin:0;
-  font-size:18px;
-  color:#0072ff;
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:1px;
+  color:#0f172a;
 }
 
 .arrow {
@@ -97,7 +207,7 @@ h1{
 .chevron {
   width: 18px;
   height: 18px;
-  stroke: #0072ff;
+  stroke: #0b74ff;
   stroke-width: 2.5;
   fill: none;
   stroke-linecap: round;
@@ -106,12 +216,10 @@ h1{
   transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-/* stato chiuso */
 .accordion .chevron {
   transform: rotate(0deg);
 }
 
-/* stato aperto (iOS feel: rotazione morbida + leggero shift visivo) */
 .accordion.open .chevron {
   transform: rotate(90deg) translateX(1px);
 }
@@ -121,26 +229,33 @@ h1{
   overflow:hidden;
   opacity:0;
   transform:translateY(-10px);
+
   transition:
-    max-height 0.4s ease,
+    max-height 0.45s ease,
     opacity 0.4s ease,
     transform 0.4s ease;
+
+  border-radius:24px;
 }
 
 .accordion.open .accordion-content{
   opacity:1;
   transform:translateY(0);
+  padding-top:16px;
 }
 
 /* LOADER */
 #loader{
   position:fixed;
   inset:0;
-  background:rgba(242,244,248,0.75);
-  backdrop-filter:blur(10px);
+
+  background:rgba(238,244,251,0.78);
+  backdrop-filter:blur(12px);
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   z-index:9999;
 }
 
@@ -148,19 +263,29 @@ h1{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:12px;
-  padding:20px 24px;
-  border-radius:16px;
-  background:rgba(255,255,255,0.8);
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  gap:14px;
+
+  padding:24px 28px;
+
+  border-radius:28px;
+
+  background:rgba(255,255,255,0.88);
+
+  border:1px solid rgba(255,255,255,0.9);
+
+  box-shadow:
+    0 16px 40px rgba(0,0,0,0.10);
 }
 
 .spinner{
-  width:34px;
-  height:34px;
-  border:3px solid #ddd;
-  border-top:3px solid #0072ff;
+  width:38px;
+  height:38px;
+
+  border:3px solid rgba(0,0,0,0.08);
+  border-top:3px solid #0b74ff;
+
   border-radius:50%;
+
   animation:spin 1s linear infinite;
 }
 
@@ -172,8 +297,9 @@ h1{
 
 .loader-text{
   font-size:14px;
-  font-weight:600;
-  color:#333;
+  font-weight:700;
+  color:#0f172a;
+  letter-spacing:0.5px;
 }
 
 /* MENU */
@@ -181,14 +307,19 @@ h1{
   position:fixed;
   bottom:0;
   left:0;
+
   width:100%;
+
   background:rgba(255,255,255,0.95);
   backdrop-filter:blur(10px);
+
   display:flex;
   justify-content:space-around;
-  padding:16px 0;
+  padding:14px 0;
+
   border-top-left-radius:24px;
   border-top-right-radius:24px;
+
   box-shadow:0 -4px 20px rgba(0,0,0,0.08);
   align-items:center;
 }
@@ -203,6 +334,8 @@ h1{
   font-weight:600;
   color:#555;
   gap:5px;
+
+  transition:0.2s;
 }
 
 .menu-item img{
@@ -221,12 +354,33 @@ h1{
 
 /* COLORI */
 .winner{
-  color:green;
-  font-weight:bold;
+  color:#16a34a;
+  font-weight:700;
 }
 
 .loser{
-  color:red;
+  color:#dc2626;
+}
+
+@media (max-width:480px){
+
+  .header{
+    min-height:220px;
+    padding:55px 20px 80px;
+  }
+
+  h1{
+    font-size:46px;
+  }
+
+  .accordion{
+    margin-left:16px;
+    margin-right:16px;
+  }
+
+  .card{
+    padding:18px;
+  }
 }
 </style>
 </head>
@@ -309,7 +463,9 @@ async function toggleAccordion(button){
    CSV PARSER
 ========================= */
 function parseCSV(text){
-  const lines = text.trim().split(/\r?\n/).slice(1);
+  const lines = text.trim().split(/
+?
+/).slice(1);
   return lines.map(line => {
     const result = [];
     let current = "";
@@ -352,7 +508,7 @@ const fasi = [
 ];
 
 /* =========================
-   MATCH SINGOLO (Aggiornato layout)
+   MATCH SINGOLO
 ========================= */
 function renderSingle(rows, content){
   rows.forEach(col => {
@@ -374,22 +530,21 @@ function renderSingle(rows, content){
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:8px;">
-        <div><b>${data}</b></div>
-        <div><b>${luogo}</b></div>
+      <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-bottom:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
+        <div>${data}</div>
+        <div>${luogo}</div>
       </div>
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:5px; font-size:15px;">
-        <!-- SQUADRA 1 ALLINEATA A SINISTRA -->
-        <div style="flex:1; text-align:left;" class="${ca}">${a}</div>
-        
-        <!-- STATO E PUNTEGGIO SEMPRE AL CENTRO -->
-        <div style="text-align:center; min-width:70px;">
-          <div style="font-size:11px; color:#666; text-transform:lowercase; margin-bottom:2px;">${stato}</div>
-          <div style="font-size:16px;"><b>${pa} - ${pb}</b></div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:15px;">
+
+        <div style="flex:1; text-align:left; line-height:1.25; font-weight:600;" class="${ca}">${a}</div>
+
+        <div style="text-align:center; min-width:78px;">
+          <div style="font-size:10px; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:1px; font-weight:700;">${stato}</div>
+          <div style="font-size:18px; font-weight:800; color:#0f172a;">${pa} - ${pb}</div>
         </div>
-        
-        <!-- SQUADRA 2 ALLINEATA A DESTRA -->
-        <div style="flex:1; text-align:right;" class="${cb}">${b}</div>
+
+        <div style="flex:1; text-align:right; line-height:1.25; font-weight:600;" class="${cb}">${b}</div>
       </div>
     `;
     content.appendChild(card);
@@ -431,32 +586,45 @@ function renderBO3(rows, content, faseNome=""){
         if(pa > pb) winsA++; else if(pb > pa) winsB++;
       }
       results += `
-        <div style="display:flex; justify-content:space-between; padding:6px 0; border-top:1px solid #eee; font-size:15px;">
+        <div style="display:flex; justify-content:space-between; padding:8px 0; border-top:1px solid #edf2f7; font-size:15px;">
           <div>Set ${i+1}</div>
-          <div>${pa} - ${pb}</div>
+          <div><b>${pa} - ${pb}</b></div>
         </div>
       `;
     });
 
     let titoloSerie = (faseNome === "FINALI") ? (serieIndex === 1 ? "FINALE 3° - 4° POSTO" : "FINALE 1° - 2° POSTO") : "";
+
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-      ${titoloSerie ? `<div style="text-align:center; font-weight:bold; color:#0072ff; margin-bottom:10px;">${titoloSerie}</div>` : ""}
-      <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:8px;">
-        <div><b>${data}</b></div>
-        <div><b>${luogo}</b></div>
+
+      ${titoloSerie ? `<div style="text-align:center; font-weight:700; color:#0b74ff; margin-bottom:14px; letter-spacing:0.5px;">${titoloSerie}</div>` : ""}
+
+      <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-bottom:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
+        <div>${data}</div>
+        <div>${luogo}</div>
       </div>
+
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-        <div style="flex:1; text-align:left; font-weight:${statoSerie === "Finita" && winsA > winsB ? "bold" : "normal"}; color:${statoSerie === "Finita" && winsA > winsB ? "green" : (statoSerie === "Finita" && winsA < winsB ? "red" : "#666")};">${teamA}</div>
-        <div style="padding:0 8px; font-size:12px; text-align:center; font-weight:700; color:#666;">
-          <div style="text-align:center; font-size:12px; color:#666; margin-bottom:4px; font-weight:normal;">${statoSerie}</div>VS
+
+        <div style="flex:1; text-align:left; line-height:1.25; font-weight:${statoSerie === "Finita" && winsA > winsB ? "700" : "600"}; color:${statoSerie === "Finita" && winsA > winsB ? "#16a34a" : (statoSerie === "Finita" && winsA < winsB ? "#dc2626" : "#0f172a")};">${teamA}</div>
+
+        <div style="padding:0 8px; font-size:12px; text-align:center; font-weight:700; color:#64748b; letter-spacing:0.5px;">
+          <div style="text-align:center; font-size:10px; color:#64748b; margin-bottom:5px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">${statoSerie}</div>
+          VS
         </div>
-        <div style="flex:1; text-align:right; font-weight:${statoSerie === "Finita" && winsB > winsA ? "bold" : "normal"}; color:${statoSerie === "Finita" && winsB > winsA ? "green" : (statoSerie === "Finita" && winsB < winsA ? "red" : "#666")};">${teamB}</div>
+
+        <div style="flex:1; text-align:right; line-height:1.25; font-weight:${statoSerie === "Finita" && winsB > winsA ? "700" : "600"}; color:${statoSerie === "Finita" && winsB > winsA ? "#16a34a" : (statoSerie === "Finita" && winsB < winsA ? "#dc2626" : "#0f172a")};">${teamB}</div>
       </div>
+
       ${results}
-      <div style="margin-top:10px; text-align:center; font-weight:bold; color:#0072ff;">Vittorie: ${winsA} - ${winsB}</div>
+
+      <div style="margin-top:14px; text-align:center; font-weight:700; color:#0b74ff; letter-spacing:0.5px;">
+        Vittorie: ${winsA} - ${winsB}
+      </div>
     `;
+
     content.appendChild(card);
   });
 }
@@ -475,7 +643,7 @@ function renderBO3(rows, content, faseNome=""){
     accordion.dataset.bo3 = f.bo3;
     accordion.dataset.nome = f.nome;
     accordion.dataset.loaded = "false";
-    
+
     const header = document.createElement("button");
     header.className = "accordion-header";
     header.innerHTML = `<h2>${escapeHTML(f.nome)}</h2><span class="arrow">
@@ -499,9 +667,9 @@ function renderBO3(rows, content, faseNome=""){
       }else{
         renderSingle(rows, content);
       }
-      
+
       accordion.dataset.rows = JSON.stringify(rows);
-      accordion.dataset.loaded = "true"; 
+      accordion.dataset.loaded = "true";
     } catch(err){
       const errorCard = document.createElement("div");
       errorCard.className = "card";
