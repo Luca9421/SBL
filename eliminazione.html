@@ -26,7 +26,7 @@ body{
   position:relative;
   overflow:hidden;
 
-  min-height:250px;
+  min-height:180px;
 
   background:
     radial-gradient(circle at bottom left,
@@ -45,7 +45,7 @@ body{
       #0b74ff 100%);
 
   color:white;
-  padding:60px 24px 90px;
+  padding:40px 24px 90px;
   text-align:center;
 }
 
@@ -80,12 +80,12 @@ h1{
   position:relative;
   z-index:2;
   margin:0;
-  font-size:58px;
+  font-size:40px;
   font-weight:900;
   line-height:0.9;
   text-transform:uppercase;
   letter-spacing:2px;
-  font-style:italic;
+  font-style:normal;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   color:white;
   text-shadow:0 4px 0 rgba(0,0,0,0.25), 0 12px 30px rgba(0,0,0,0.45);
@@ -421,7 +421,7 @@ function renderSingle(rows, content){
         
         <!-- STATO E PUNTEGGIO SEMPRE AL CENTRO -->
         <div style="text-align:center; min-width:70px;">
-          <div style="font-size:11px; color:#666; text-transform:lowercase; margin-bottom:2px;">${stato}</div>
+          <div style="font-size:11px; color:#666; text-transform:uppercase; margin-bottom:2px;">${stato}</div>
           <div style="font-size:16px;"><b>${pa} - ${pb}</b></div>
         </div>
         
