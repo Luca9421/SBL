@@ -400,7 +400,7 @@ function renderSingle(rows, content){
     const pb = parseInt(col[3]) || 0;
     const stato = escapeHTML(col[4] || "-");
     const data = escapeHTML(col[5] || "-");
-    const luogo = escapeHTML(col[6] || "-");
+    const stato = (escapeHTML(col[4] || "-")).toUpperCase();
 
     let ca = "", cb = "";
     if(stato.toLowerCase() === "finita"){
